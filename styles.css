@@ -94,6 +94,7 @@ footer {
     box-shadow: 0 0 10px #000;
     width: 25%;
     margin: 10px;
+    padding: 0px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -104,6 +105,11 @@ footer {
     border: 3px solid #25A55F;
     width: 100%;
     margin-top: auto;
+}
+
+.Card p {
+    text-align: center;
+    border: 3px solid #25A55F;
 }
 
 .CardSplitContainer {
