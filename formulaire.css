@@ -1,0 +1,208 @@
+/*GENERAL*/
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;         
+}
+main {
+    margin-top: 90px; 
+}
+
+header{
+    background-color: #fff;
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    padding: 20px;
+    height: 40px;
+    width: 100%;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.5s;
+}
+
+.logo img{
+    width: 160px; 
+    height: 60px;
+    margin-top: 0;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+nav { 
+    display: flex;
+    padding: 2% 6%;
+    height: 40px;
+}
+.nav-links{
+    flex: 1;
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.nav-links ul{
+    margin: 0;
+    padding: 0;
+}
+.nav-links ul li{
+    list-style: none;
+    display: inline-block;
+    padding: 0px 12px;
+    position: relative;
+}
+.nav-links ul li a{
+    color: #000;
+    text-decoration: none;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+.nav-links a:hover{
+    color: #3CB371;
+}
+.nav-links a.active{
+    color: #3CB371 ;
+    font-weight: bold;
+}
+.btn-donate{
+    padding: 7px 10px;
+    background: #248951;
+    margin-top: -10px;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 3px;
+}
+
+.hamburger{
+    display: none;
+    cursor: pointer;
+}
+.bar{
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px auto;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    background-color: #000;
+}
+
+/*FORMULAIRE*/
+
+section h2{
+    font-size: 40px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+/*CARTES DU FORMULAIRE*/
+
+.card {
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 20px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 175px;
+    height: 300px;
+}
+
+.card h3 {
+    text-align: center;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.card p {
+    text-align: center;
+}
+
+.card button {
+    padding: 5px 10px;
+    background: #248951;
+    margin-top: 10px;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 3px;
+    width: 100px;
+    text-align: center;
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+.CardSplitContainer {
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.CardSplit {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    width: 48%;
+}
+
+.CardSplit h2 {
+    text-align: center;
+}
+
+.CardList {
+    width: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/*ADVERTISEMENT*/
+
+.advertisements {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #f4f4f4; 
+}
+  
+.ad {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ddd; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+}
+  
+.ad:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
+}
+  
+.ad img {
+    max-width: 100%; 
+    height: auto; 
+    border-radius: 5px; 
+}
