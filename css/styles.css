@@ -1,0 +1,136 @@
+
+body {
+    font-family: sans-serif;
+    color: #fff;
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+header {
+    background-color: whitesmoke;
+    color: #25A55F;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+header img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+header h1 {
+    margin: 0;
+    padding: 0;
+    align-self: center;
+}
+
+header nav {
+    align-self: center;
+}
+
+header nav button {
+    background-color: whitesmoke;
+    color: #25A55F;
+    padding: 5px 10px;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+main {
+    display: flex;
+    color: #fff;
+    padding: 10px;
+}
+
+main aside {
+    background-color: whitesmoke;
+    width: 20%;
+}
+
+main div {
+    background-color: #e5fff1;
+    color: #000;
+    width: 80%;
+}
+
+.advertisement {
+    color: #fff;
+    width: auto;
+    background-image: url('advertisement_total.jpg');
+    background-size: cover;
+    width: 100%;
+    padding: 10px;
+}
+
+.advertisement h2 {
+    color: blue;
+    text-align: center;
+    text-shadow: 5px 5px 5px #000;
+    padding: 10px;
+}
+
+.advertisement p {
+    text-align: center;
+    color: black;
+    padding: 10px;
+}
+
+footer {
+    background-color: whitesmoke;
+    color: #25A55F;
+    padding: 10px;
+    text-align: center;
+}
+
+.Card {
+    background-color: whitesmoke;
+    color: #000;
+    box-shadow: 0 0 10px #000;
+    width: 25%;
+    margin: 10px;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Card h3 {
+    text-align: center;
+    border: 3px solid #25A55F;
+    width: 100%;
+    margin-top: auto;
+}
+
+.Card p {
+    text-align: center;
+    border: 3px solid #25A55F;
+}
+
+.CardSplitContainer {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.CardSplit {
+    border: 3px solid #25A55F;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.CardSplit h2 {
+    text-align: center;
+    color: #25A55F;
+}
+
+.CardList {
+    width: auto;
+    display: flex;
+    flex-wrap: wrap;
+}

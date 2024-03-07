@@ -33,7 +33,15 @@ header{
   margin-top: 0;
   margin-left: 10px;
   vertical-align: middle;
+  border-radius: 6px;
 }
+.ad img {
+  max-width: 100%; 
+  max-height: 150px;
+  height: auto; 
+  border-radius: 5px; 
+}
+
 
 nav { 
   display: flex;
@@ -249,8 +257,6 @@ letter-spacing: 2px;
 padding: 8px 15px;
 border-radius: 5px;
 transition: 0.3s;
-transition-property: background;
-
 }
 .contenu .text .info-btn:hover{
 background: #248951;
