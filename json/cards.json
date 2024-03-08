@@ -1,0 +1,116 @@
+{
+    "transport": [
+        {
+            "id": 1,
+            "name": "Trajet en voiture",
+            "description": "Ajouter un trajet en voiture",
+            "image": {
+                "icon": "../images/car_icon.png",
+                "alt": "car"
+            }
+        },
+        {
+            "id": 2,
+            "name": "Trajet en vélo",
+            "description": "Ajouter un trajet en vélo",
+            "image": {
+                "icon": "../images/bike_icon.png",
+                "alt": "bike"
+            }
+        },
+        {
+            "id": 3,
+            "name": "Trajet en bus",
+            "description": "Ajouter un trajet en bus",
+            "image": {
+                "icon": "../images/bus_icon.png",
+                "alt": "bus"
+            }
+        },
+        {
+            "id": 4,
+            "name": "Trajet en avion",
+            "description": "Ajouter un trajet en avion",
+            "image": {
+                "icon": "../images/plane_icon.png",
+                "alt": "plane"
+            }
+        }
+    ],
+    "repas": [
+        {
+            "id": 5,
+            "name": "Repas au restaurant",
+            "description": "Ajouter un repas au restaurant",
+            "image": {
+                "icon": "../images/restaurant_icon.png",
+                "alt": "restaurant"
+            }
+        },
+        {
+            "id": 6,
+            "name": "Repas à la maison",
+            "description": "Ajouter un repas à la maison",
+            "image": {
+                "icon": "../images/home_icon.png",
+                "alt": "home"
+            }
+        },
+        {
+            "id": 7,
+            "name": "Repas Végétarien",
+            "description": "Ajouter un repas végétarien",
+            "image": {
+                "icon": "../images/vegetarian_icon.png",
+                "alt": "vegetarian"
+            }
+        }
+    ],
+    "loisirs": [
+        {
+            "id": 8,
+            "name": "Visite d'un musée",
+            "description": "Ajouter une visite d'un musée",
+            "image": {
+                "icon": "../images/museum_icon.png",
+                "alt": "museum"
+            }
+        },
+        {
+            "id": 9,
+            "name": "Visite d'un parc",
+            "description": "Ajouter une visite d'un parc",
+            "image": {
+                "icon": "../images/park_icon.png",
+                "alt": "park"
+            }
+        },
+        {
+            "id": 10,
+            "name": "Visite d'un zoo",
+            "description": "Ajouter une visite d'un zoo",
+            "image": {
+                "icon": "../images/zoo_icon.png",
+                "alt": "zoo"
+            }
+        },
+        {
+            "id": 11,
+            "name": "Visite d'un aquarium",
+            "description": "Ajouter une visite d'un aquarium",
+            "image": {
+                "icon": "../images/aquarium_icon.png",
+                "alt": "aquarium"
+            }
+        },
+        {
+            "id": 12,
+            "name": "Visite d'un parc d'attraction",
+            "description": "Ajouter une visite d'un parc d'attraction",
+            "image": {
+                "icon": "../images/attraction_icon.png",
+                "alt": "attraction"
+            }
+        }
+    ]
+}
