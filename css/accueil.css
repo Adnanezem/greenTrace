@@ -279,29 +279,31 @@ background: #248951;
   justify-content: center;
   align-items: center;
   margin: 20px 0;
-  padding: 10px;
-  background-color: #f4f4f4; 
+  padding: 0; 
+  background-color: #f4f4f4;
+  width: 100%; 
 }
 
 .ad {
-  margin: 10px;
-  padding: 10px;
-  border: 1px solid #ddd; 
-  border-radius: 8px; 
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
-  transition: transform 0.3s ease, box-shadow 0.3s ease; 
+  width: 100%; 
+  margin: 0; 
+  padding: 0;
+  border: 1px solid #ddd;
+  border-radius: 0; 
+  box-shadow: none; 
 }
 
 .ad:hover {
-  transform: translateY(-5px); 
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
+  transform: none; 
+  box-shadow: none;
 }
 
 .ad img {
-  max-width: 100%; 
-  height: auto; 
-  border-radius: 5px; 
+  max-width: 100%;
+  height: auto;
+  border-radius: 0;
 }
+
 
 
 @media (max-width: 768px) {
