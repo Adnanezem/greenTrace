@@ -101,6 +101,34 @@ section h2{
     text-transform: uppercase;
 }
 
+.CardSplitContainer {
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    overflow-y: auto;
+    height: 100%;
+}
+
+.CardSplit {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    width: 48%;
+}
+
+.CardSplit h2 {
+    text-align: center;
+}
+
+.CardList {
+    width: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 /*CARTES DU FORMULAIRE*/
 
 
@@ -177,38 +205,6 @@ section h2{
     text-align: center;
     margin: 0 auto;
     cursor: pointer;
-}
-
-
-
-
-
-
-
-.CardSplitContainer {
-    background-color: #f4f4f4;
-    border-radius: 10px;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.CardSplit {
-    background-color: #fff;
-    border-radius: 5px;
-    padding: 10px;
-    width: 48%;
-}
-
-.CardSplit h2 {
-    text-align: center;
-}
-
-.CardList {
-    width: auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
 }
 
 /*ADVERTISEMENT*/
