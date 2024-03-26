@@ -27,4 +27,4 @@ deploy-prod:
     #- mvn clean package
     #- scp -o StrictHostKeyChecking=no -i $CI_SSH_KEY target/$PACKAGE_NAME gitlabci@$IP_ADDRESS:/opt/tomcat/webapps/v3.war
     # build client
-    - scp -o StrictHostKeyChecking=no -i $CI_SSH_KEY -r $CI_PROJECT_DIR/front/* gitlabci@$IP_ADDRESS:/usr/share/nginx/multimif
+    - scp -o StrictHostKeyChecking=no -i $CI_SSH_KEY -r -v $CI_PROJECT_DIR/front/* gitlabci@$IP_ADDRESS:/usr/share/nginx/multimif
