@@ -1,0 +1,30 @@
+# Cache downloaded dependencies and plugins between builds.
+# Not strictly necessary, but speeds up the builds.
+cache:
+  key: "$CI_JOB_NAME"
+  paths:
+    # Must be within the repository under test hence we can't use the
+    # default ~/.m2
+    - .m2/repository
+variables:
+  # Use the cached directory above.
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+  PACKAGE_NAME: ""
+  BACK_DIR: ""
+  IP_ADDRESS: "192.168.75.79"
+
+deploy-prod:
+  image: maven:3.8.5-openjdk-17 # docker image with Maven
+  only:
+    - CI
+  before_script:
+    - chmod +x $CI_PROJECT_DIR/ci/setup-mvn-proxy.sh
+    - $CI_PROJECT_DIR/ci/setup-mvn-proxy.sh
+    - chmod 400 $CI_SSH_KEY
+  script:
+    # build api
+    #- cd $CI_PROJECT_DIR/tp4
+    #- mvn clean package
+    #- scp -o StrictHostKeyChecking=no -i $CI_SSH_KEY target/$PACKAGE_NAME gitlabci@$IP_ADDRESS:/opt/tomcat/webapps/v3.war
+    # build client
+    - scp -o StrictHostKeyChecking=no -i $CI_SSH_KEY -r $CI_PROJECT_DIR/front/* gitlabci@$IP_ADDRESS:/usr/share/nginx/mif03/
