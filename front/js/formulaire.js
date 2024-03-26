@@ -3,6 +3,7 @@ function generateCardsFromJson() {
         .then(response => response.json())
         .then(data => {
             let cardListNew = document.getElementById('cardListNew');
+            let cardListUser = document.getElementById('cardListUser'); // Get the user's card list
             ['transport', 'repas', 'loisirs'].forEach(category => {
                 data[category].forEach(item => {
                     let card = document.createElement('div');
@@ -25,6 +26,11 @@ function generateCardsFromJson() {
 
                     let button = document.createElement('button');
                     button.textContent = 'Ajouter';
+                    button.addEventListener('click', function() { // Add event listener
+                        let clonedCard = card.cloneNode(true); // Clone the card
+                        clonedCard.querySelector('button').textContent = 'Modifier'; // Change the button text in the cloned card
+                        cardListUser.appendChild(clonedCard); // Append the cloned card to the user's card list
+                    });
                     div.appendChild(button);
 
                     card.appendChild(div);
@@ -35,9 +41,7 @@ function generateCardsFromJson() {
         });
 }
 
-//console.log('formulaire.js loaded');
+console.log('formulaire.js loaded');
 
 // Call the function to generate the cards
-//generateCardsFromJson();
-
-
+generateCardsFromJson();
