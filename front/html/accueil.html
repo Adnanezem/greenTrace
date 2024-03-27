@@ -1,150 +1,165 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Accueil - Green Trace</title>
-  <link rel="stylesheet" href="../css/accueil.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;600;700&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
-</head>
-<body class="accueil">
-  <header>
-        <a class="logo" href="../html/"><img src="../images/logo.png"></a>
-    <nav>
-        <div class="nav-links">
-            <ul>
-              <li class="nav-items"><a href="accueil.html" class="active">Home</a></li>
-              <li class="nav-items"><a href="formulaire.html">Start</a></li>
-              <li class="nav-items"><a href="contact.html">Contact</a></li>
-              <li class="nav-items"><a href="login.html">Login</a></li>
-             
-            </ul>
-        </div>
-        <div class="hamburger">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-        </div>
-    </nav>
-  </header>
 
-  <main>
-    <!--image slider starts-->
-    <div class="slider">
-        <div class="slides">
-            <!--ratio button starts-->
-            <input type="radio" name="radio-btn" id="radio1">
-            <input type="radio" name="radio-btn" id="radio2">
-            <input type="radio" name="radio-btn" id="radio3">
-            <!--ratio button ends-->
-            <!--slide images starts-->
-            <div class="slide first ">
-                <img src="../images/pollution1.jpg" alt="">
-                <div class="citation">
-                    <h2 class="titlep1">"Chaque action compte. Chaque geste réduit notre empreinte carbone.<br>
-                         Chaque pas nous rapproche d'un avenir durable."</h2>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil - Green Trace</title>
+    <link rel="stylesheet" href="../css/accueil.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body class="accueil">
+    <header>
+        <a class="logo" href="./html/"><img src="./images/logo.png"></a>
+        <nav>
+            <div class="nav-links">
+                <ul>
+                    <li class="nav-items"><a href="index.html?page=accueil" class="active">Home</a></li>
+                    <li class="nav-items"><a href="index.html?page=formulaire">Start</a></li>
+                    <li class="nav-items"><a href="index.html?page=contact">Contact</a></li>
+                    <li class="nav-items"><a href="index.html?page=login">Login</a></li>
+                </ul>
+            </div>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!--image slider starts-->
+        <div class="slider">
+            <div class="slides">
+                <!--ratio button starts-->
+                <input type="radio" name="radio-btn" id="radio1">
+                <input type="radio" name="radio-btn" id="radio2">
+                <input type="radio" name="radio-btn" id="radio3">
+                <!--ratio button ends-->
+                <!--slide images starts-->
+                <div class="slide first ">
+                    <img src="./images/pollution1.jpg" alt="">
+                    <div class="citation">
+                        <h2 class="titlep1">"Chaque action compte. Chaque geste réduit notre empreinte carbone.<br>
+                            Chaque pas nous rapproche d'un avenir durable."</h2>
+                    </div>
+                </div>
+                <div class="slide">
+                    <img src="./images/pollution2.jpg" alt="">
+                </div>
+                <div class="slide">
+                    <img src="./images/pollution3.jpg" alt="">
+                </div>
+                <!--slide images ends-->
+                <!--automatic navigation starts-->
+                <div class="auto-navigation">
+                    <div class="auto-btn1"></div>
+                    <div class="auto-btn2"></div>
+                    <div class="auto-btn3"></div>
+
+                </div>
+                <!--automatic navigation ends-->
+            </div>
+            <!--manual navigation starts-->
+            <div class="manual-navigation">
+                <label for="radio1" class="manual-btn"></label>
+                <label for="radio2" class="manual-btn"></label>
+                <label for="radio3" class="manual-btn"></label>
+            </div>
+            <!--manual navigation ends-->
+        </div>
+        <!--image slider ends-->
+
+        <script type="text/javascript">
+            //Slider automatique
+            var counter = 1;
+            setInterval(function () {
+                document.getElementById('radio' + counter).checked = true;
+                counter++;
+                if (counter > 3) {
+                    counter = 1;
+                }
+            }, 3000);
+        </script>
+
+
+        <section class="presentation">
+            <div class="presentation-content">
+                <div class="contenu">
+                    <div class="image">
+                        <img src="./images/pollution4.jpg" alt="">
+                    </div>
+                    <div class="text">
+                        <h2>Qui somme nous?</h2>
+                        <p>Notre site Web innovante calcule votre empreinte carbone quotidienne en se basant sur vos
+                            habitudes de vie, comme les déplacements, l'alimentation, le télétravail, et les loisirs.
+                            Destinée au grand public, elle offre des simulations personnalisées pour éclairer vos choix
+                            vers un mode de vie plus durable. Grâce à une base de données actualisable, notre plateforme
+                            fournit des analyses précises, encourageant une prise de conscience et des actions concrètes
+                            pour réduire votre impact sur l'environnement. Rejoignez notre démarche vers un avenir plus
+                            vert.</p>
+                        <a href="formulaire.html" class="info-btn">Formulaire</a>
+                    </div>
                 </div>
             </div>
-            <div class="slide">
-                <img src="../images/pollution2.jpg" alt="">
+        </section>
+
+
+        <section>
+            <div class="missions">
+                <h2>Nos Missions</h2>
+                <div class="cards">
+                    <div class="text-card">
+                        <h3><i class="ri-leaf-line"></i><br>Calculer l'Empreinte Carbone :</h3>
+                        <p>Notre objectif premier est de fournir à chacun les moyens de calculer précisément son
+                            empreinte carbone basée sur ses habitudes quotidiennes. De vos déplacements à votre
+                            consommation alimentaire, nous vous aidons à mesurer votre impact sur l'environnement.</p>
+                    </div>
+                    <div class="text-card">
+                        <h3><i class="ri-refresh-line"></i><br>Encourager les Changements Positifs :</h3>
+                        <p>Nous promouvons l'adoption de pratiques plus durables à travers des recommandations
+                            personnalisées pour réduire votre empreinte carbone. Que ce soit par le choix de vos modes
+                            de transport ou de vos habitudes alimentaires, chaque action compte.</p>
+                    </div>
+                    <div class="text-card">
+                        <h3><i class="ri-lightbulb-line"></i><br>Eduquer et Sensibiliser :</h3>
+                        <p>L'éducation sur les enjeux climatiques et l'importance de réduire notre empreinte carbone est
+                            au cœur de notre mission. Nous nous engageons à partager des connaissances et à sensibiliser
+                            le public sur les moyens efficaces de protéger notre planète.</p>
+                    </div>
+                </div>
             </div>
-            <div class="slide">
-                <img src="../images/pollution3.jpg" alt="">
-            </div>
-            <!--slide images ends-->
-            <!--automatic navigation starts-->
-            <div class="auto-navigation">
-                <div class="auto-btn1"></div>
-                <div class="auto-btn2"></div>
-                <div class="auto-btn3"></div>
-                
-            </div>
-            <!--automatic navigation ends-->
-        </div>
-        <!--manual navigation starts-->
-        <div class="manual-navigation">
-            <label for="radio1" class="manual-btn"></label>
-            <label for="radio2" class="manual-btn"></label>
-            <label for="radio3" class="manual-btn"></label>
-        </div>
-        <!--manual navigation ends-->
-    </div>
-    <!--image slider ends-->
+        </section>
 
-    <script type="text/javascript">
-        //Slider automatique
-        var counter=1;
-        setInterval(function(){
-            document.getElementById('radio' + counter).checked = true;
-            counter++;
-            if(counter>3){
-                counter = 1;
-            }
-        },3000);
-    </script>
+    </main>
 
-
-    <section class="presentation">
-      <div class="presentation-content">
-        <div class="contenu">
-            <div class="image">
-                <img src="../images/pollution4.jpg" alt="">
-            </div>
-            <div class="text">
-                <h2>Qui somme nous?</h2>
-                <p>Notre site Web innovante calcule votre empreinte carbone quotidienne en se basant sur vos habitudes de vie, comme les déplacements, l'alimentation, le télétravail, et les loisirs. Destinée au grand public, elle offre des simulations personnalisées pour éclairer vos choix vers un mode de vie plus durable. Grâce à une base de données actualisable, notre plateforme fournit des analyses précises, encourageant une prise de conscience et des actions concrètes pour réduire votre impact sur l'environnement. Rejoignez notre démarche vers un avenir plus vert.</p>
-                <a href="formulaire.html" class="info-btn">Formulaire</a>
-            </div>
-        </div>
-      </div>
-    </section>
-
-
-    <section>
-        <div class="missions">
-          <h2>Nos Missions</h2>
-          <div class="cards">
-              <div class="text-card">
-                  <h3><i class="ri-leaf-line"></i><br>Calculer l'Empreinte Carbone :</h3>
-                  <p>Notre objectif premier est de fournir à chacun les moyens de calculer précisément son empreinte carbone basée sur ses habitudes quotidiennes. De vos déplacements à votre consommation alimentaire, nous vous aidons à mesurer votre impact sur l'environnement.</p>
-              </div>
-              <div class="text-card">
-                  <h3><i class="ri-refresh-line"></i><br>Encourager les Changements Positifs :</h3>
-                  <p>Nous promouvons l'adoption de pratiques plus durables à travers des recommandations personnalisées pour réduire votre empreinte carbone. Que ce soit par le choix de vos modes de transport ou de vos habitudes alimentaires, chaque action compte.</p>
-              </div>
-              <div class="text-card">
-                  <h3><i class="ri-lightbulb-line"></i><br>Eduquer et Sensibiliser :</h3>
-                  <p>L'éducation sur les enjeux climatiques et l'importance de réduire notre empreinte carbone est au cœur de notre mission. Nous nous engageons à partager des connaissances et à sensibiliser le public sur les moyens efficaces de protéger notre planète.</p>
-              </div>
-          </div>
-        </div>
-      </section>
-      
-  </main>
-
-  <footer>
-    <!-- Contenu du pied de page -->
-    <!--<div class="media-icons">
+    <footer>
+        <!-- Contenu du pied de page -->
+        <!--<div class="media-icons">
         <a href="#" class="icon"><i class="ri-facebook-circle-fill"></i></a>
         <a href="#" class="icon"><i class="ri-instagram-line"></i></a>
         <a href="#" class="icon"><i class="ri-twitter-fill"></i></a>
     </div>-->
-    <div class="advertisements">
-        <!-- Publicité 1 -->
-        <div class="ad">
-            <a href="https://www.carwow.co.uk/hybrid-cars">
-                <img src="../images/ad.jpg" alt="Publicité 1">
-            </a>
+        <div class="advertisements">
+            <!-- Publicité 1 -->
+            <div class="ad">
+                <a href="https://www.carwow.co.uk/hybrid-cars">
+                    <img src="./images/ad.jpg" alt="Publicité 1">
+                </a>
+            </div>
         </div>
-    </div>
-    <p>&copy; 2024 Green Tracer. All rights reserved.</p>
-  </footer>
+        <p>&copy; 2024 Green Tracer. All rights reserved.</p>
+    </footer>
 
-  <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
-  <script src="../js/script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"
+        integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+    <script src="./js/script.js"></script>
 </body>
-</html>
 
+</html>
