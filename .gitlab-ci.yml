@@ -48,6 +48,7 @@ sonarqube-check:
     - merge_requests
     - master
     - main
+    - CI
     - develop
 
 sonarqube-vulnerability-report:
@@ -59,6 +60,7 @@ sonarqube-vulnerability-report:
     - merge_requests
     - master
     - main
+    - CI
     - develop
   artifacts:
     expire_in: 1 day
