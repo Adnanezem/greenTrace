@@ -130,6 +130,25 @@ section h2{
     justify-content: center;
 }
 
+.cardAssemblySplit {
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+}
+
+#cardListNew, #cardListUser {
+    overflow-y: auto;
+    height: 600px;
+}
+
+#cardAssemblySplitLeft h2, #cardAssemblySplitRight h2 {
+    position: sticky;
+    top: 0;
+    background: rgba(255, 255, 255, 0.5); /* Change color as needed */
+    z-index: 1;
+    width: 100%;
+}
+
 /*CARTES DU FORMULAIRE*/
 
 
