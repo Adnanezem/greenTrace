@@ -89,6 +89,13 @@ document.querySelector('.contactForm').addEventListener('submit', function(event
     var inputMessage = document.getElementById('inputMessage').value;
     var exampleFormControlTextarea1 = document.getElementById('exampleFormControlTextarea1').value;
 
+    // Email validation
+    var emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+    if (!inputEmail4.match(emailPattern)) {
+        alert('Please enter a valid email address');
+        return;
+    }
+
     console.log('Prénom: ', inputName1);
     console.log('Nom: ', inputName2);
     console.log('Email: ', inputEmail4);
