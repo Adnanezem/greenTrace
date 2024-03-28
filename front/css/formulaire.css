@@ -33,7 +33,8 @@ header{
     margin-top: 0;
     margin-left: 10px;
     vertical-align: middle;
-}
+    border-radius: 6px;
+  }
 
 nav { 
     display: flex;
@@ -256,3 +257,48 @@ section h2{
     height: auto; 
     border-radius: 5px; 
 }
+
+/*RESPONSIVE BAR*/
+  
+@media(max-width: 1060px){
+    .hamburger{
+      display: block;
+    }
+    .hamburger.active .bar:nth-child(2){
+      opacity: 0;;
+    }
+    .hamburger.active .bar:nth-child(1){
+      transform: translateY(8px) rotate(45deg);
+    }
+    .hamburger.active .bar:nth-child(3){
+      transform: translateY(-8px) rotate(-45deg);
+    }
+    .nav-links{
+      height: 450px;
+      position: fixed;
+      left: -100%;
+      top: 70px;
+      gap: 0;
+      flex-direction: column;
+      background-color: #fff;
+      width: 100%;
+      transition: 0.3s;
+    }
+    .nav-links ul {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%; 
+      margin: 0; 
+      padding: 0; 
+    }
+    
+    .nav-items {
+      margin: 15px 0px;
+    }
+    .nav-links.active{
+      left: 0;
+    }
+  }
+  
