@@ -16,6 +16,9 @@
 	<description>Site web Green Tracer pour l&apos;UE MULTIMIF </description>
 	<properties>
 		<java.version>17</java.version>
+		<sonar.projectKey>multimif_multimif-8_AY6FQPc7u4zgX3p-IR2I</sonar.projectKey>
+  		<sonar.projectName>Multimif 8</sonar.projectName>
+  		<sonar.qualitygate.wait>true</sonar.qualitygate.wait>
 	</properties>
 	<dependencies>
 		<dependency>
