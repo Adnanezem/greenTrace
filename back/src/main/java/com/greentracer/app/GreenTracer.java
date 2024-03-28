@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.greentracer.app.internal.DefaultGreenTracer;
-import com.greentracer.app.records.testRecord;
+import com.greentracer.app.responses.testRecord;
 
 
 @RestController

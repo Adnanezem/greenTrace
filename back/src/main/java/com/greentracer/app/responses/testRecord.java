@@ -1,4 +1,4 @@
-package com.greentracer.app.records;
+package com.greentracer.app.responses;
 
 public record testRecord(String content) {
     
