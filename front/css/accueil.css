@@ -358,17 +358,17 @@ background: #248951;
 
 /*TITRE DU SLIDER RESPONSIF*/
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1060px) {
   .slider{
-    width: 28%;
+    width: 100%;
   }
   .title {
-    font-size: 10px;
+    font-size: 3px;
   }
 }
 @media screen and (max-width: 480px) {
   .title {
-    font-size: 8px;
+    font-size: 5px;
   }
 }
 @media screen and (max-width: 360px) {
