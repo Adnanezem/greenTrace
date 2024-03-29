@@ -1,9 +1,8 @@
 stages:
-  - build
-  - deploy-front
-  - deploy-back
   - sonarqube-check
-  - sonarqube-vulnerability-report
+  - deploy
+
+
 # Cache downloaded dependencies and plugins between builds.
 # Not strictly necessary, but speeds up the builds.
 cache:
@@ -13,6 +12,7 @@ cache:
     # default ~/.m2
     - .m2/repository
     - .sonar/cache
+
 variables:
   # Use the cached directory above.
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
@@ -22,21 +22,21 @@ variables:
   SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
   GIT_DEPTH: "0"
 
-deploy-front:
-  stage: deploy-front
+deploy-front-test:
+  stage: deploy
   image: maven:3.8.5-openjdk-17
   only:
-    - CI
+    - main
   before_script:
     - chmod 400 $CI_SSH_KEY
   script:
     - scp -o StrictHostKeyChecking=no -i $CI_SSH_KEY -r -v $CI_PROJECT_DIR/front/* gitlabci@$IP_ADDRESS:/usr/share/nginx/multimif
 
-deploy-back:
-  stage: deploy-back
+deploy-back-test:
+  stage: deploy
   image: maven:3.8.5-openjdk-17
   only:
-    - CI
+    - main
   before_script:
     - chmod +x $CI_PROJECT_DIR/ci/setup-mvn-proxy.sh
     - $CI_PROJECT_DIR/ci/setup-mvn-proxy.sh
@@ -58,26 +58,5 @@ sonarqube-check:
     - mvn verify sonar:sonar
   allow_failure: true
   only:
-    - merge_requests
-    - master
     - main
-    - CI
-    - develop
 
-sonarqube-vulnerability-report:
-  stage: sonarqube-vulnerability-report
-  script:
-    - 'curl -u "${SONAR_TOKEN}:" "${SONAR_HOST_URL}/api/issues/gitlab_sast_export?projectKey=multimif_multimif-8_AY6FQPc7u4zgX3p-IR2I&branch=${CI_COMMIT_BRANCH}&pullRequest=${CI_MERGE_REQUEST_IID}" -o gl-sast-sonar-report.json'
-  allow_failure: true
-  only:
-    - merge_requests
-    - master
-    - main
-    - CI
-    - develop
-  artifacts:
-    expire_in: 1 day
-    reports:
-      sast: gl-sast-sonar-report.json
-  dependencies:
-    - sonarqube-check
