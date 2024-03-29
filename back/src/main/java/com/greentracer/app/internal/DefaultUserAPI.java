@@ -5,16 +5,28 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.greentracer.app.UserAPI;
+import com.greentracer.app.dao.UserDao;
 import com.greentracer.app.responses.Error;
 import com.greentracer.app.responses.GreenTracerResponse;
 import com.greentracer.app.utils.JSONUtils;
+import com.greentracer.models.User;
 
+@Component
 public class DefaultUserAPI {
+
+    private final UserDao userDao;
+
+    @Autowired
+    public DefaultUserAPI(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     private static Logger logger = LoggerFactory.getLogger(UserAPI.class);
 
@@ -33,18 +45,26 @@ public class DefaultUserAPI {
             String password = JSONUtils.getStringField(json, "password");
             if (login.isBlank() || password.isBlank()) {
                 logger.error("Le champ login ou password est vide.");
-                Error err = new Error("Le champ login ou password est vide.", 401);
+                Error err = new Error("Le champ login ou password est vide.", 400);
                 res.put(false, err);
                 return res;
             }
             logger.info("login: {}, password: {}", login, password);
-            // on doit requete la bd ici..
-            if (true /* REMPLACER PAR RETOUR DE LA BD */) {
+            User u = userDao.getById(login);
+            if (u.getPassword().equals(password)) {
                 res.put(true, null);
+            } else {
+                Error err = new Error("Mot de passe erronée.", 403);
+                res.put(false, err);
             }
         } catch (JsonProcessingException e) {
             logger.error("Format JSON non respecté : {}", body);
-            Error err = new Error("Format JSON non respecté.", 401);
+            Error err = new Error("Format JSON non respecté.", 400);
+            res.put(false, err);
+            return res;
+        } catch (IllegalArgumentException e) {
+            logger.error("L'utilisateur définit par {} n'existe pas dans la base.", body);
+            Error err = new Error("Cet utilisateur n'existe pas ", 401);
             res.put(false, err);
             return res;
         }
@@ -54,7 +74,7 @@ public class DefaultUserAPI {
     public Map<Boolean, GreenTracerResponse> defaultRegister(String body) {
         Map<Boolean, GreenTracerResponse> res = new HashMap<>();
         if (body.isEmpty()) {
-            Error err = new Error("Corps de requête vide.", 401);
+            Error err = new Error("Corps de requête vide.", 400);
             res.put(false, err);
             return res;
         }
@@ -71,16 +91,21 @@ public class DefaultUserAPI {
                     mail.isBlank() || fname.isBlank() || lname.isBlank();
             if (isBlank) {
                 String err_msg = "Il manque des champs à la requête." +
-                "La requête comporte les champs login, password, mail, fname, lname." +
-                " Tous les champs sont des strings.";
+                        "La requête comporte les champs login, password, mail, fname, lname." +
+                        " Tous les champs sont des strings.";
                 logger.error(err_msg);
-                Error err = new Error(err_msg, 401);
+                Error err = new Error(err_msg, 400);
                 res.put(false, err);
                 return res;
             }
-            // on doit requete la bd ici..
-            if (true /* REMPLACER PAR RETOUR DE LA BD */) {
+            User u = new User(login, password, lname, fname);
+            if (userDao.create(u)) {
                 res.put(true, null);
+            } else {
+                logger.error("Problème lors de la création d'un user.");
+                Error err = new Error("Problème lors de la création d'un user.", 400);
+                res.put(false, err);
+                return res;
             }
         } catch (JsonProcessingException e) {
             logger.error("Format JSON non respecté : {}", body);

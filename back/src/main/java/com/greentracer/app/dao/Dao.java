@@ -6,7 +6,7 @@ import java.util.List;
  * Dao
  */
 public interface Dao<U, T> {
-    T getById(U id) throws NullPointerException;
+    T getById(U id) throws IllegalArgumentException;
 
     List<T> getAll();
 
