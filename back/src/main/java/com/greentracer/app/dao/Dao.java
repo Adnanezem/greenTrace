@@ -2,6 +2,9 @@ package com.greentracer.app.dao;
 
 import java.util.List;
 
+/**
+ * Dao
+ */
 public interface Dao<U, T> {
     T getById(U id) throws NullPointerException;
 

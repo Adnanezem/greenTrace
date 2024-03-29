@@ -5,7 +5,6 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -13,6 +12,10 @@ import org.springframework.stereotype.Component;
 import com.greentracer.mappers.UserMapper;
 import com.greentracer.models.User;
 
+
+/**
+ * UserDao
+ */
 @Component
 public class UserDao implements Dao<String, User> {
 
