@@ -348,9 +348,6 @@ background: #248951;
     margin: 0; 
     padding: 0; 
   }
-  .btn-donate{
-    margin: 14px 0;
-  }
   .nav-items {
     margin: 15px 0px;
   }
@@ -466,25 +463,6 @@ background: #248951;
   }
 }
 
-/* MEDIA ICONS RESPONSIVE 
-@media screen and (max-width: 767px) {
-  .media-icons {
-    display: flex;
-    justify-content: center;
-  }
-  .icon {
-    margin: 5px;
-  }
-  .icon i {
-    font-size: 24px;
-  }
-}
-
-@media screen and (max-width: 479px) {
-  .icon i {
-    font-size: 20px;
-  }
-}*/
 
 .loader {
   border: 16px solid #f3f3f3;

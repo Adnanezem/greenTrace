@@ -1,6 +1,7 @@
 stages:
   - build
   - deploy-front
+  - deploy-back
   - sonarqube-check
   - sonarqube-vulnerability-report
 # Cache downloaded dependencies and plugins between builds.
@@ -15,8 +16,8 @@ cache:
 variables:
   # Use the cached directory above.
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
-  PACKAGE_NAME: ""
-  BACK_DIR: ""
+  PACKAGE_NAME: "greentracer-0.0.1-SNAPSHOT.war.original"
+  BACK_DIR: "back"
   IP_ADDRESS: "192.168.75.79"
   SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
   GIT_DEPTH: "0"
@@ -30,6 +31,21 @@ deploy-front:
     - chmod 400 $CI_SSH_KEY
   script:
     - scp -o StrictHostKeyChecking=no -i $CI_SSH_KEY -r -v $CI_PROJECT_DIR/front/* gitlabci@$IP_ADDRESS:/usr/share/nginx/multimif
+
+deploy-back:
+  stage: deploy-back
+  image: maven:3.8.5-openjdk-17
+  only:
+    - CI
+  before_script:
+    - chmod +x $CI_PROJECT_DIR/ci/setup-mvn-proxy.sh
+    - $CI_PROJECT_DIR/ci/setup-mvn-proxy.sh
+    - chmod 400 $CI_SSH_KEY
+  script:
+    - cd $CI_PROJECT_DIR/$BACK_DIR
+    - mvn clean package
+    - scp -o StrictHostKeyChecking=no -i $CI_SSH_KEY target/$PACKAGE_NAME gitlabci@$IP_ADDRESS:/opt/tomcat/webapps/back_test.war
+
 
 sonarqube-check:
   stage: sonarqube-check
