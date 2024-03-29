@@ -3,7 +3,7 @@ package com.greentracer.app.dao;
 import java.util.List;
 
 public interface Dao<U, T> {
-    T getById(U id);
+    T getById(U id) throws NullPointerException;
 
     List<T> getAll();
 

@@ -5,6 +5,8 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -16,11 +18,11 @@ public class UserDao implements Dao<String, User> {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private final String SQL_FIND_USER = "select * from user where login = ?";
-    private final String SQL_DELETE_USER = "delete from user where login = ?";
-    private final String SQL_UPDATE_USER = "update user set Prenom = ?, Nom = ?, MDPS = ? where login = ?";
-    private final String SQL_GET_ALL = "select * from user";
-    private final String SQL_INSERT_USER = "insert into user(login, Prenom, Nom, MDPS) values(?,?,?,?)";
+    private final String SQL_FIND_USER = "select * from public.users where login = ?";
+    private final String SQL_DELETE_USER = "delete from public.users where login = ?";
+    private final String SQL_UPDATE_USER = "update public.users set Prenom = ?, Nom = ?, MDPS = ? where login = ?";
+    private final String SQL_GET_ALL = "select * from public.users";
+    private final String SQL_INSERT_USER = "insert into public.users(login, Prenom, Nom, MDPS) values(?,?,?,?)";
 
     @Autowired
     public UserDao(DataSource dataSource) {
@@ -28,8 +30,16 @@ public class UserDao implements Dao<String, User> {
     }
 
     @Override
-    public User getById(String id) {
-        return jdbcTemplate.queryForObject(SQL_FIND_USER, new UserMapper(), new Object[] { id });
+    public User getById(String id) throws NullPointerException {
+        if(id == null) {
+            throw new NullPointerException("L'id utilisateur fourni est null.");
+        }
+        try {
+            User u = jdbcTemplate.queryForObject(SQL_FIND_USER, new UserMapper(), id);
+            return u;
+        } catch (IncorrectResultSizeDataAccessException e) {
+            throw new NullPointerException("L'id utilisateur fourni est null.");
+        }
     }
 
     @Override

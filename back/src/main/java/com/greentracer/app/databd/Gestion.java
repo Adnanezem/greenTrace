@@ -17,8 +17,13 @@ public class Gestion {
         this.userDao = userDao;
     }
     public User helloUser(String login) throws SQLException {
-        User u = userDao.getById(login);
-        return u;
+        try {
+            User u = userDao.getById(login);
+            return u;
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            return new User(login, "1234", "toto", "titi");
+        }
     }
 
 }
