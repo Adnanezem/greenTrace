@@ -5,13 +5,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.greentracer.app.internal.DefaultGreenTracer;
-import com.greentracer.app.records.testRecord;
+import com.greentracer.app.responses.testRecord;
 
 
 @RestController
 public class GreenTracer {
 
-    DefaultGreenTracer def = new DefaultGreenTracer();
+    private final DefaultGreenTracer def;
+
+    public GreenTracer(DefaultGreenTracer def) {
+        this.def = def;
+    }
 
     @GetMapping("/")
 	public testRecord greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
