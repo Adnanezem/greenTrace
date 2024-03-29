@@ -38,4 +38,19 @@ done
 
 echo '  </proxies>' >>~/.m2/settings.xml
 
+
+# Configurations de SonarQube
+echo '  <!-- Configurations de SonarQube -->' >>~/.m2/settings.xml
+echo '  <profiles>' >>~/.m2/settings.xml
+echo '    <profile>' >>~/.m2/settings.xml
+echo '      <id>sonar</id>' >>~/.m2/settings.xml
+echo '      <properties>' >>~/.m2/settings.xml
+echo '        <!-- URL du serveur SonarQube -->' >>~/.m2/settings.xml
+echo '        <sonar.host.url>http://localhost:9000</sonar.host.url>' >>~/.m2/settings.xml
+echo '        <!-- Token d acces pour SonarQube -->' >>~/.m2/settings.xml
+echo '        <sonar.login>VOTRE_TOKEN</sonar.login>' >>~/.m2/settings.xml
+echo '      </properties>' >>~/.m2/settings.xml
+echo '    </profile>' >>~/.m2/settings.xml
+echo '  </profiles>' >>~/.m2/settings.xml
+
 echo '</settings>' >>~/.m2/settings.xml
