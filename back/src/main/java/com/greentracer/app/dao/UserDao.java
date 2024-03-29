@@ -5,7 +5,6 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -30,15 +29,15 @@ public class UserDao implements Dao<String, User> {
     }
 
     @Override
-    public User getById(String id) throws NullPointerException {
+    public User getById(String id) throws IllegalArgumentException {
         if(id == null) {
-            throw new NullPointerException("L'id utilisateur fourni est null.");
+            throw new IllegalArgumentException("L'id utilisateur fourni est null.");
         }
         try {
             User u = jdbcTemplate.queryForObject(SQL_FIND_USER, new UserMapper(), id);
             return u;
         } catch (IncorrectResultSizeDataAccessException e) {
-            throw new NullPointerException("L'id utilisateur fourni est null.");
+            throw new IllegalArgumentException("L'id utilisateur fourni est null.");
         }
     }
 

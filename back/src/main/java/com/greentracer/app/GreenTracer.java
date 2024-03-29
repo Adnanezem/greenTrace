@@ -19,7 +19,6 @@ public class GreenTracer {
 
     @GetMapping("/")
 	public testRecord greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-        String msg = "Hello " + name + " !";
-		return def.greeting(msg);
+		return def.greeting(name);
 	}
 }

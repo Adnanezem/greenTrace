@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.greentracer.app.internal.DefaultGreenTracer;
 import com.greentracer.app.internal.DefaultUserAPI;
 import com.greentracer.app.responses.GreenTracerResponse;
 
@@ -22,11 +23,16 @@ public class UserAPI {
     // ACCES HISTORIQUE (=> REDIRECTION).
 
     private static Logger logger = LoggerFactory.getLogger(UserAPI.class);
-    DefaultUserAPI uAPI = new DefaultUserAPI();
+
+    private final DefaultUserAPI def;
+
+    public UserAPI(DefaultUserAPI def) {
+        this.def = def;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody String body) {
-        Map<Boolean, GreenTracerResponse> response = uAPI.defaultLogin(body);
+        Map<Boolean, GreenTracerResponse> response = def.defaultLogin(body);
         Iterator<Map.Entry<Boolean, GreenTracerResponse>> iterator = response.entrySet().iterator();
         Map.Entry<Boolean, GreenTracerResponse> isAccepted = iterator.next();
         if (!isAccepted.getKey()) {
@@ -37,7 +43,7 @@ public class UserAPI {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody String body) {
-        Map<Boolean, GreenTracerResponse> response = uAPI.defaultRegister(body);
+        Map<Boolean, GreenTracerResponse> response = def.defaultRegister(body);
         Iterator<Map.Entry<Boolean, GreenTracerResponse>> iterator = response.entrySet().iterator();
         Map.Entry<Boolean, GreenTracerResponse> isAccepted = iterator.next();
         if (!isAccepted.getKey()) {
