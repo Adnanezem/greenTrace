@@ -26,13 +26,38 @@ deploy-front-test:
   stage: deploy
   image: maven:3.8.5-openjdk-17
   only:
+    - test
+  before_script:
+    - chmod 400 $CI_SSH_KEY
+  script:
+    - scp -o StrictHostKeyChecking=no -i $CI_SSH_KEY -r -v $CI_PROJECT_DIR/front/* gitlabci@$IP_ADDRESS:/usr/share/nginx/multimif-test
+
+deploy-back-test:
+  stage: deploy
+  image: maven:3.8.5-openjdk-17
+  only:
+    - test
+  before_script:
+    - chmod +x $CI_PROJECT_DIR/ci/setup-mvn-proxy.sh
+    - $CI_PROJECT_DIR/ci/setup-mvn-proxy.sh
+    - chmod 400 $CI_SSH_KEY
+  script:
+    - cd $CI_PROJECT_DIR/$BACK_DIR
+    - mvn clean package
+    - scp -o StrictHostKeyChecking=no -i $CI_SSH_KEY target/$PACKAGE_NAME gitlabci@$IP_ADDRESS:/opt/tomcat/webapps/back_test.war
+
+
+deploy-front-prod:
+  stage: deploy
+  image: maven:3.8.5-openjdk-17
+  only:
     - main
   before_script:
     - chmod 400 $CI_SSH_KEY
   script:
     - scp -o StrictHostKeyChecking=no -i $CI_SSH_KEY -r -v $CI_PROJECT_DIR/front/* gitlabci@$IP_ADDRESS:/usr/share/nginx/multimif
 
-deploy-back-test:
+deploy-back-prod:
   stage: deploy
   image: maven:3.8.5-openjdk-17
   only:
@@ -44,10 +69,10 @@ deploy-back-test:
   script:
     - cd $CI_PROJECT_DIR/$BACK_DIR
     - mvn clean package
-    - scp -o StrictHostKeyChecking=no -i $CI_SSH_KEY target/$PACKAGE_NAME gitlabci@$IP_ADDRESS:/opt/tomcat/webapps/back_test.war
+    - scp -o StrictHostKeyChecking=no -i $CI_SSH_KEY target/$PACKAGE_NAME gitlabci@$IP_ADDRESS:/opt/tomcat/webapps/back.war
 
 
-sonarqube-check:
+sonarqube-check-test:
   stage: sonarqube-check
   image: maven:3.8.5-openjdk-17
   before_script:
@@ -58,5 +83,18 @@ sonarqube-check:
     - mvn verify sonar:sonar
   allow_failure: true
   only:
+    - test
+
+sonarqube-check-prod:
+  stage: sonarqube-check
+  image: maven:3.8.5-openjdk-17
+  before_script:
+    - chmod +x $CI_PROJECT_DIR/ci/setup-mvn-proxy.sh
+    - $CI_PROJECT_DIR/ci/setup-mvn-proxy.sh
+  script: 
+    - cd back/
+    - mvn verify sonar:sonar
+  only:
     - main
+
 
