@@ -13,16 +13,23 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.greentracer.app.UserAPI;
 import com.greentracer.app.dao.UserDao;
+import com.greentracer.app.models.User;
 import com.greentracer.app.responses.Error;
 import com.greentracer.app.responses.GreenTracerResponse;
 import com.greentracer.app.utils.JSONUtils;
-import com.greentracer.models.User;
 
+/**
+ * Classe réalisant les opérations internes de l'endpoint "users".
+ */
 @Component
 public class DefaultUserAPI {
 
     private final UserDao userDao;
 
+    /**
+     * Constructeur par défaut. 
+     * @param userDao
+     */
     @Autowired
     public DefaultUserAPI(UserDao userDao) {
         this.userDao = userDao;
@@ -30,6 +37,12 @@ public class DefaultUserAPI {
 
     private static Logger logger = LoggerFactory.getLogger(UserAPI.class);
 
+    /**
+     * Vérifie les données fournies et construit la réponse en conséquence. 
+     * @param body
+     * @return une Map contenant vrai ou faux en clé (vrai si l'authentification est correcte faux sinon),
+     *  et un objet de réponse en valeur (utilisé pour retourner le message d'erreur spécifique uniquement).
+     */
     public Map<Boolean, GreenTracerResponse> defaultLogin(String body) {
         Map<Boolean, GreenTracerResponse> res = new HashMap<>();
         if (body.isEmpty()) {
@@ -71,6 +84,12 @@ public class DefaultUserAPI {
         return res;
     }
 
+    /**
+     * Vérifie les données fournies et construit la réponse en conséquence. 
+     * @param body
+     * @return une Map contenant vrai ou faux en clé (vrai si l'authentification est correcte faux sinon),
+     *  et un objet de réponse en valeur (utilisé pour retourner le message d'erreur spécifique uniquement).
+     */
     public Map<Boolean, GreenTracerResponse> defaultRegister(String body) {
         Map<Boolean, GreenTracerResponse> res = new HashMap<>();
         if (body.isEmpty()) {
@@ -90,11 +109,11 @@ public class DefaultUserAPI {
             Boolean isBlank = login.isBlank() || password.isBlank() ||
                     mail.isBlank() || fname.isBlank() || lname.isBlank();
             if (isBlank) {
-                String err_msg = "Il manque des champs à la requête." +
+                String errMsg = "Il manque des champs à la requête." +
                         "La requête comporte les champs login, password, mail, fname, lname." +
                         " Tous les champs sont des strings.";
-                logger.error(err_msg);
-                Error err = new Error(err_msg, 400);
+                logger.error(errMsg);
+                Error err = new Error(errMsg, 400);
                 res.put(false, err);
                 return res;
             }

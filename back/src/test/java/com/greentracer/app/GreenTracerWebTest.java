@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.greentracer.app.internal.DefaultGreenTracer;
-import com.greentracer.app.responses.testRecord;
+import com.greentracer.app.responses.TestRecord;
 
 @WebMvcTest(GreenTracer.class)
 public class GreenTracerWebTest {
@@ -33,7 +33,7 @@ public class GreenTracerWebTest {
         // Arrange
         String name = "Alice";
         String expectedMessage = name;
-        testRecord expectedResult = new testRecord("Hello " + name + " !");
+        TestRecord expectedResult = new TestRecord("Hello " + name + " !");
 
         // Mock the behavior of DefaultGreenTracer.greeting() method
         when(defaultGreenTracer.greeting(expectedMessage)).thenReturn(expectedResult);

@@ -1,12 +1,15 @@
-package com.greentracer.mappers;
+package com.greentracer.app.mappers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.greentracer.models.User;
+import com.greentracer.app.models.User;
 
+/**
+ * Mapper pour les objets User (pour le SQL).
+ */
 public class UserMapper implements RowMapper<User> {
 
     @Override

@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.greentracer.app.internal.DefaultGreenTracer;
 import com.greentracer.app.internal.DefaultUserAPI;
 import com.greentracer.app.responses.GreenTracerResponse;
 
@@ -16,6 +15,9 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Contrôleur API dédié aux utilisateurs.
+ */
 @RestController
 @RequestMapping("/users")
 public class UserAPI {
@@ -26,10 +28,19 @@ public class UserAPI {
 
     private final DefaultUserAPI def;
 
+    /**
+     * Constructeur par défaut.
+     * @param def
+     */
     public UserAPI(DefaultUserAPI def) {
         this.def = def;
     }
 
+    /**
+     * Méthode POST pour le login utilisateur.
+     * @param body
+     * @return
+     */
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody String body) {
         Map<Boolean, GreenTracerResponse> response = def.defaultLogin(body);
@@ -41,6 +52,11 @@ public class UserAPI {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Méthode POST pour l'enregistrement de l'utilisateur.
+     * @param body
+     * @return
+     */
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody String body) {
         Map<Boolean, GreenTracerResponse> response = def.defaultRegister(body);

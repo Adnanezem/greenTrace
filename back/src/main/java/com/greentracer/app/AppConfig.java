@@ -13,14 +13,14 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 
 /**
- * AppConfig
+ * AppConfig.
  */
 @Configuration
 @ComponentScan("com.greentracer.app")
 public class AppConfig {
 
     @Autowired
-    Environment environment;
+    private Environment environment;
 
     @Value("${spring.datasource.url}")
     private String url;
@@ -34,6 +34,10 @@ public class AppConfig {
     @Value("${spring.datasource.driver-class-name}")
     private String driverClassName;
 
+    /**
+     * Construit le bean nécessaire au datasource (accès BD).
+     * @return
+     */
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -43,9 +47,4 @@ public class AppConfig {
         dataSource.setDriverClassName(driverClassName);
         return dataSource;
     }
-
-    // @Bean
-    // public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
-    //     return new PropertySourcesPlaceholderConfigurer();
-    // }
 }

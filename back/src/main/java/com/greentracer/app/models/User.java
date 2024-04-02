@@ -1,4 +1,4 @@
-package com.greentracer.models;
+package com.greentracer.app.models;
 
 /**
  * Java representation of User data row.

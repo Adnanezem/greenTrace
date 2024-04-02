@@ -9,23 +9,23 @@ import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import com.greentracer.mappers.UserMapper;
-import com.greentracer.models.User;
+import com.greentracer.app.mappers.UserMapper;
+import com.greentracer.app.models.User;
 
 
 /**
- * UserDao
+ * Dao dédié aux utilisateurs.
  */
 @Component
 public class UserDao implements Dao<String, User> {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private final String SQL_FIND_USER = "select * from public.users where login = ?";
-    private final String SQL_DELETE_USER = "delete from public.users where login = ?";
-    private final String SQL_UPDATE_USER = "update public.users set Prenom = ?, Nom = ?, MDPS = ? where login = ?";
-    private final String SQL_GET_ALL = "select * from public.users";
-    private final String SQL_INSERT_USER = "insert into public.users(login, Prenom, Nom, MDPS) values(?,?,?,?)";
+    private final String findRequest = "select * from public.users where login = ?";
+    private final String deleteRequest = "delete from public.users where login = ?";
+    private final String updateRequest = "update public.users set Prenom = ?, Nom = ?, MDPS = ? where login = ?";
+    private final String findAllRequest = "select * from public.users";
+    private final String insertRequest = "insert into public.users(login, Prenom, Nom, MDPS) values(?,?,?,?)";
 
     @Autowired
     public UserDao(DataSource dataSource) {
@@ -38,7 +38,7 @@ public class UserDao implements Dao<String, User> {
             throw new IllegalArgumentException("L'id utilisateur fourni est null.");
         }
         try {
-            User u = jdbcTemplate.queryForObject(SQL_FIND_USER, new UserMapper(), id);
+            User u = jdbcTemplate.queryForObject(findRequest, new UserMapper(), id);
             return u;
         } catch (IncorrectResultSizeDataAccessException e) {
             throw new IllegalArgumentException("L'id utilisateur fourni est null.");
@@ -47,23 +47,23 @@ public class UserDao implements Dao<String, User> {
 
     @Override
     public List<User> getAll() {
-        return jdbcTemplate.query(SQL_GET_ALL, new UserMapper());
+        return jdbcTemplate.query(findAllRequest, new UserMapper());
     }
 
     @Override
     public Boolean delete(User obj) {
-        return jdbcTemplate.update(SQL_DELETE_USER, obj.getLogin()) > 0;
+        return jdbcTemplate.update(deleteRequest, obj.getLogin()) > 0;
     }
 
     @Override
     public Boolean update(User obj) {
-        return jdbcTemplate.update(SQL_UPDATE_USER, obj.getFname(),
+        return jdbcTemplate.update(updateRequest, obj.getFname(),
                 obj.getLname(), obj.getPassword(), obj.getLogin()) > 0;
     }
 
     @Override
     public Boolean create(User obj) {
-        return jdbcTemplate.update(SQL_INSERT_USER, obj.getLogin(), obj.getFname(), obj.getLname(),
+        return jdbcTemplate.update(insertRequest, obj.getLogin(), obj.getFname(), obj.getLname(),
                 obj.getPassword()) > 0;
     }
 

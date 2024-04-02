@@ -1,17 +1,23 @@
 package com.greentracer.app.responses;
 
 /**
- * Error response
+ * Réponses d'erreurs.
  */
 public class Error implements GreenTracerResponse {
-    String msg;
-    int errorType;
+    private String msg;
+    private int errorType;
 
-    public int getError_type() {
+    /**
+     * @return le type d'erreur (int)
+     */
+    public int getErrorType() {
         return errorType;
     }
 
-    public void setError_type(int errorType) {
+    /**
+     * @param errorType
+     */
+    public void setErrorType(int errorType) {
         this.errorType = errorType;
     }
 

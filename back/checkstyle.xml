@@ -1,64 +1,63 @@
 <?xml version="1.0"?>
-<!DOCTYPE module PUBLIC
-        "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
-        "https://checkstyle.org/dtds/configuration_1_3.dtd">
-
+<!DOCTYPE module PUBLIC "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN" "https://checkstyle.org/dtds/configuration_1_3.dtd">
 
 <module name="Checker">
-    
-    <property name="severity" value="error"/>
 
-    <property name="fileExtensions" value="java, properties, xml"/>
+    <property name="severity" value="error" />
+
+    <property name="fileExtensions" value="java, properties, xml" />
 
     <!-- Excludes all 'module-info.java' files              -->
     <!-- See https://checkstyle.org/config_filefilters.html -->
     <module name="BeforeExecutionExclusionFileFilter">
-        <property name="fileNamePattern" value="module\-info\.java$"/>
+        <property name="fileNamePattern" value="module\-info\.java$" />
     </module>
 
     <!-- https://checkstyle.org/config_filters.html#SuppressionFilter -->
     <module name="SuppressionFilter">
         <property name="file" value="${org.checkstyle.sun.suppressionfilter.config}"
-                  default="checkstyle-suppressions.xml" />
-        <property name="optional" value="true"/>
+            default="checkstyle-suppressions.xml" />
+        <property name="optional" value="true" />
     </module>
 
 
     <!-- Checks whether files end with a new line.                        -->
     <!-- See https://checkstyle.org/config_misc.html#NewlineAtEndOfFile -->
-    <module name="NewlineAtEndOfFile"/>
+    <module name="NewlineAtEndOfFile" />
 
     <!-- Checks that property files contain the same keys.         -->
     <!-- See https://checkstyle.org/config_misc.html#Translation -->
-    <module name="Translation"/>
+    <module name="Translation" />
 
     <!-- Checks for Size Violations.                    -->
     <!-- See https://checkstyle.org/config_sizes.html -->
-    <module name="FileLength"/>
+    <module name="FileLength" />
 
     <module name="LineLength">
         <!-- MM: Added compared to SUN's default (80) -->
-        <property name="max" value="160"/>
-        <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
-        <property name="fileExtensions" value="java"/>
+        <property name="max" value="160" />
+        <property name="ignorePattern"
+            value="^package.*|^import.*|a href|href|http://|https://|ftp://" />
+        <property name="fileExtensions" value="java" />
     </module>
 
+    <module name="SuppressWarningsFilter" />
 
     <module name="TreeWalker">
 
         <!-- Checks for Javadoc comments.                     -->
         <!-- See https://checkstyle.org/config_javadoc.html -->
-        <module name="InvalidJavadocPosition"/>
+        <module name="InvalidJavadocPosition" />
         <module name="JavadocMethod">
             <!-- MM: This is often included in the short description, don't force the tag. -->
-            <property name="allowMissingReturnTag" value="true"/>
-            <property name="allowMissingParamTags" value="true"/>
+            <property name="allowMissingReturnTag" value="true" />
+            <property name="allowMissingParamTags" value="true" />
         </module>
-        <module name="JavadocType"/>
+        <module name="JavadocType" />
         <!-- MM: Disabled: if the methods are documented, private variables may not need JavaDoc
         <module name="JavadocVariable"/>
         -->
-        <module name="JavadocStyle"/>
+        <module name="JavadocStyle" />
         <!-- MM: the special-case for setters and getters is too strict
         <module name="MissingJavadocMethod">
             <!- MM: Javadoc for getters and setters are usually redundant with the name. ->
@@ -67,127 +66,131 @@
     -->
 
         <module name="MissingJavadocTypeCheck">
-            <property name="scope" value="public"/>
+            <property name="scope" value="public" />
         </module>
 
         <!-- Checks for Naming Conventions.                  -->
         <!-- See https://checkstyle.org/config_naming.html -->
-        <module name="ConstantName"/>
-        <module name="LocalFinalVariableName"/>
-        <module name="LocalVariableName"/>
-        <module name="MemberName"/>
-        <module name="MethodName"/>
-        <module name="PackageName"/>
-        <module name="ParameterName"/>
-        <module name="StaticVariableName"/>
-        <module name="TypeName"/>
+        <module name="ConstantName" />
+        <module name="LocalFinalVariableName" />
+        <module name="LocalVariableName" />
+        <module name="MemberName" />
+        <module name="MethodName" />
+        <module name="PackageName" />
+        <module name="ParameterName" />
+        <module name="StaticVariableName" />
+        <module name="TypeName" />
 
         <!-- Checks for imports                              -->
         <!-- See https://checkstyle.org/config_import.html -->
-        <module name="AvoidStarImport"/>
-        <module name="IllegalImport"/> <!-- defaults to sun.* packages -->
-        <module name="RedundantImport"/>
+        <module name="AvoidStarImport" />
+        <module name="IllegalImport" /> <!-- defaults to sun.* packages -->
+        <module name="RedundantImport" />
         <module name="UnusedImports">
-            <property name="processJavadoc" value="false"/>
+            <property name="processJavadoc" value="false" />
         </module>
 
         <!-- Checks for Size Violations.                    -->
         <!-- See https://checkstyle.org/config_sizes.html -->
-        <module name="MethodLength"/>
-        <module name="ParameterNumber"/>
+        <module name="MethodLength" />
+        <module name="ParameterNumber" />
 
         <!-- Checks for whitespace                               -->
         <!-- See https://checkstyle.org/config_whitespace.html -->
-        <module name="EmptyForIteratorPad"/>
-        <module name="GenericWhitespace"/>
-        <module name="MethodParamPad"/>
-        <module name="NoWhitespaceAfter"/>
-        <module name="NoWhitespaceBefore"/>
+        <module name="EmptyForIteratorPad" />
+        <module name="GenericWhitespace" />
+        <module name="MethodParamPad" />
+        <module name="NoWhitespaceAfter" />
+        <module name="NoWhitespaceBefore" />
         <module name="OperatorWrap">
-            <property name="option" value="eol"/>
+            <property name="option" value="eol" />
         </module>
 
-        <module name="ParenPad"/>
-        <module name="TypecastParenPad"/>
+        <module name="ParenPad" />
+        <module name="TypecastParenPad" />
         <module name="WhitespaceAfter">
-            <property name="tokens" value="COMMA, SEMI"/>
+            <property name="tokens" value="COMMA, SEMI" />
         </module>
         <module name="WhitespaceAround">
-            <property name="allowEmptyConstructors" value="true"/>
-            <property name="allowEmptyMethods" value="true"/>
-            <property name="allowEmptyTypes" value="true"/>
-            <property name="allowEmptyLoops" value="true"/>
-            <property name="allowEmptyLambdas" value="true"/>
-            <property name="allowEmptyCatches" value="true"/>
-            <property name="ignoreEnhancedForColon" value="true"/>
-            <property name="tokens" value="ASSIGN,DIV_ASSIGN,PLUS_ASSIGN,MINUS_ASSIGN,STAR_ASSIGN,
+            <property name="allowEmptyConstructors" value="true" />
+            <property name="allowEmptyMethods" value="true" />
+            <property name="allowEmptyTypes" value="true" />
+            <property name="allowEmptyLoops" value="true" />
+            <property name="allowEmptyLambdas" value="true" />
+            <property name="allowEmptyCatches" value="true" />
+            <property name="ignoreEnhancedForColon" value="true" />
+            <property name="tokens"
+                value="ASSIGN,DIV_ASSIGN,PLUS_ASSIGN,MINUS_ASSIGN,STAR_ASSIGN,
            MOD_ASSIGN,SR_ASSIGN,BSR_ASSIGN,SL_ASSIGN,BXOR_ASSIGN,
-           BOR_ASSIGN,BAND_ASSIGN,LCURLY,RCURLY"/>
+           BOR_ASSIGN,BAND_ASSIGN,LCURLY,RCURLY" />
         </module>
 
         <!-- Modifier Checks                                    -->
         <!-- See https://checkstyle.org/config_modifiers.html -->
-        <module name="ModifierOrder"/>
-        <module name="RedundantModifier"/>
+        <module name="ModifierOrder" />
+        <module name="RedundantModifier" />
 
         <!-- Checks for blocks. You know, those {}'s         -->
         <!-- See https://checkstyle.org/config_blocks.html -->
-        <module name="AvoidNestedBlocks"/>
-        <module name="EmptyBlock"/>
-        <module name="LeftCurly"/>
+        <module name="AvoidNestedBlocks" />
+        <module name="EmptyBlock" />
+        <module name="LeftCurly" />
         <module name="NeedBraces">
-            <property name="allowSingleLineStatement" value="true"/>
+            <property name="allowSingleLineStatement" value="true" />
         </module>
-        <module name="RightCurly"/>
+        <module name="RightCurly" />
 
         <!-- Checks for common coding problems               -->
         <!-- See https://checkstyle.org/config_coding.html -->
-        <module name="EmptyStatement"/>
-        <module name="EqualsHashCode"/>
+        <module name="EmptyStatement" />
+        <module name="EqualsHashCode" />
         <!-- MM: Disabled, as it's a common pattern to have param and field with
         the same name for setters.
         <module name="HiddenField"/>
         -->
-        <module name="IllegalInstantiation"/>
-        <module name="InnerAssignment"/>
+        <module name="IllegalInstantiation" />
+        <module name="InnerAssignment" />
         <!-- MM: Disabled, to make checkstyle a bit less verbose, but it's still
             a good idea to avoid magic numbers
         <module name="MagicNumber"/>
         -->
-        <module name="MissingSwitchDefault"/>
-        <module name="MultipleVariableDeclarations"/>
-        <module name="SimplifyBooleanExpression"/>
-        <module name="SimplifyBooleanReturn"/>
+        <module name="MissingSwitchDefault" />
+        <module name="MultipleVariableDeclarations" />
+        <module name="SimplifyBooleanExpression" />
+        <module name="SimplifyBooleanReturn" />
 
         <!-- Checks for class design                         -->
         <!-- See https://checkstyle.org/config_design.html -->
         <!-- MM: Disabled because too verbose and a bit tricky to understand.
         <module name="DesignForExtension"/>
         -->
-        <module name="FinalClass"/>
-        <module name="HideUtilityClassConstructor"/>
-        <module name="InterfaceIsType"/>
+        <module name="FinalClass" />
+        <module name="HideUtilityClassConstructor" />
+        <module name="InterfaceIsType" />
         <module name="VisibilityModifier">
-            <property name="protectedAllowed" value="true"/>
+            <property name="protectedAllowed" value="true" />
         </module>
 
         <!-- Miscellaneous other checks.                   -->
         <!-- See https://checkstyle.org/config_misc.html -->
-        <module name="ArrayTypeStyle"/>
-        <!--module name="FinalParameters"/-->
+        <module name="ArrayTypeStyle" />
+        <!--module
+        name="FinalParameters"/-->
 
         <!-- MM: We're providing a skeleton with TODO comments, let's not bother
             students with associated warnings.
         <module name="TodoComment"/>
         -->
-        <module name="UpperEll"/>
+        <module name="UpperEll" />
 
         <!-- https://checkstyle.org/config_filters.html#SuppressionXpathFilter -->
         <module name="SuppressionXpathFilter">
             <property name="file" value="${org.checkstyle.sun.suppressionxpathfilter.config}"
-                      default="checkstyle-xpath-suppressions.xml" />
-            <property name="optional" value="true"/>
+                default="checkstyle-xpath-suppressions.xml" />
+            <property name="optional" value="true" />
         </module>
+
+        <module name="SuppressWarningsHolder" />
 
     </module>
 
