@@ -1,6 +1,9 @@
-function blameBackEnd() {
-    console.log('blameBackEnd');
-    //Create a div in bad flashy color
+console.log('contact.js loaded');
+
+// Define the backend endpoint
+var BACKEND_ENDPOINT = 'http://192.168.75.79/greentracer-0.0.1-SNAPSHOT/contact';
+
+function serverError(comment) {
     var div = document.createElement('div');
     div.style.backgroundColor = 'red';
     div.style.color = 'white';
@@ -8,57 +11,42 @@ function blameBackEnd() {
     div.style.top = '0';
     div.style.left = '0';
     div.style.width = '100%';
-    div.style.height = '100%';
     div.style.zIndex = '1000';
     div.style.padding = '10px';
     div.style.textAlign = 'center';
-    div.innerHTML = 'Erreur serveur, allez taper sur le développeur back-end';
+    div.innerHTML = 'Erreur serveur: ' + comment;
     document.body.appendChild(div);
 
-    // Fill in the space with advertising
-    var advertising = document.createElement('div');
-    advertising.style.backgroundColor = 'white';
-    advertising.style.color = 'black';
-    advertising.style.position = 'fixed';
-    advertising.style.top = '50%';
-    advertising.style.left = '50%';
-    advertising.style.width = '100%';
-    advertising.style.height = '20%';
-    advertising.style.transform = 'translate(-50%, -50%)';
-    advertising.style.zIndex = '1000';
-    advertising.style.padding = '10px';
-    advertising.style.textAlign = 'center';
-    advertising.innerHTML = 'Achetez nos produits!';
-    //make the advert flash
-    setInterval(function() {
-        if (advertising.style.backgroundColor === 'white') {
-            advertising.style.backgroundColor = 'black';
-            advertising.style.color = 'white';
-        } else {
-            advertising.style.backgroundColor = 'white';
-            advertising.style.color = 'black';
-        }
-    }, 500);
-
-    document.body.appendChild(advertising);
-
-    
-
-    // Add a button to close the div
-    var button = document.createElement('button');
-    button.style.position = 'fixed';
-    button.style.top = '0';
-    button.style.right = '0';
-    button.style.zIndex = '1001';
-    button.innerHTML = 'X';
-    button.addEventListener('click', function() {
+    setTimeout(function() {
         div.remove();
-        advertising.remove();
-        button.remove();
-    });
-    document.body.appendChild(button);
-
+    }
+    , 5000);
 }
+
+function toggleProcessingMessage(show) {
+    let processingDiv = document.getElementById('processingMessage');
+    if (!processingDiv) {
+        processingDiv = document.createElement('div');
+        processingDiv.id = 'processingMessage';
+        processingDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+        processingDiv.style.color = 'white';
+        processingDiv.style.position = 'fixed';
+        processingDiv.style.top = '0';
+        processingDiv.style.left = '0';
+        processingDiv.style.width = '100%';
+        processingDiv.style.height = '100%';
+        processingDiv.style.zIndex = '1001';
+        processingDiv.style.display = 'flex';
+        processingDiv.style.justifyContent = 'center';
+        processingDiv.style.alignItems = 'center';
+        processingDiv.style.fontSize = '20px';
+        processingDiv.textContent = 'Processing your request...';
+        document.body.appendChild(processingDiv);
+    }
+    processingDiv.style.display = show ? 'flex' : 'none';
+}
+
+
 
 //function to fill the form with the data stored in the local storage
 function fillForm() {
@@ -75,9 +63,6 @@ function fillForm() {
 // Call the function to fill the form
 fillForm();
 
-
-
-// contact.js
 document.querySelector('.contactForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -96,6 +81,7 @@ document.querySelector('.contactForm').addEventListener('submit', function(event
         return;
     }
 
+    // Assuming console logs are for debugging purposes, and you've checked the data
     console.log('Prénom: ', inputName1);
     console.log('Nom: ', inputName2);
     console.log('Email: ', inputEmail4);
@@ -115,12 +101,31 @@ document.querySelector('.contactForm').addEventListener('submit', function(event
         exampleFormControlTextarea1: exampleFormControlTextarea1
     };
 
-    console.log(data);
-
-    //store the data in the local storage, for automatic filling of the form
+    // Store the data in the local storage for automatic filling of the form
     localStorage.setItem('contactData', JSON.stringify(data));
 
-    // Call the function to blame the back-end
-    blameBackEnd();
+    // Show processing message
+    toggleProcessingMessage(true);
 
+    // Now send the data to the backend using fetch
+    fetch(BACKEND_ENDPOINT, {
+        method: 'POST', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => response.json()) // assuming the server responds with json
+    .then(data => {
+        console.log('Success:', data);
+        alert('Form successfully submitted');
+        // Hide processing message
+        toggleProcessingMessage(false);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        serverError('Impossible de soumettre le formulaire');
+        // Hide processing message
+        toggleProcessingMessage(false);
+    });
 });
