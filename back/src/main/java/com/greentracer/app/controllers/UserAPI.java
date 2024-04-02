@@ -1,4 +1,4 @@
-package com.greentracer.app;
+package com.greentracer.app.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.greentracer.app.internal.DefaultUserAPI;
+import com.greentracer.app.internal.DefaultUser;
 import com.greentracer.app.responses.GreenTracerResponse;
 
 import java.util.Iterator;
@@ -26,13 +26,13 @@ public class UserAPI {
 
     private static Logger logger = LoggerFactory.getLogger(UserAPI.class);
 
-    private final DefaultUserAPI def;
+    private final DefaultUser def;
 
     /**
      * Constructeur par défaut.
      * @param def
      */
-    public UserAPI(DefaultUserAPI def) {
+    public UserAPI(DefaultUser def) {
         this.def = def;
     }
 

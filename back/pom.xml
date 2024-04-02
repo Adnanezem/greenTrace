@@ -29,7 +29,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
@@ -90,7 +93,7 @@
 							<configLocation>checkstyle.xml</configLocation>
 							<encoding>UTF-8</encoding>
 							<consoleOutput>true</consoleOutput>
-							<!-- <failsOnError>true</failsOnError> <! Échoue le build si des erreurs de style sont trouvées --> 
+							<failsOnError>true</failsOnError>
 						</configuration>
 					</execution>
 				</executions>

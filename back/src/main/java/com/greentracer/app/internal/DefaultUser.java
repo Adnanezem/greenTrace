@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.greentracer.app.UserAPI;
+import com.greentracer.app.controllers.UserAPI;
 import com.greentracer.app.dao.UserDao;
 import com.greentracer.app.models.User;
 import com.greentracer.app.responses.Error;
@@ -22,7 +22,7 @@ import com.greentracer.app.utils.JSONUtils;
  * Classe réalisant les opérations internes de l'endpoint "users".
  */
 @Component
-public class DefaultUserAPI {
+public class DefaultUser {
 
     private final UserDao userDao;
 
@@ -31,7 +31,7 @@ public class DefaultUserAPI {
      * @param userDao
      */
     @Autowired
-    public DefaultUserAPI(UserDao userDao) {
+    public DefaultUser(UserDao userDao) {
         this.userDao = userDao;
     }
 
