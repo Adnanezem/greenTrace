@@ -63,6 +63,12 @@
             <artifactId>log4j-slf4j-impl</artifactId>
             <version>2.7</version>
         </dependency>
+		<!-- dépendances pour BD(tests) -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
