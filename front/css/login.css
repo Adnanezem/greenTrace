@@ -247,10 +247,10 @@ form.sign-up-form{
 
 
 .left-panel .content{
-  transform: translateX(0);
+  transform: translateX(-200%);
 }
 .right-panel .content{
-  transform: translateX(-200%);
+  transform: translateX(0);
 }
 .account-text{
   display: none;
