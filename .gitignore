@@ -62,7 +62,7 @@ buildNumber.properties
 .classpath
 
 # IntelliJ IDEA
-.idea/
+.idea
 
 ### SonarQube ###
 # SonarQube ignore files.
