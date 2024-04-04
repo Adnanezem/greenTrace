@@ -3,8 +3,8 @@ console.log('login.js loaded');
 var log_in = true;
 
 var CONTACT_BACKEND_ENDPOINT = 'http://192.168.75.79/back_test/contact';
-var LOGIN_BACKEND_ENDPOINT = 'http://192.168.75.79/back_test/login';
-var SIGNUP_BACKEND_ENDPOINT = 'http://192.168.75.79/back_test/register';
+var LOGIN_BACKEND_ENDPOINT = 'http://192.168.75.79/back_test/users/login';
+var SIGNUP_BACKEND_ENDPOINT = 'http://192.168.75.79/back_test/users/register';
 
 
 function serverError(comment) {
