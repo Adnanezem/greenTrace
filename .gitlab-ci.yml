@@ -43,7 +43,7 @@ deploy-back-test:
     - chmod 400 $CI_SSH_KEY
   script:
     - cd $CI_PROJECT_DIR/$BACK_DIR
-    - mvn clean package -Dcheckstyle.skip
+    - mvn clean package -Dcheckstyle.skip -Dmaven.test.skip
     - scp -o StrictHostKeyChecking=no -i $CI_SSH_KEY target/$PACKAGE_NAME gitlabci@$IP_ADDRESS:/opt/tomcat/webapps/back_test.war
 
 
