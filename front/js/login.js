@@ -1,10 +1,7 @@
 // login.js
 var log_in = true;
 
-// Define the backend endpoint for login
-var LOGIN_BACKEND_ENDPOINT = 'http://192.168.75.79/back_test/login';
-// Define the backend endpoint for sign-up
-var SIGNUP_BACKEND_ENDPOINT = 'http://192.168.75.79/back_test/signup';
+import { LOGIN_BACKEND_ENDPOINT, SIGNUP_BACKEND_ENDPOINT } from './config.js';
 
 
 function serverError(comment) {

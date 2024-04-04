@@ -1,3 +1,7 @@
-export var BACKEND_ENDPOINT = '192.168.75.79/users/register';
+var CONTACT_BACKEND_ENDPOINT = 'http://192.168.75.79/back_test/contact';
+var LOGIN_BACKEND_ENDPOINT = 'http://192.168.75.79/back_test/login';
+var SIGNUP_BACKEND_ENDPOINT = 'http://192.168.75.79/back_test/signup';
 
 console.log('config.js loaded');
+
+export { CONTACT_BACKEND_ENDPOINT, LOGIN_BACKEND_ENDPOINT, SIGNUP_BACKEND_ENDPOINT };
