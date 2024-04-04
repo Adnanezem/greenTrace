@@ -164,13 +164,13 @@ form {
   padding: 0 10px;
 }
 
-.sign-in-form {
+form.sign-in-form {
   opacity: 1;
   transition: 0.5s ease-in-out;
   transition-delay: 1s;
 }
 
-.sign-up-form {
+form.sign-up-form {
   opacity: 0;
   transition: 0.5s ease-in-out;
   transition-delay: 1s;
