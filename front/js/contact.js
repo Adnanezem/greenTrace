@@ -1,7 +1,7 @@
 console.log('contact.js loaded');
 
 // Define the backend endpoint
-var BACKEND_ENDPOINT = 'http://192.168.75.79/greentracer-0.0.1-SNAPSHOT/contact';
+var BACKEND_ENDPOINT = 'http://192.168.75.79/back_test/contact';
 
 function serverError(comment) {
     var div = document.createElement('div');

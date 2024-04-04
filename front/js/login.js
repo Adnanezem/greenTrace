@@ -2,9 +2,9 @@
 var log_in = true;
 
 // Define the backend endpoint for login
-var LOGIN_BACKEND_ENDPOINT = 'http://192.168.75.79/greentracer-0.0.1-SNAPSHOT/login';
+var LOGIN_BACKEND_ENDPOINT = 'http://192.168.75.79/back_test/login';
 // Define the backend endpoint for sign-up
-var SIGNUP_BACKEND_ENDPOINT = 'http://192.168.75.79/greentracer-0.0.1-SNAPSHOT/signup';
+var SIGNUP_BACKEND_ENDPOINT = 'http://192.168.75.79/back_test/signup';
 
 
 function serverError(comment) {
