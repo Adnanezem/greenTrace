@@ -28,8 +28,6 @@ function serverError(comment) {
 }
 
 function toggleProcessingMessage(show) {
-
-    console.log('Processing message toggled');
     let processingDiv = document.getElementById('processingMessage');
     if (!processingDiv) {
         processingDiv = document.createElement('div');
@@ -50,8 +48,6 @@ function toggleProcessingMessage(show) {
         document.body.appendChild(processingDiv);
     }
     processingDiv.style.display = show ? 'flex' : 'none';
-
-    console.log('Processing message toggled');
 }
 
 //if loginData is stored in the local storage, fill the form with the data
