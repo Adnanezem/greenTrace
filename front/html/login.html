@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Espace bénévoles - Un sourire une vie</title>
+  <title>Login - Green Tracer</title>
   <link rel="stylesheet" href="../css/login.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,7 +34,7 @@
         <section class="section2">
             <div class="container">
             <div class="signin-signup">
-                <form class="sign-in-form">
+                <form class="sign-in-form is-hidden">
                     <h2 class="title">Se connecter</h2>
                     <div class="input-field">
                         <i class="ri-admin-fill"></i>
@@ -48,7 +48,7 @@
                     <p class="account-text">Vous n'avez pas un compte?<a href="#" id="sign-up-btn2">S'inscrire</a></p>
                 </form>
 
-                <form class="sign-up-form">
+                <form class="sign-up-form is-hidden">
                     <h2 class="title">S'inscrire</h2>
                     <div class="input-field">
                         <i class="ri-admin-fill"></i>
@@ -73,10 +73,10 @@
                     <p>Calculer votre empreinte carbone facilement</p>
                     <button class="btn" id="sign-in-btn">Se connecter</button>
                 </div>
-                </div>
+            </div>
 
-                <div class="panel right-panel">
-                    <div class="content">
+            <div class="panel right-panel">
+                <div class="content">
                     <h3>Nouveau membre?</h3>
                     <p>Calculer votre empreinte carbone facilement</p>
                     <button class="btn" id="sign-up-btn">S'inscrire</button>
@@ -93,30 +93,40 @@
 
   <script>
     //Sign up ou Sign in
+    
   const sign_in_btn = document.querySelector("#sign-in-btn");
   const sign_up_btn = document.querySelector("#sign-up-btn");
   const container = document.querySelector(".container");
   const sign_in_btn2 = document.querySelector("#sign-in-btn2");
   const sign_up_btn2 = document.querySelector("#sign-up-btn2");
+  
+  (function() {
+  // Check if the 'sign-up-mode' should be active on page load
+  const shouldSignUp = window.location.search.indexOf('signup=true') > -1;
+  if (shouldSignUp) {
+    container.classList.add("sign-up-mode");
+    document.querySelector(".sign-up-form").classList.remove("is-hidden");
+  } else {
+    document.querySelector(".sign-in-form").classList.remove("is-hidden");
+  }
+})();
 
-  sign_up_btn.addEventListener("click", () => {
-      container.classList.add("sign-up-mode");
-  });
+// Event listeners
+sign_up_btn.addEventListener("click", () => {
+    container.classList.add("sign-up-mode");
+    document.querySelector(".sign-in-form").classList.add("is-hidden");
+    document.querySelector(".sign-up-form").classList.remove("is-hidden");
+});
 
-  sign_in_btn.addEventListener("click", () => {
-      container.classList.remove("sign-up-mode");
-  });
+sign_in_btn.addEventListener("click", () => {
+    container.classList.remove("sign-up-mode");
+    document.querySelector(".sign-up-form").classList.add("is-hidden");
+    document.querySelector(".sign-in-form").classList.remove("is-hidden");
+});
 
-  sign_up_btn2.addEventListener("click", () => {
-      container.classList.add("sign-up-mode2");
-  });
 
-  sign_in_btn2.addEventListener("click", () => {
-      container.classList.remove("sign-up-mode2");
-  });
   </script>
 
-  <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
   <script src="../js/hamburger.js"></script>
   <script src="../js/login.js"></script>
 </body>
