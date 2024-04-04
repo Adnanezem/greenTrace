@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Espace bénévoles - Un sourire une vie</title>
+  <title>Login - Green Tracer</title>
   <link rel="stylesheet" href="../css/login.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,12 +52,20 @@
                     <h2 class="title">S'inscrire</h2>
                     <div class="input-field">
                         <i class="ri-admin-fill"></i>
-                        <input type="text" placeholder="Username" required id="su-username">
+                        <input type="text" placeholder="Username" required id="su-login">
                     </div>
                     <div class="input-field">
-                    <i class="ri-mail-line"></i>
-                    <input type="text" placeholder="Email" required id="su-email">
-                </div>
+                        <i class="ri-admin-fill"></i>
+                        <input type="text" placeholder="First Name" required id="su-username">
+                    </div>
+                    <div class="input-field">
+                        <i class="ri-admin-fill"></i>
+                        <input type="text" placeholder="Last Name" required id="su-userlastname">
+                    </div>
+                    <div class="input-field">
+                        <i class="ri-mail-line"></i>
+                        <input type="text" placeholder="Email" required id="su-email">
+                    </div>
                     <div class="input-field">
                         <i class="ri-lock-2-fill"></i>
                         <input type="password" placeholder="Mot de passe" required id="su-password">
@@ -73,10 +81,10 @@
                     <p>Calculer votre empreinte carbone facilement</p>
                     <button class="btn" id="sign-in-btn">Se connecter</button>
                 </div>
-                </div>
+            </div>
 
-                <div class="panel right-panel">
-                    <div class="content">
+            <div class="panel right-panel">
+                <div class="content">
                     <h3>Nouveau membre?</h3>
                     <p>Calculer votre empreinte carbone facilement</p>
                     <button class="btn" id="sign-up-btn">S'inscrire</button>
@@ -93,11 +101,13 @@
 
   <script>
     //Sign up ou Sign in
+    
   const sign_in_btn = document.querySelector("#sign-in-btn");
   const sign_up_btn = document.querySelector("#sign-up-btn");
   const container = document.querySelector(".container");
   const sign_in_btn2 = document.querySelector("#sign-in-btn2");
   const sign_up_btn2 = document.querySelector("#sign-up-btn2");
+  
 
   sign_up_btn.addEventListener("click", () => {
       container.classList.add("sign-up-mode");
@@ -116,6 +126,7 @@
   });
   </script>
 
+  <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
   <script src="../js/hamburger.js"></script>
   <script src="../js/login.js"></script>
 </body>

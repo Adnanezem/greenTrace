@@ -100,8 +100,6 @@ body {
     transition: all 0.3s ease-in-out;
     background-color: #000;
   }
-  
-  
 
 .section2{
     display: flex;
@@ -245,7 +243,7 @@ form.sign-up-form{
 
 
 .left-panel .content{
-  transform: translateX(0);
+  transform: translateX(-200%);
 }
 .right-panel .content{
   transform: translateX(0);
@@ -253,6 +251,7 @@ form.sign-up-form{
 .account-text{
   display: none;
 }
+
 
 /*ANIMATION*/
 .container.sign-up-mode::before{
