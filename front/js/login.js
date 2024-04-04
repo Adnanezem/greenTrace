@@ -79,15 +79,15 @@ document.getElementById('sign-in-btn').addEventListener('click', function() {
 // When "login-btn" submit input is clicked
 document.getElementById('login-btn').addEventListener('click', function() {
     // Get username and password inputs
-    var si_username = document.getElementById('si-username').value;
-    var si_password = document.getElementById('si-password').value;
-    console.log('Username: ', si_username);
-    console.log('Password: ', si_password);
+    var login = document.getElementById('si-username').value;
+    var password = document.getElementById('si-password').value;
+    console.log('Username: ', login);
+    console.log('Password: ', password);
 
     // Create a json object with the data
     var data = {
-        si_username: si_username,
-        si_password: si_password
+        login: login,
+        password: password
     };
 
     console.log('Data: ', data);
@@ -131,15 +131,21 @@ document.getElementById('login-btn').addEventListener('click', function() {
 
 // When "signup-btn" submit input is clicked
 document.getElementById('signup-btn').addEventListener('click', function() {
-    var su_username = document.getElementById('su-username').value;
-    var su_password = document.getElementById('su-password').value;
-    var su_email = document.getElementById('su-email').value;
+    var login = document.getElementById('su-login').value;
+    var fname = document.getElementById('su-username').value;
+    var lname = document.getElementById('su-userlastname').value;
+    var email = document.getElementById('su-email').value;
+    var password = document.getElementById('su-password').value;
 
     var data = {
-        su_username: su_username,
-        su_password: su_password,
-        su_email: su_email
+        login: login,
+        fname: fname,
+        lname: lname,
+        email: email,
+        password: password
     };
+
+    console.log('Data: ', data);
 
     localStorage.setItem('signupData', JSON.stringify(data));
 
