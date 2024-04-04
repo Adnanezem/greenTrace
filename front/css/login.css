@@ -103,40 +103,6 @@ body {
   
   
 
-/*Espace bénévole*/
-.section1{
-    position: relative;
-    width: 100%;
-    min-height: 75vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    background: url(images/apropos5.jpg)no-repeat;
-    background-size: cover;
-    background-position: center;
-}
-.content1{
-    margin: 120px 100px;
-    color: #636161;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    line-height: 30px;
-    
-}
-.content1 a{
-    text-decoration: none;
-    color: #636161;
-    font-family: "Times New Roman", serif ;
-}
-.content1 span{
-    font-family: "Times New Roman", serif ;
-}
-.content1 h1{
-    font-size: 40px;
-    color: #36a568;
-    font-weight: 800;
-}
-
 .section2{
     display: flex;
     align-items: center;
@@ -238,32 +204,7 @@ form.sign-up-form{
 .btn:hover{
     background: #3CB371;
 }
-.social-text{
-    margin: 10px 0;
-    font-size: 16px;
-}
-.social-media{
-    display: flex;
-    justify-content: center;
-}
-.social-icon{
-    height: 45px;
-    width: 45px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #444;
-    border: 1.5px solid #444;
-    border-radius: 40px;
-    margin: 0 5px;  
-}
-a{
-    text-decoration: none;
-}
-.social-icon:hover{
-color: #36a568;
-border-color: #36a568;
-}
+
 .panels-container{
   position: absolute;
   top: 0;
@@ -304,7 +245,7 @@ border-color: #36a568;
 
 
 .left-panel .content{
-  transform: translateX(-200%);
+  transform: translateX(0);
 }
 .right-panel .content{
   transform: translateX(0);
