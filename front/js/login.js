@@ -160,7 +160,7 @@ document.getElementById('signup-btn').addEventListener('click', function() {
     .then(data => {
         toggleProcessingMessage(false);
         if (data.success) {
-            window.location.href = './';
+            //window.location.href = './';
         } else {
             alert('Signup failed. Please try again.');
         }
