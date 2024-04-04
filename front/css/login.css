@@ -100,7 +100,9 @@ body {
     transition: all 0.3s ease-in-out;
     background-color: #000;
   }
-  
+  .is-hidden{
+    display : none
+  }
   
 
 .section2{
@@ -248,11 +250,12 @@ form.sign-up-form{
   transform: translateX(0);
 }
 .right-panel .content{
-  transform: translateX(0);
+  transform: translateX(-200%);
 }
 .account-text{
   display: none;
 }
+
 
 /*ANIMATION*/
 .container.sign-up-mode::before{
