@@ -107,6 +107,7 @@ sonarqube-check-prod:
     - cd back/
     - mvn verify sonar:sonar
   only:
-    - main
+    refs:
+      - main
 
 
