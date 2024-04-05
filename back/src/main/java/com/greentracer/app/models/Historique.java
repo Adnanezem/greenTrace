@@ -4,52 +4,80 @@ package com.greentracer.app.models;
 /**
  * Java representation of historique data row.
  */
-
 public class Historique {
-    
-    private int id_histr;
-    private String id_p;
+
+    private int idhistr;
+    private String idp;
     private float historique;
 
+    /**
+     * 
+     */
     public Historique() {
     }
 
-    public  Historique (int id_histr, String id_p, float historique) {
-        this.id_histr = id_histr;
-        this.id_p = id_p;
+    /**
+     * 
+     * @param idhistr
+     * @param idp
+     * @param historique
+     */
+    public Historique(int idhistr, String idp, float historique) {
+        this.idhistr = idhistr;
+        this.idp = idp;
         this.historique = historique;
     }
-    public  int getid() {
-        return id_histr;
+
+    /**
+     * 
+     * @return
+     */
+    public int getid() {
+        return idhistr;
     }
 
-    public void setid(int id_hist) {
-        this.id_histr = id_histr;
+    /**
+     * 
+     * @param idHist
+     */
+    public void setid(int idHist) {
+        this.idhistr = idHist;
     }
 
-    public String getid_p() {
-        return id_p;
+    /**
+     * 
+     * @return
+     */
+    public String getidp() {
+        return idp;
     }
 
-    public void setid_p(String id_p) {
-        this.id_p = id_p;
+    /**
+     * 
+     * @param idp
+     */
+    public void setidp(String idp) {
+        this.idp = idp;
     }
 
+    /**
+     * 
+     * @return
+     */
     public float gethistorique() {
         return historique;
     }
 
+    /**
+     * 
+     * @param historique
+     */
     public void sethistorique(float historique) {
         this.historique = historique;
     }
 
-
     @Override
     public String toString() {
-        return "User [id=" + id_histr + ", ID_patient=" + id_p + ", historique=" + historique + "]";
+        return "User [id=" + idhistr + ", IDpatient=" + idp + ", historique=" + historique + "]";
     }
-
-
-
-
 }
