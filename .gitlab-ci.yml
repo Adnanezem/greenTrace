@@ -87,7 +87,8 @@ sonarqube-check-test:
     - mvn verify sonar:sonar
   allow_failure: true
   only:
-    - test
+    refs:
+      - test
 
 sonarqube-check-prod:
   stage: sonarqube-check
