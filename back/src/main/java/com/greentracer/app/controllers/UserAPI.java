@@ -1,10 +1,10 @@
 package com.greentracer.app.controllers;
 
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.greentracer.app.internal.DefaultUser;
 import com.greentracer.app.responses.GreenTracerResponse;
 
-import jakarta.websocket.server.PathParam;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -100,6 +99,11 @@ public class UserAPI {
      */
     @GetMapping("/{id}/history")
     public ResponseEntity<?> getUserHistory(@PathVariable String id) {
+        return ResponseEntity.status(302).build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable String id) {
         return ResponseEntity.ok().build();
     }
 }
