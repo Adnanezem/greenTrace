@@ -43,40 +43,37 @@ public class AuthFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        response.sendError(HttpServletResponse.SC_PAYMENT_REQUIRED, AUTH_HEADER);
-        return;
+        String url = request.getRequestURI().replace(request.getContextPath(), "");
+        logger.info("request URL: {}", url);
 
-    //     String url = request.getRequestURI().replace(request.getContextPath(), "");
-    //     logger.info("request URL: {}", url);
+        if (isInWhiteList(url)) {
+            logger.warn("OOOOOOOOO");
+            chain.doFilter(request, response);
+            return;
+        }
+        String authToken = request.getHeader(AUTH_HEADER);
+        HttpServletRequest reqCopy = request;
 
-    //     if (isInWhiteList(url)) {
-    //         logger.warn("OOOOOOOOO");
-    //         chain.doFilter(request, response);
-    //         return;
-    //     }
-    //     String authToken = request.getHeader(AUTH_HEADER);
-    //     HttpServletRequest reqCopy = request;
+        String body = reqCopy.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+        logger.info("request body: {}", body);
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode json = mapper.readTree(body);
+        String login = JSONUtils.getStringField(json, "login");
 
-    //     String body = reqCopy.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-    //     logger.info("request body: {}", body);
-    //     ObjectMapper mapper = new ObjectMapper();
-    //     JsonNode json = mapper.readTree(body);
-    //     String login = JSONUtils.getStringField(json, "login");
+        boolean isAuthenticated = (authToken == null) ? false : jwtHelper.validateToken(authToken, login);
 
-    //     boolean isAuthenticated = (authToken == null) ? false : jwtHelper.validateToken(authToken, login);
-
-    //     if (isAuthenticated) {
-    //         chain.doFilter(request, response);
-    //         return;
-    //     } else {
-    //         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-    //         return;
-    //     }
+        if (isAuthenticated) {
+            chain.doFilter(request, response);
+            return;
+        } else {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+            return;
+        }
     }
 
-    // private Boolean isInWhiteList(String url) {
-    //     Boolean res = WHITELIST_URLS.contains(url);
-    //     logger.debug(res.toString());
-    //     return res;
-    // }
+    private Boolean isInWhiteList(String url) {
+        Boolean res = WHITELIST_URLS.contains(url);
+        logger.debug(res.toString());
+        return res;
+    }
 }
