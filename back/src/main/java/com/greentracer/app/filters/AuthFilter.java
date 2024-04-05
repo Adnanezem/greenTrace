@@ -3,6 +3,7 @@ package com.greentracer.app.filters;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+// import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.core.config.Order;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.greentracer.app.databd.Gestion;
+import com.greentracer.app.utils.JwtTokenUtil;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -30,6 +32,9 @@ public class AuthFilter implements Filter {
     private static final List<String> WHITELIST_URLS = Arrays.asList(WHITELIST);
     private static final String AUTH_HEADER = "Authorization";
 
+    private JwtTokenUtil jwtHelper = new JwtTokenUtil();
+
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain)
             throws IOException, ServletException {
@@ -44,9 +49,11 @@ public class AuthFilter implements Filter {
         String authToken = request.getHeader(AUTH_HEADER);
 
         // Valide le token TODO
-        boolean isAuthenticated = isValidAuthToken(authToken);
+        // String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+        // logger.info("request body: {}", body);
+        boolean isAuthenticated = (authToken == null) ? false : jwtHelper.validateToken(authToken, null);
 
-        if (isAuthenticated) {
+        if (true /* utiliser isAuth à la place bien sur */) {
             chain.doFilter(request, response);
         } else {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
@@ -55,12 +62,5 @@ public class AuthFilter implements Filter {
 
     private boolean isInWhiteList(String url) {
         return WHITELIST_URLS.contains(url);
-    }
-
-    // Méthode factice pour valider le token (à remplacer par votre logique
-    // d'authentification réelle)
-    private boolean isValidAuthToken(String authToken) {
-        return true;
-        // return authToken != null && !authToken.isEmpty();
     }
 }

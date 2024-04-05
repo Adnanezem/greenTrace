@@ -21,11 +21,11 @@ public class UserDao implements Dao<String, User> {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private final String findRequest = "select * from public.users where login = ?";
-    private final String deleteRequest = "delete from public.users where login = ?";
-    private final String updateRequest = "update public.users set Prenom = ?, Nom = ?, MDPS = ? where login = ?";
-    private final String findAllRequest = "select * from public.users";
-    private final String insertRequest = "insert into public.users(login, Prenom, Nom, MDPS) values(?,?,?,?)";
+    private final String findRequest = "select * from public.user where login = ?";
+    private final String deleteRequest = "delete from public.user where login = ?";
+    private final String updateRequest = "update public.user set Prenom = ?, Nom = ?, MDPS = ? where login = ?";
+    private final String findAllRequest = "select * from public.user";
+    private final String insertRequest = "insert into public.user(login, Prenom, Nom, MDPS) values(?,?,?,?)";
 
     @Autowired
     public UserDao(DataSource dataSource) {
