@@ -58,11 +58,11 @@
         },
         {
             "id": 7,
-            "name": "Repas Végétarien",
-            "description": "Ajouter un repas végétarien",
+            "name": "Repas à emporter",
+            "description": "Ajouter un repas à emporter",
             "image": {
-                "icon": "../images/vegetarian_icon.png",
-                "alt": "vegetarian"
+                "icon": "../images/takeaway_icon.png",
+                "alt": "takeaway"
             }
         }
     ],
