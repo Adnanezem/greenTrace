@@ -42,8 +42,8 @@ public class AuthFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        logger.info("request URI: {}", request.getRequestURI());
         String url = request.getRequestURI().replace(request.getContextPath(), "");
+        logger.info("request URL: {}", url);
 
         if (isInWhiteList(url)) {
             chain.doFilter(request, response);
@@ -59,6 +59,7 @@ public class AuthFilter implements Filter {
 
         if (true /* utiliser isAuth à la place bien sur */) {
             chain.doFilter(request, response);
+            return;
         } else {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
         }
