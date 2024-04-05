@@ -29,12 +29,7 @@ function generateCardsFromJson() {
                     button.addEventListener('click', function() { // Add event listener
                         let clonedCard = card.cloneNode(true); // Clone the card
                         clonedCard.querySelector('button').textContent = 'Modifier'; // Change the button text in the cloned card
-                        clonedCard.querySelector('button').addEventListener('click', function() {
-                            cardListNew.appendChild(clonedCard);
-                            card.remove();
-                        });
                         cardListUser.appendChild(clonedCard); // Append the cloned card to the user's card list
-
                     });
                     div.appendChild(button);
 
