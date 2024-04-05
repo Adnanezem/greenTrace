@@ -90,16 +90,22 @@ function buttonEventSetup() {
             },
             body: JSON.stringify(data),
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-            // Hide processing message
-            toggleProcessingMessage(false);
-            if (data.success) {
-                console.log("??????????????????????????????????????????????????????????????????????????MOUETTE")
-                //window.location.href = './';
+        .then(response => {
+            if (response.ok) {
+                console.log('Response: ', response);
+                // Hide processing message
+                toggleProcessingMessage(false);
+                // Redirect to the home page
+                window.location.href = './';
             } else {
-                alert('Invalid username or password');
+                console.log('Response: ', response);
+                serverError('Impossible de se connecter');
+                // Hide processing message
+                toggleProcessingMessage(false);
+                // Empty the password input
+                document.getElementById('si-password').value = '';
+                //stay on the same page
+                return;
             }
         })
         .catch((error) => {
@@ -131,10 +137,13 @@ function buttonEventSetup() {
         };
 
         console.log('Data: ', data);
-
+        // Store data in local storage
         localStorage.setItem('signupData', JSON.stringify(data));
 
+        // Show processing message
         toggleProcessingMessage(true);
+
+        console.log('tout va bien ici: Data: ', data);
 
         fetch(SIGNUP_BACKEND_ENDPOINT, {
             method: 'POST',
@@ -143,13 +152,18 @@ function buttonEventSetup() {
             },
             body: JSON.stringify(data),
         })
-        .then(response => response.json())
-        .then(data => {
-            toggleProcessingMessage(false);
-            if (data.success) {
-                //window.location.href = './';
+        .then(response => {
+            if (response.ok) {
+                console.log('Response: ', response);
+                // Hide processing message
+                toggleProcessingMessage(false);
+                // Redirect to the home page
+                window.location.href = './';
             } else {
-                alert('Signup failed. Please try again.');
+                console.log('Response: ', response);
+                serverError('Impossible de s\'inscrire');
+                toggleProcessingMessage(false);
+                document.getElementById('su-password').value = '';
             }
         })
         .catch((error) => {
