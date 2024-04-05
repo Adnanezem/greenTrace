@@ -1,10 +1,10 @@
+console.log('login.js loaded');
 // login.js
 var log_in = true;
 
-// Define the backend endpoint for login
-var LOGIN_BACKEND_ENDPOINT = 'http://192.168.75.79/greentracer-0.0.1-SNAPSHOT/login';
-// Define the backend endpoint for sign-up
-var SIGNUP_BACKEND_ENDPOINT = 'http://192.168.75.79/greentracer-0.0.1-SNAPSHOT/signup';
+var CONTACT_BACKEND_ENDPOINT = 'https://192.168.75.79/back_test/contact';
+var LOGIN_BACKEND_ENDPOINT = 'https://192.168.75.79/back_test/users/login';
+var SIGNUP_BACKEND_ENDPOINT = 'https://192.168.75.79/back_test/users/register';
 
 
 function serverError(comment) {
@@ -18,7 +18,7 @@ function serverError(comment) {
     div.style.zIndex = '1000';
     div.style.padding = '10px';
     div.style.textAlign = 'center';
-    div.innerHTML = 'Erreur serveur: ' + comment;
+    div.innerHTML = 'Erreur: ' + comment;
     document.body.appendChild(div);
 
     setTimeout(function() {
@@ -54,117 +54,117 @@ function toggleProcessingMessage(show) {
 function fillForm() {
     var data = JSON.parse(localStorage.getItem('loginData'));
     if (data) {
-        document.getElementById('si-username').value = data.si_username;
-        document.getElementById('si-password').value = data.si_password;
+        document.getElementById('si-username').value = data.login;
+        document.getElementById('si-password').value = data.password;
     }
+}
+
+function buttonEventSetup() {
+
+    // When "login-btn" submit input is clicked
+    document.getElementById('login-btn').addEventListener('click', function() {
+        // Get username and password inputs
+        var login = document.getElementById('si-username').value;
+        var password = document.getElementById('si-password').value;
+        console.log('Username: ', login);
+        console.log('Password: ', password);
+
+        // Create a json object with the data
+        var data = {
+            login: login,
+            password: password
+        };
+
+        console.log('Data: ', data);
+        // Store data in local storage
+        localStorage.setItem('loginData', JSON.stringify(data))
+
+        // Show processing message
+        toggleProcessingMessage(true);
+
+        // Now send the data to the backend using fetch
+        fetch(LOGIN_BACKEND_ENDPOINT, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            // Hide processing message
+            toggleProcessingMessage(false);
+            if (data.success) {
+                console.log("??????????????????????????????????????????????????????????????????????????MOUETTE")
+                //window.location.href = './';
+            } else {
+                alert('Invalid username or password');
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            serverError('Impossible de se connecter');
+            // Hide processing message
+            toggleProcessingMessage(false);
+            // Empty the password input
+            document.getElementById('si-password').value = '';
+            //stay on the same page
+            return;
+        });
+    });
+
+    // When "signup-btn" submit input is clicked
+    document.getElementById('signup-btn').addEventListener('click', function() {
+        var login = document.getElementById('su-login').value;
+        var fname = document.getElementById('su-username').value;
+        var lname = document.getElementById('su-userlastname').value;
+        var email = document.getElementById('su-email').value;
+        var password = document.getElementById('su-password').value;
+
+        var data = {
+            login: login,
+            fname: fname,
+            lname: lname,
+            email: email,
+            password: password
+        };
+
+        console.log('Data: ', data);
+
+        localStorage.setItem('signupData', JSON.stringify(data));
+
+        toggleProcessingMessage(true);
+
+        fetch(SIGNUP_BACKEND_ENDPOINT, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => {
+            toggleProcessingMessage(false);
+            if (data.success) {
+                //window.location.href = './';
+            } else {
+                alert('Signup failed. Please try again.');
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            serverError('Impossible de s\'inscrire');
+            toggleProcessingMessage(false);
+            document.getElementById('su-password').value = '';
+        });
+    });
 }
 
 // Call the function to fill the form
 fillForm();
 
-
-// If user presses button of id "sign-up-btn", switch log_in to false
-document.getElementById('sign-up-btn').addEventListener('click', function() {
-    log_in = false;
-    console.log(log_in);
-});
-
-//If user presses button of id "sign-in-btn", switch log_in to true
-document.getElementById('sign-in-btn').addEventListener('click', function() {
-    log_in = true;
-    console.log(log_in);
-});
+// Call the function to setup button events
+buttonEventSetup();
 
 
-// When "login-btn" submit input is clicked
-document.getElementById('login-btn').addEventListener('click', function() {
-    // Get username and password inputs
-    var si_username = document.getElementById('si-username').value;
-    var si_password = document.getElementById('si-password').value;
-    console.log('Username: ', si_username);
-    console.log('Password: ', si_password);
-
-    // Create a json object with the data
-    var data = {
-        si_username: si_username,
-        si_password: si_password
-    };
-
-    console.log('Data: ', data);
-    // Store data in local storage
-    localStorage.setItem('loginData', JSON.stringify(data));
-
-    // Show processing message
-    toggleProcessingMessage(true);
-
-    // Now send the data to the backend using fetch
-    fetch(LOGIN_BACKEND_ENDPOINT, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
-        // Hide processing message
-        toggleProcessingMessage(false);
-        if (data.success) {
-            window.location.href = './';
-        } else {
-            alert('Invalid username or password');
-        }
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-        serverError('Impossible de se connecter');
-        // Hide processing message
-        toggleProcessingMessage(false);
-        // Empty the password input
-        document.getElementById('si-password').value = '';
-        //stay on the same page
-        return;
-    });
-});
-
-
-// When "signup-btn" submit input is clicked
-document.getElementById('signup-btn').addEventListener('click', function() {
-    var su_username = document.getElementById('su-username').value;
-    var su_password = document.getElementById('su-password').value;
-    var su_email = document.getElementById('su-email').value;
-
-    var data = {
-        su_username: su_username,
-        su_password: su_password,
-        su_email: su_email
-    };
-
-    localStorage.setItem('signupData', JSON.stringify(data));
-
-    toggleProcessingMessage(true);
-
-    fetch(SIGNUP_BACKEND_ENDPOINT, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    })
-    .then(response => response.json())
-    .then(data => {
-        toggleProcessingMessage(false);
-        if (data.success) {
-            window.location.href = './';
-        } else {
-            alert('Signup failed. Please try again.');
-        }
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-        serverError('Impossible de s\'inscrire');
-        toggleProcessingMessage(false);
-        document.getElementById('su-password').value = '';
-    });
-});

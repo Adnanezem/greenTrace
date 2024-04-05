@@ -1,7 +1,6 @@
 console.log('contact.js loaded');
 
-// Define the backend endpoint
-var BACKEND_ENDPOINT = 'http://192.168.75.79/greentracer-0.0.1-SNAPSHOT/contact';
+import { CONTACT_BACKEND_ENDPOINT } from './config.js';
 
 function serverError(comment) {
     var div = document.createElement('div');
@@ -108,7 +107,7 @@ document.querySelector('.contactForm').addEventListener('submit', function(event
     toggleProcessingMessage(true);
 
     // Now send the data to the backend using fetch
-    fetch(BACKEND_ENDPOINT, {
+    fetch(CONTACT_BACKEND_ENDPOINT, {
         method: 'POST', // or 'PUT'
         headers: {
             'Content-Type': 'application/json',

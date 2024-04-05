@@ -1,123 +1,138 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Espace bénévoles - Un sourire une vie</title>
-  <link rel="stylesheet" href="../css/login.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;600;700&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Green Tracer</title>
+    <link rel="stylesheet" href="../css/login.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
 </head>
+
 <body>
     <header>
         <a class="logo" href="./"><img src="./images/logo.png"></a>
-    <nav>
-        <div class="nav-links">
-            <ul>
-                <li class="nav-items"><a href="index.html?page=accueil">Home</a></li>
-                <li class="nav-items"><a href="index.html?page=formulaire">Start</a></li>
-                <li class="nav-items"><a href="index.html?page=contact">Contact</a></li>
-                <li class="nav-items"><a href="index.html?page=login" class="active">Login</a></li>
-            </ul>
-        </div>
-        <div class="hamburger">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-        </div>
-    </nav>
+        <nav>
+            <div class="nav-links">
+                <ul>
+                    <li class="nav-items"><a href="index.html?page=accueil">Home</a></li>
+                    <li class="nav-items"><a href="index.html?page=formulaire">Start</a></li>
+                    <li class="nav-items"><a href="index.html?page=contact">Contact</a></li>
+                    <li class="nav-items"><a href="index.html?page=login" class="active">Login</a></li>
+                </ul>
+            </div>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
     </header>
 
     <main>
         <section class="section2">
             <div class="container">
-            <div class="signin-signup">
-                <form class="sign-in-form">
-                    <h2 class="title">Se connecter</h2>
-                    <div class="input-field">
-                        <i class="ri-admin-fill"></i>
-                        <input type="text" placeholder="Username" required id="si-username">
+                <div class="signin-signup">
+                    <div class="sign-in-form">
+                        <h2 class="title">Se connecter</h2>
+                        <div class="input-field">
+                            <i class="ri-admin-fill"></i>
+                            <input type="text" placeholder="Username" required id="si-username">
+                        </div>
+                        <div class="input-field">
+                            <i class="ri-lock-2-fill"></i>
+                            <input type="password" placeholder="Mot de passe" required id="si-password">
+                        </div>
+                        <input type="submit" value="login" class="btn" id="login-btn">
+                        <p class="account-text">Vous n'avez pas un compte?<a href="#" id="sign-up-btn2">S'inscrire</a>
+                        </p>
                     </div>
-                    <div class="input-field">
-                        <i class="ri-lock-2-fill"></i>
-                        <input type="password" placeholder="Mot de passe" required id="si-password">
-                    </div>
-                    <input type="submit" value="login" class="btn" id="login-btn">
-                    <p class="account-text">Vous n'avez pas un compte?<a href="#" id="sign-up-btn2">S'inscrire</a></p>
-                </form>
 
-                <form class="sign-up-form">
-                    <h2 class="title">S'inscrire</h2>
-                    <div class="input-field">
-                        <i class="ri-admin-fill"></i>
-                        <input type="text" placeholder="Username" required id="su-username">
+                    <div class="sign-up-form">
+                        <h2 class="title">S'inscrire</h2>
+                        <div class="input-field">
+                            <i class="ri-admin-fill"></i>
+                            <input type="text" placeholder="Username" required id="su-login">
+                        </div>
+                        <div class="input-field">
+                            <i class="ri-admin-fill"></i>
+                            <input type="text" placeholder="First Name" required id="su-username">
+                        </div>
+                        <div class="input-field">
+                            <i class="ri-admin-fill"></i>
+                            <input type="text" placeholder="Last Name" required id="su-userlastname">
+                        </div>
+                        <div class="input-field">
+                            <i class="ri-mail-line"></i>
+                            <input type="text" placeholder="Email" required id="su-email">
+                        </div>
+                        <div class="input-field">
+                            <i class="ri-lock-2-fill"></i>
+                            <input type="password" placeholder="Mot de passe" required id="su-password">
+                        </div>
+                        <input type="submit" value="Sign up" class="btn" id="signup-btn">
+                        <p class="account-text">Vous avez déjà un compte?<a href="#" id="sign-in-btn2">Se connecter</a>
+                        </p>
                     </div>
-                    <div class="input-field">
-                    <i class="ri-mail-line"></i>
-                    <input type="text" placeholder="Email" required id="su-email">
                 </div>
-                    <div class="input-field">
-                        <i class="ri-lock-2-fill"></i>
-                        <input type="password" placeholder="Mot de passe" required id="su-password">
+                <div class="panels-container">
+                    <div class="panel left-panel">
+                        <div class="content">
+                            <h3>Déjà membre?</h3>
+                            <p>Calculer votre empreinte carbone facilement</p>
+                            <button class="btn" id="sign-in-btn">Se connecter</button>
+                        </div>
                     </div>
-                    <input type="submit" value="Sign up" class="btn" id="signup-btn">
-                    <p class="account-text">Vous avez déjà un compte?<a href="#" id="sign-in-btn2">Se connecter</a></p>
-                </form>
-            </div>
-            <div class="panels-container">
-                <div class="panel left-panel">
-                <div class="content">
-                    <h3>Déjà membre?</h3>
-                    <p>Calculer votre empreinte carbone facilement</p>
-                    <button class="btn" id="sign-in-btn">Se connecter</button>
-                </div>
-                </div>
 
-                <div class="panel right-panel">
-                    <div class="content">
-                    <h3>Nouveau membre?</h3>
-                    <p>Calculer votre empreinte carbone facilement</p>
-                    <button class="btn" id="sign-up-btn">S'inscrire</button>
+                    <div class="panel right-panel">
+                        <div class="content">
+                            <h3>Nouveau membre?</h3>
+                            <p>Calculer votre empreinte carbone facilement</p>
+                            <button class="btn" id="sign-up-btn">S'inscrire</button>
+                        </div>
                     </div>
-                </div>
                 </div>
             </div>
         </section>
     </main>
 
-  <footer>
-    <!-- Contenu du pied de page -->
-  </footer>
+    <footer>
+        <!-- Contenu du pied de page -->
+    </footer>
 
-  <script>
-    //Sign up ou Sign in
-  const sign_in_btn = document.querySelector("#sign-in-btn");
-  const sign_up_btn = document.querySelector("#sign-up-btn");
-  const container = document.querySelector(".container");
-  const sign_in_btn2 = document.querySelector("#sign-in-btn2");
-  const sign_up_btn2 = document.querySelector("#sign-up-btn2");
+    <script>
+        //Sign up ou Sign in
 
-  sign_up_btn.addEventListener("click", () => {
-      container.classList.add("sign-up-mode");
-  });
+        const sign_in_btn = document.querySelector("#sign-in-btn");
+        const sign_up_btn = document.querySelector("#sign-up-btn");
+        const container = document.querySelector(".container");
+        const sign_in_btn2 = document.querySelector("#sign-in-btn2");
+        const sign_up_btn2 = document.querySelector("#sign-up-btn2");
 
-  sign_in_btn.addEventListener("click", () => {
-      container.classList.remove("sign-up-mode");
-  });
 
-  sign_up_btn2.addEventListener("click", () => {
-      container.classList.add("sign-up-mode2");
-  });
+        sign_up_btn.addEventListener("click", () => {
+            container.classList.add("sign-up-mode");
+        });
 
-  sign_in_btn2.addEventListener("click", () => {
-      container.classList.remove("sign-up-mode2");
-  });
-  </script>
+        sign_in_btn.addEventListener("click", () => {
+            container.classList.remove("sign-up-mode");
+        });
 
-  <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+        sign_up_btn2.addEventListener("click", () => {
+            container.classList.add("sign-up-mode2");
+        });
+
+        sign_in_btn2.addEventListener("click", () => {
+            container.classList.remove("sign-up-mode2");
+        });
+    </script>
+
   <script src="../js/hamburger.js"></script>
   <script src="../js/login.js"></script>
 </body>
+
 </html>
