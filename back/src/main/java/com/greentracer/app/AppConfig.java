@@ -12,7 +12,6 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.greentracer.app.utils.JwtTokenUtil;
 
 /**
  * AppConfig.
@@ -49,15 +48,6 @@ public class AppConfig {
         dataSource.setPassword(password);
         dataSource.setDriverClassName(driverClassName);
         return dataSource;
-    }
-
-    /**
-     * Construit le bean nécessaire au jwtHelper.
-     * @return
-     */
-    @Bean
-    public JwtTokenUtil jwtHelper() {
-        return new JwtTokenUtil();
     }
 
     @Bean

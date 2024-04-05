@@ -47,7 +47,7 @@ public class HistoriqueDao implements Dao<String, Historique> {
 
     @Override
     public Boolean create(Historique historique) {
-        return jdbcTemplate.update(insertRequest, historique.getid_p(), historique.gethistorique()) > 0;
+        return jdbcTemplate.update(insertRequest, historique.getidp(), historique.gethistorique()) > 0;
     }
 
     @Override
