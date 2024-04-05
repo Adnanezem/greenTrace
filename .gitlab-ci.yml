@@ -2,7 +2,6 @@ stages:
   - sonarqube-check
   - deploy
 
-
 # Cache downloaded dependencies and plugins between builds.
 # Not strictly necessary, but speeds up the builds.
 cache:
