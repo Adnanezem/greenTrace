@@ -126,7 +126,7 @@ function buttonEventSetup() {
             login: login,
             fname: fname,
             lname: lname,
-            email: email,
+            mail: email,
             password: password
         };
 
