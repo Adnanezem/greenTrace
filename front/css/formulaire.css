@@ -301,4 +301,41 @@ section h2{
       left: 0;
     }
   }
-  
+
+
+/* Formulaires cartes */
+
+.floating_form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+}
+
+.floating_form form {
+    width: 400px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form_field_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border: 1px solid red;
+}
+
+.form_field {
+    margin-bottom: 20px;
+    border: 1px solid green;
+}

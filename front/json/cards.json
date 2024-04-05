@@ -7,7 +7,29 @@
             "image": {
                 "icon": "../images/car_icon.png",
                 "alt": "car"
-            }
+            },
+            "fields": [
+                {
+                    "name": "distance traveled",
+                    "type": "number input",
+                    "unit": "km"
+                },
+                {
+                    "name": "drive mode",
+                    "type": "scrolllist",
+                    "options": ["town", "sport", "highway"]
+                },
+                {
+                    "name": "car type",
+                    "type": "scrolllist",
+                    "options": ["sedan", "SUV", "break", "compact"]
+                },
+                {
+                    "name": "fuel type",
+                    "type": "scrolllist",
+                    "options": ["diesel", "gasoline", "electric", "hybrid", "LPG", "hydrogen"]
+                }
+            ]
         },
         {
             "id": 2,
