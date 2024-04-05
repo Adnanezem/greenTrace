@@ -8,28 +8,27 @@ import java.sql.Date;
 
 public class Journee {
     
-    private String id;
+    private int id;
     private String patientId;
     private Date date;
-    private String resultat;
-
+    private float resultat;
 
 
     public Journee() {
     }
 
-    public Journee(String id, String patientId, Date date, String resultat) {
+    public Journee(int id, String patientId, Date date, float resultat) {
         this.id = id;
         this.patientId = patientId;
         this.date = date;
         this.resultat = resultat;
     }
 
-    public String getid() {
+    public int getid() {
         return id;
     }
 
-    public void setid(String id) {
+    public void setid(int id) {
         this.id = id;
     }
 
@@ -39,6 +38,7 @@ public class Journee {
 
     public void setpatientId(String patientId) {
         this.patientId = patientId;
+        
     }
 
     public Date getdate() {
@@ -49,11 +49,11 @@ public class Journee {
         this.date = date;
     }
 
-    public String getresultat() {
+    public float getresultat() {
         return resultat;
     }
 
-    public void setresultat(String resultat) {
+    public void setresultat(float resultat) {
         this.resultat = resultat;
     }
 

@@ -1,3 +1,4 @@
+
 package com.greentracer.app.dao;
 
 import java.util.List;
@@ -7,13 +8,12 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+
 import org.springframework.stereotype.Component;
 
 import com.greentracer.app.mappers.JourneeMapper;
-import com.greentracer.app.mappers.UserMapper;
-import com.greentracer.app.models.Journee;
-import com.greentracer.app.models.User;
 
+import com.greentracer.app.models.Journee;
 
 
 /**
@@ -63,6 +63,8 @@ public class JourneeDao implements Dao<String, Journee> {
     public List<Journee> getAll() {
         return jdbcTemplate.query(findAllRequest, new JourneeMapper());
     }
+
+
 
 
 }
