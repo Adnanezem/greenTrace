@@ -35,7 +35,6 @@ public class JourneeDao implements Dao<String, Journee> {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-
     @Override
     public Journee getById(String id) {
         try {
@@ -46,25 +45,25 @@ public class JourneeDao implements Dao<String, Journee> {
         }
 
     }
+
+    @Override
     public Boolean create(Journee journee) {
         return jdbcTemplate.update(insertRequest, journee.getpatientId(), journee.getdate(), journee.getresultat()) > 0;
     }
 
+    @Override
     public Boolean update(Journee journee) {
         return jdbcTemplate.update(updateRequest, journee.getdate(), journee.getresultat()) > 0;
     }
     
+    @Override
     public Boolean delete(Journee journee) {
         return jdbcTemplate.update(deleteRequest, journee.getid()) > 0;
     }
-
 
     @Override
     public List<Journee> getAll() {
         return jdbcTemplate.query(findAllRequest, new JourneeMapper());
     }
-
-
-
 
 }
