@@ -72,7 +72,7 @@ public class AuthFilter implements Filter {
     //         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
     //         return;
     //     }
-    // }
+    }
 
     // private Boolean isInWhiteList(String url) {
     //     Boolean res = WHITELIST_URLS.contains(url);
