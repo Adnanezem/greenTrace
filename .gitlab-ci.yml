@@ -26,7 +26,8 @@ deploy-front-test:
   stage: deploy
   image: maven:3.8.5-openjdk-17
   only:
-    - test
+    refs:
+      - test
   before_script:
     - chmod 400 $CI_SSH_KEY
   script:
@@ -36,7 +37,8 @@ deploy-back-test:
   stage: deploy
   image: maven:3.8.5-openjdk-17
   only:
-    - test
+    refs:
+      - test
   before_script:
     - chmod +x $CI_PROJECT_DIR/ci/setup-mvn-proxy.sh
     - $CI_PROJECT_DIR/ci/setup-mvn-proxy.sh
@@ -51,7 +53,8 @@ deploy-front-prod:
   stage: deploy
   image: maven:3.8.5-openjdk-17
   only:
-    - main
+    refs:
+      - main
   before_script:
     - chmod 400 $CI_SSH_KEY
   script:
@@ -61,7 +64,8 @@ deploy-back-prod:
   stage: deploy
   image: maven:3.8.5-openjdk-17
   only:
-    - main
+    refs:
+      - main
   before_script:
     - chmod +x $CI_PROJECT_DIR/ci/setup-mvn-proxy.sh
     - $CI_PROJECT_DIR/ci/setup-mvn-proxy.sh
@@ -83,6 +87,7 @@ sonarqube-check-test:
     - mvn verify sonar:sonar
   allow_failure: true
   only:
+    refs:
     - test
 
 sonarqube-check-prod:
@@ -95,6 +100,7 @@ sonarqube-check-prod:
     - cd back/
     - mvn verify sonar:sonar
   only:
-    - main
+    refs:
+      - main
 
 
