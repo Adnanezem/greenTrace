@@ -65,8 +65,7 @@ public class AppConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/*").allowedOrigins("http://localhost/", "http://localhost:8080",
-                        "https://192.168.75.79/*");
+                registry.addMapping("/**");
             }
         };
     }
