@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.apache.logging.log4j.core.config.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -35,7 +36,12 @@ public class AuthFilter implements Filter {
     private static final List<String> WHITELIST_URLS = Arrays.asList(WHITELIST);
     private static final String AUTH_HEADER = "Authorization";
 
-    private JwtTokenUtil jwtHelper = new JwtTokenUtil();
+    private final JwtTokenUtil jwtHelper;
+
+    @Autowired
+    public AuthFilter(JwtTokenUtil jwtHelper) {
+        this.jwtHelper = jwtHelper;
+    }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain)
@@ -66,7 +72,7 @@ public class AuthFilter implements Filter {
             chain.doFilter(request, response);
             return;
         } else {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden");
             return;
         }
     }

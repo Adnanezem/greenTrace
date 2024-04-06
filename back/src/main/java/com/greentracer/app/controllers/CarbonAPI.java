@@ -56,7 +56,7 @@ public class CarbonAPI {
      * Retourne l'historique des empreintes carbonnes journalière avec une limite de 30 jours.
      * @return une réponse json.
      */
-    @GetMapping("/history")
+    @GetMapping("/{id}/history")
     public ResponseEntity<?> getHistory() {
         return ResponseEntity.ok().build();
     }
@@ -66,7 +66,7 @@ public class CarbonAPI {
      * @param date une date sous forme de String.
      * @return une réponse json.
      */
-    @GetMapping("/history/{date}")
+    @GetMapping("/{id}/history/{date}")
     public ResponseEntity<?> getDetailledHistory(@PathVariable String date) {
         return ResponseEntity.ok().build();
     }

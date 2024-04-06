@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,6 +20,8 @@ import com.greentracer.app.models.User;
  */
 @Component
 public class UserDao implements Dao<String, User> {
+
+    private static Logger logger = LoggerFactory.getLogger(UserDao.class);
 
     private final JdbcTemplate jdbcTemplate;
 
