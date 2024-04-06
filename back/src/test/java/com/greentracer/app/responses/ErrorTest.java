@@ -7,34 +7,34 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ErrorTest {
 
-    private Error error;
+    private ErrorResponse error;
 
     @BeforeEach
     public void setup() {
-        error = new Error("testMsg", 1);
+        error = new ErrorResponse("testMsg", 1);
     }
 
     @Test
     public void setAndGetMsg() {
         String msg = "newTestMsg";
-        error.setMsg(msg);
-        assertEquals(msg, error.getMsg());
+        error.setMessage(msg);
+        assertEquals(msg, error.getMessage());
     }
 
     @Test
     public void setAndGetErrorType() {
         int errorType = 2;
-        error.setErrorType(errorType);
-        assertEquals(errorType, error.getErrorType());
+        error.setStatus(errorType);
+        assertEquals(errorType, error.getStatus());
     }
 
     @Test
     public void constructor_setsValues() {
         String msg = "testMsg";
         int errorType = 1;
-        Error error = new Error(msg, errorType);
+        ErrorResponse error = new ErrorResponse(msg, errorType);
 
-        assertEquals(msg, error.getMsg());
-        assertEquals(errorType, error.getErrorType());
+        assertEquals(msg, error.getMessage());
+        assertEquals(errorType, error.getStatus());
     }
 }

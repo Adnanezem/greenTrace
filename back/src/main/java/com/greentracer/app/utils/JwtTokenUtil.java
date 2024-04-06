@@ -1,6 +1,7 @@
 package com.greentracer.app.utils;
 
 import java.io.Serializable;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +43,8 @@ public class JwtTokenUtil implements Serializable {
 	}
     //for retrieveing any information from token we will need the secret key
 	private Claims getAllClaimsFromToken(String token) {
-		return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+		String encodedString = Base64.getEncoder().encodeToString(secret.getBytes());
+		return Jwts.parser().setSigningKey(encodedString).parseClaimsJws(token).getBody();
 	}
 
 	//check if the token has expired
@@ -63,14 +65,16 @@ public class JwtTokenUtil implements Serializable {
 	//3. According to JWS Compact Serialization(https://tools.ietf.org/html/draft-ietf-jose-json-web-signature-41#section-3.1)
 	//   compaction of the JWT to a URL-safe string 
 	private String doGenerateToken(Map<String, Object> claims, String subject) {
-
+		System.out.println("SECRET: " + this.secret);
+		String encodedString = Base64.getEncoder().encodeToString(secret.getBytes());
 		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
-				.signWith(SignatureAlgorithm.HS512, secret).compact();
+				.signWith(SignatureAlgorithm.HS512, encodedString).compact();
 	}
 
 	//validate token
 	public Boolean validateToken(String token, String uLogin) {
+		System.out.println("SECRET : " + this.secret);
 		final String login = getUsernameFromToken(token);
 		return (login.equals(uLogin) && !isTokenExpired(token));
 	}
