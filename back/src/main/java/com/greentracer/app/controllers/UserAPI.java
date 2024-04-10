@@ -52,8 +52,8 @@ public class UserAPI {
      */
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody String body) {
-        Map<Boolean, GreenTracerResponse> resMapponse = def.defaultLogin(body);
-        Iterator<Map.Entry<Boolean, GreenTracerResponse>> iterator = resMapponse.entrySet().iterator();
+        Map<Boolean, GreenTracerResponse> resMap = def.defaultLogin(body);
+        Iterator<Map.Entry<Boolean, GreenTracerResponse>> iterator = resMap.entrySet().iterator();
         Map.Entry<Boolean, GreenTracerResponse> res = iterator.next();
         if (!res.getKey()) {
             return ResponseEntity.badRequest().body(res.getValue());
@@ -70,8 +70,8 @@ public class UserAPI {
      */
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody String body) {
-        Map<Boolean, GreenTracerResponse> resMapponse = def.defaultRegister(body);
-        Iterator<Map.Entry<Boolean, GreenTracerResponse>> iterator = resMapponse.entrySet().iterator();
+        Map<Boolean, GreenTracerResponse> resMap = def.defaultRegister(body);
+        Iterator<Map.Entry<Boolean, GreenTracerResponse>> iterator = resMap.entrySet().iterator();
         Map.Entry<Boolean, GreenTracerResponse> res = iterator.next();
         if (!res.getKey()) {
             return ResponseEntity.badRequest().body(res.getValue());
@@ -86,7 +86,7 @@ public class UserAPI {
      */
     @PostMapping("/logout")
     public ResponseEntity<?> logout() {
-        Map<Boolean, GreenTracerResponse> resMapp = def.defaultLogout();
+        Map<Boolean, GreenTracerResponse> resMap = def.defaultLogout();
         return ResponseEntity.noContent().build();
     }
 

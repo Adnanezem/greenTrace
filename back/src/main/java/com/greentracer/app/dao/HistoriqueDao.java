@@ -35,7 +35,7 @@ public class HistoriqueDao implements Dao<String, Historique> {
 
 
     @Override
-    public Historique getById(String id) {
+    public Historique getById(String id) throws IllegalArgumentException{
         try {
             Historique historique = jdbcTemplate.queryForObject(findRequest, new HistoriqueMapper(), id);
             return historique;
