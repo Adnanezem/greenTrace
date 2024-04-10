@@ -1,6 +1,7 @@
 
 package com.greentracer.app.dao;
 
+import java.sql.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -25,6 +26,7 @@ public class JourneeDao implements Dao<String, Journee> {
     private final JdbcTemplate jdbcTemplate;
 
     private final String findRequest = "SELECT * FROM Journee j INNER JOIN user u ON j.id_patient = u.login WHERE u.login = ?";
+    private final String findByDateRequest = "SELECT * FROM Journee j INNER JOIN user u ON j.id_patient = u.login WHERE u.login = ? AND j.date = ?";
     private final String deleteRequest = "DELETE FROM Journee j INNER JOIN user u ON j.id_patient = u.login WHERE u.login = ?";
     private final String updateRequest = "UPDATE Journee j INNER JOIN user u ON j.id_patient = u.login SET j.date = ?, j.resultat = ? ";
     private final String insertRequest = "INSERT INTO Journee( id_patient, date, resultat) VALUES (?, ?, ?)";
@@ -41,7 +43,23 @@ public class JourneeDao implements Dao<String, Journee> {
             Journee journee = jdbcTemplate.queryForObject(findRequest, new JourneeMapper(), id);
             return journee;
         } catch (IncorrectResultSizeDataAccessException e) {
-            throw new IllegalArgumentException("Aucune journée trouvée avec l'id spécifié.");
+            throw new IllegalArgumentException("Aucune journée trouvée avec l'utilisateur spécifié.");
+        }
+
+    }
+
+    /**
+     * Méthode spécifique à JourneeDao permettant de trouver une date précise.
+     * @param userId
+     * @param date
+     * @return
+     */
+    public Journee getByDate(String userId, Date date) {
+        try {
+            Journee journee = jdbcTemplate.queryForObject(findByDateRequest, new JourneeMapper(), userId, date);
+            return journee;
+        } catch (IncorrectResultSizeDataAccessException e) {
+            throw new IllegalArgumentException("Aucune journée trouvée avec l'utilisateur et la date spécifiée.");
         }
 
     }
