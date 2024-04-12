@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.greentracer.app.utils.JSONUtils;
 import com.greentracer.app.utils.JwtTokenUtil;
-// import com.greentracer.app.utils.UrlUtils;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -35,6 +34,7 @@ public class AuthFilter implements Filter {
     private static final String[] WHITELIST = {"/", "/users/register", "/users/login" };
     private static final List<String> WHITELIST_URLS = Arrays.asList(WHITELIST);
     private static final String AUTH_HEADER = "Authorization";
+    private static final String LOGIN_HEADER = "U-Login";
 
     private final JwtTokenUtil jwtHelper;
 
@@ -53,18 +53,11 @@ public class AuthFilter implements Filter {
         logger.info("request URL: {}", url);
 
         if (isInWhiteList(url)) {
-            logger.warn("OOOOOOOOO");
             chain.doFilter(request, response);
             return;
         }
         String authToken = request.getHeader(AUTH_HEADER);
-        HttpServletRequest reqCopy = request;
-
-        String body = reqCopy.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-        logger.info("request body: {}", body);
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode json = mapper.readTree(body);
-        String login = JSONUtils.getStringField(json, "login");
+        String login = request.getHeader(LOGIN_HEADER);
 
         boolean isAuthenticated = (authToken == null) ? false : jwtHelper.validateToken(authToken, login);
 
