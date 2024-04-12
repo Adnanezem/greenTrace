@@ -65,7 +65,6 @@ public class JwtTokenUtil implements Serializable {
 	//3. According to JWS Compact Serialization(https://tools.ietf.org/html/draft-ietf-jose-json-web-signature-41#section-3.1)
 	//   compaction of the JWT to a URL-safe string 
 	private String doGenerateToken(Map<String, Object> claims, String subject) {
-		System.out.println("SECRET: " + this.secret);
 		String encodedString = Base64.getEncoder().encodeToString(secret.getBytes());
 		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
@@ -74,7 +73,6 @@ public class JwtTokenUtil implements Serializable {
 
 	//validate token
 	public Boolean validateToken(String token, String uLogin) {
-		System.out.println("SECRET : " + this.secret);
 		final String login = getUsernameFromToken(token);
 		return (login.equals(uLogin) && !isTokenExpired(token));
 	}
