@@ -3,17 +3,12 @@ package com.greentracer.app.filters;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import org.apache.logging.log4j.core.config.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.greentracer.app.utils.JSONUtils;
 import com.greentracer.app.utils.JwtTokenUtil;
 
 import jakarta.servlet.Filter;
