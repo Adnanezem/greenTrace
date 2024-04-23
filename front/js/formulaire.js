@@ -1,7 +1,3 @@
-
-var COMPUTE_FORM_BACKEND_ENDPOINT = 'https://192.168.75.79/back_test/carbon/compute';
-
-
 // function to generate the field form from a json file
 function generateFormFromJson(card, modify = false) {
 
