@@ -87,7 +87,7 @@ function generateFormFromJson(card) {
             document.removeEventListener('keydown', closeForm);
         }
     }
-    
+
     document.addEventListener('keydown', closeForm);
 
     // We add an event listener to the form
@@ -124,6 +124,13 @@ function generateFormFromJson(card) {
         setTimeout(() => {
             successMessage.remove();
         }, 3000);
+
+        let cardListUser = document.getElementById('cardListUser'); // Get the user's card list
+
+        // Clone the card and change the button text
+        let clonedCard = card.cloneNode(true); // Clone the card
+        clonedCard.querySelector('button').textContent = 'Modifier'; // Change the button text in the cloned card
+        cardListUser.appendChild(clonedCard); // Append the cloned card to the user's card list
     });
 }
 
@@ -172,11 +179,6 @@ function generateCardsFromJson() {
                         console.log('Ajouter button clicked');
                         // Open the form
                         generateFormFromJson(item); // Generate the form
-
-                        // Clone the card and change the button text
-                        let clonedCard = card.cloneNode(true); // Clone the card
-                        clonedCard.querySelector('button').textContent = 'Modifier'; // Change the button text in the cloned card
-                        cardListUser.appendChild(clonedCard); // Append the cloned card to the user's card list
                     });
                     div.appendChild(button);
 
