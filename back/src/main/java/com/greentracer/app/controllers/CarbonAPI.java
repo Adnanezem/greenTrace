@@ -43,17 +43,23 @@ public class CarbonAPI {
 
     /**
      * Calcule l'empreinte carbonne.
+     * 
      * @param body
      * @return un résultat sous forme de json.
      */
     @PostMapping("/compute")
     public ResponseEntity<?> compute(@RequestBody String body) {
         URI uri;
-        Map<Boolean, GreenTracerResponse> res = new HashMap<>();
+        Map<Boolean, GreenTracerResponse> resMap = new HashMap<>();
         try {
-            res = def.defaultCompute(body);
+            resMap = def.defaultCompute(body);
+            Iterator<Map.Entry<Boolean, GreenTracerResponse>> iterator = resMap.entrySet().iterator();
+            Map.Entry<Boolean, GreenTracerResponse> res = iterator.next();
+            if (!res.getKey()) {
+                return ResponseEntity.badRequest().build();
+            }
             uri = new URI("uriadefinir");
-            return ResponseEntity.created(uri).body(res.get(true));
+            return ResponseEntity.created(uri).body(res.getValue());
         } catch (URISyntaxException e) {
             logger.info(body);
             return ResponseEntity.badRequest().build();
@@ -61,7 +67,9 @@ public class CarbonAPI {
     }
 
     /**
-     * Retourne l'historique des empreintes carbonnes journalière avec une limite de 30 jours.
+     * Retourne l'historique des empreintes carbonnes journalière avec une limite de
+     * 30 jours.
+     * 
      * @return une réponse json.
      */
     @GetMapping("/{id}/history")
@@ -70,7 +78,7 @@ public class CarbonAPI {
         resMap = def.defaultGetHistory(id);
         Iterator<Map.Entry<Boolean, GreenTracerResponse>> iterator = resMap.entrySet().iterator();
         Map.Entry<Boolean, GreenTracerResponse> res = iterator.next();
-        if(!res.getKey()) {
+        if (!res.getKey()) {
             return ResponseEntity.status(res.getValue().getStatus()).body(res.getValue());
         }
         HistoriqueResponse response = (HistoriqueResponse) resMap.get(true);
@@ -78,8 +86,9 @@ public class CarbonAPI {
     }
 
     /**
-     * Retourne le bilan d'un jour détaillé. 
-     * @param id l'id de l'utilisateur.
+     * Retourne le bilan d'un jour détaillé.
+     * 
+     * @param id   l'id de l'utilisateur.
      * @param date une date sous forme de String.
      * @return une réponse json.
      */
@@ -89,7 +98,7 @@ public class CarbonAPI {
         resMap = def.defaultGetDetailledHistory(id, date);
         Iterator<Map.Entry<Boolean, GreenTracerResponse>> iterator = resMap.entrySet().iterator();
         Map.Entry<Boolean, GreenTracerResponse> res = iterator.next();
-        if(!res.getKey()) {
+        if (!res.getKey()) {
             return ResponseEntity.status(res.getValue().getStatus()).body(res.getValue());
         }
         JourneeResponse response = (JourneeResponse) resMap.get(true);

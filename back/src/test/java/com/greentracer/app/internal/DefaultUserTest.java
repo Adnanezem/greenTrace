@@ -6,7 +6,6 @@ import com.greentracer.app.responses.ErrorResponse;
 import com.greentracer.app.responses.GreenTracerResponse;
 import com.greentracer.app.utils.JwtTokenUtil;
 
-import org.assertj.core.data.MapEntry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -15,7 +14,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
 
 public class DefaultUserTest {
