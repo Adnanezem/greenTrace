@@ -129,7 +129,7 @@ function check_form_filled() {
     return filled;
 }
 
-
+// Function to generate the cards from a json file
 function generateCardsFromJson() {
     fetch('../json/cards.json')
         .then(response => response.json())
@@ -176,6 +176,45 @@ function generateCardsFromJson() {
                 });
             });
         });
+}
+
+// Function to load the saved cards from localStorage
+function loadSavedCards() {
+    let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
+    cardSelection.forEach(card => {
+        let cardElement = document.createElement('div');
+        cardElement.className = 'card';
+
+        let div = document.createElement('div');
+
+        let h3 = document.createElement('h3');
+        h3.textContent = card.name;
+        div.appendChild(h3);
+
+        let p = document.createElement('p');
+        p.textContent = card.description;
+        div.appendChild(p);
+
+        let button = document.createElement('button');
+        button.textContent = 'Modifier';
+        button.addEventListener('click', function() {
+            console.log('Modifier button clicked');
+            // Open the form
+            generateFormFromJson(card);
+        });
+        div.appendChild(button);
+
+        cardElement.appendChild(div);
+
+        cardListUser.appendChild(cardElement);
+    });
+}
+
+// Function to save a card to localStorage
+function saveCard(card) {
+    let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
+    cardSelection.push(card);
+    localStorage.setItem('cardSelection', JSON.stringify(cardSelection));
 }
 
 console.log('formulaire.js loaded');
