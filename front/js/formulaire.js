@@ -467,7 +467,7 @@ function sendForm() {
 
 console.log('formulaire.js loaded');
 
-function sendForm(data) {
+function sendFormData(data) {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", sessionStorage.getItem("jwt"));
