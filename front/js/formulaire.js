@@ -23,6 +23,26 @@ function toggleProcessingMessage(show) {
     processingDiv.style.display = show ? 'flex' : 'none';
 }
 
+function serverError(comment) {
+    var div = document.createElement('div');
+    div.style.backgroundColor = 'red';
+    div.style.color = 'white';
+    div.style.position = 'fixed';
+    div.style.top = '0';
+    div.style.left = '0';
+    div.style.width = '100%';
+    div.style.zIndex = '1000';
+    div.style.padding = '10px';
+    div.style.textAlign = 'center';
+    div.innerHTML = 'Erreur serveur: ' + comment;
+    document.body.appendChild(div);
+
+    setTimeout(function() {
+        div.remove();
+    }
+    , 5000);
+}
+
 
 // function to generate the field form from a json file
 function generateFormFromJson(card, modify = false) {
@@ -325,6 +345,7 @@ function loadSavedCards() {
 console.log('formulaire.js loaded');
 
 function sendFormData(data) {
+    console.log('sendFormData:');
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", sessionStorage.getItem("jwt"));
@@ -345,6 +366,7 @@ function sendFormData(data) {
             throw new Error("Erreur lors de l\'envoie du formulaire.")
         }
     }).then(json =>  {
+        console.log(json);
         return json;
     }).catch(err => {
         serverError(err);
@@ -370,21 +392,10 @@ function sendForm() {
         // Show processing message
         toggleProcessingMessage(true);
 
-        //send the card list to the server (sendFormData returns json data)
-        sendFormData(cardSelection).then(data => {
-            console.log(data);
-            // Hide processing message
-            toggleProcessingMessage(false);
-            //display a success message
-            let successMessage = document.createElement('div');
-            successMessage.textContent = 'Cartes envoyées avec succès';
-            document.body.appendChild(successMessage);
-            setTimeout(() => {
-                successMessage.remove();
-            }, 3000);
-        }).catch(err => {
-            serverError(err);
-        });
+        //send the card list to the server
+        sendFormData(cardSelection);
+
+        
 
     });
 }
