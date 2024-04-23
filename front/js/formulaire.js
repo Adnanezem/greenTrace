@@ -83,7 +83,7 @@ function generateFormFromJson(card) {
     // We add an event listener to the form
     formElement.addEventListener('submit', function(event) {
         //Check if the form is filled
-        if (!check_form_filled()) {
+        if (!check_form_filled(form)) {
             alert('Please fill all the fields');
             return;
         }
@@ -117,8 +117,7 @@ function generateFormFromJson(card) {
 }
 
 // Function to check if the form is filled
-function check_form_filled() {
-    let form = document.getElementById('floating_form');
+function check_form_filled(form) {
     let fields = form.querySelectorAll('input');
     let filled = true;
     fields.forEach(field => {
