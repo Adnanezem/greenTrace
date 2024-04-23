@@ -1,26 +1,5 @@
 // function to generate the field form from a json file
 function generateFormFromJson(card) {
-    /*"fields": [
-        {
-            "name": "distance traveled",
-            "type": "number input",
-            "unit": "km"
-        },
-        {
-            "name": "drive mode",
-            "type": "radio",
-            "options": ["town", "sport", "highway"]
-        },
-        {
-            "name": "car type",
-            "type": "radio",
-            "options": ["sedan", "SUV", "break", "compact"]
-        },
-        {
-            "name": "departure time",
-            "type": "time"
-        }
-    ]*/
     
     // We create a floating div to contain the form
     let form = document.createElement('div');
@@ -103,7 +82,15 @@ function generateFormFromJson(card) {
 
     // We add an event listener to the form
     formElement.addEventListener('submit', function(event) {
+        //Check if the form is filled
+        if (!check_form_filled()) {
+            alert('Please fill all the fields');
+            return;
+        }
         event.preventDefault();
+
+        // check the type of the card
+        console.log(card.type);
         let data = {};
         card.fields.forEach(field => {
             data[field.name] = formElement.querySelector('[name="' + field.name + '"]').value;
@@ -127,6 +114,19 @@ function generateFormFromJson(card) {
             successMessage.remove();
         }, 3000);
     });
+}
+
+// Function to check if the form is filled
+function check_form_filled() {
+    let form = document.getElementById('floating_form');
+    let fields = form.querySelectorAll('input');
+    let filled = true;
+    fields.forEach(field => {
+        if (field.value === '') {
+            filled = false;
+        }
+    });
+    return filled;
 }
 
 
