@@ -91,6 +91,8 @@ function generateFormFromJson(card) {
             document.removeEventListener('keydown', closeForm);
         }
     }
+    
+    document.addEventListener('keydown', closeForm);
 
     // We add an event listener to the form
     formElement.addEventListener('submit', function(event) {
