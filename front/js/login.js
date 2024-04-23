@@ -95,6 +95,7 @@ function buttonEventSetup() {
                 console.log('Response: ', response);
                 // Hide processing message
                 toggleProcessingMessage(false);
+                sessionStorage.setItem("jwt", response.headers.get("Authorization"));
                 // Redirect to the home page
                 window.location.href = './';
             } else {
