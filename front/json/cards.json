@@ -2,6 +2,7 @@
     "transport": [
         {
             "id": 1,
+            "category": "transport",
             "name": "Trajet en voiture",
             "description": "Ajouter un trajet en voiture",
             "image": {
@@ -33,6 +34,7 @@
         },
         {
             "id": 2,
+            "category": "transport",
             "name": "Trajet en vélo",
             "description": "Ajouter un trajet en vélo",
             "image": {
@@ -42,6 +44,7 @@
         },
         {
             "id": 3,
+            "category": "transport",
             "name": "Trajet en bus",
             "description": "Ajouter un trajet en bus",
             "image": {
@@ -51,6 +54,7 @@
         },
         {
             "id": 4,
+            "category": "transport",
             "name": "Trajet en avion",
             "description": "Ajouter un trajet en avion",
             "image": {
@@ -62,6 +66,7 @@
     "repas": [
         {
             "id": 5,
+            "category": "repas",
             "name": "Repas au restaurant",
             "description": "Ajouter un repas au restaurant",
             "image": {
@@ -71,6 +76,7 @@
         },
         {
             "id": 6,
+            "category": "repas",
             "name": "Repas à la maison",
             "description": "Ajouter un repas à la maison",
             "image": {
@@ -80,6 +86,7 @@
         },
         {
             "id": 7,
+            "category": "repas",
             "name": "Repas à emporter",
             "description": "Ajouter un repas à emporter",
             "image": {
@@ -91,6 +98,7 @@
     "loisirs": [
         {
             "id": 8,
+            "category": "loisirs",
             "name": "Visite d'un musée",
             "description": "Ajouter une visite d'un musée",
             "image": {
@@ -100,6 +108,7 @@
         },
         {
             "id": 9,
+            "category": "loisirs",
             "name": "Visite d'un parc",
             "description": "Ajouter une visite d'un parc",
             "image": {
@@ -109,6 +118,7 @@
         },
         {
             "id": 10,
+            "category": "loisirs",
             "name": "Visite d'un zoo",
             "description": "Ajouter une visite d'un zoo",
             "image": {
@@ -118,6 +128,7 @@
         },
         {
             "id": 11,
+            "category": "loisirs",
             "name": "Visite d'un aquarium",
             "description": "Ajouter une visite d'un aquarium",
             "image": {
@@ -127,6 +138,7 @@
         },
         {
             "id": 12,
+            "category": "loisirs",
             "name": "Visite d'un parc d'attraction",
             "description": "Ajouter une visite d'un parc d'attraction",
             "image": {
