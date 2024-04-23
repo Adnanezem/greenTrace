@@ -19,11 +19,11 @@ function isConnected() {
     console.log('elem login: ', loginNav)
     if(sessionStorage.getItem("jwt") === null) {
         profilNav.style.display = 'none';
-        logout.style.display = 'none';
+        logoutNav.style.display = 'none';
         loginNav.style.display = 'flex';
     } else { // on est connecté
         profilNav.style.display = 'flex';
-        logout.style.display = 'flex';
+        logoutNav.style.display = 'flex';
         loginNav.style.display = 'none';
     }
 }
