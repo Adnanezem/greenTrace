@@ -438,6 +438,33 @@ function saveCard(card) {
     localStorage.setItem('cardSelection', JSON.stringify(cardSelection));
 }
 
+//Function to make the "send" button work
+function sendForm() {
+    //get button of id "sendCards"
+    let sendButton = document.getElementById('sendCards');
+    //add event listener to the button
+    sendButton.addEventListener('click', function() {
+        //get the card list in the localStorage
+        let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
+        //check if the card list is empty
+        if (cardSelection.length === 0) {
+            alert('Please add at least one card');
+            return;
+        }
+        //display the card list
+        console.log(cardSelection);
+
+        //display a success message
+        let successMessage = document.createElement('div');
+        successMessage.textContent = 'Cartes envoyées avec succès';
+        document.body.appendChild(successMessage);
+        setTimeout(() => {
+            successMessage.remove();
+        }, 3000);
+
+    });
+}
+
 console.log('formulaire.js loaded');
 
 function sendForm(data) {
