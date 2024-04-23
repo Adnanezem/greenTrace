@@ -80,14 +80,23 @@ function generateFormFromJson(card) {
     // We append the form to the body
     document.body.appendChild(form);
 
+    // If user presses the "esc" key, we close the form, and remove the event listener
+    let closeForm = function(event) {
+        if (event.key === 'Escape') {
+            form.remove();
+            document.removeEventListener('keydown', closeForm);
+        }
+    }
+
     // We add an event listener to the form
     formElement.addEventListener('submit', function(event) {
+        event.preventDefault();
+
         //Check if the form is filled
         if (!check_form_filled(form)) {
             alert('Please fill all the fields');
             return;
         }
-        event.preventDefault();
 
         // check the type of the card
         console.log(card.type);
