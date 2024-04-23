@@ -312,15 +312,35 @@ function generateCardsFromJson() {
 
 // Function to load the saved cards from localStorage
 function loadSavedCards() {
+    // Show processing message
+    //toggleProcessingMessage(true);
+
+    // Load the "cardSelection" from localStorage
     let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
+    console.log('cardSelection:');
+    console.log(cardSelection);
+    console.log('----');
     cardSelection.forEach(card => {
+        // Create the cards using the data from the localStorage and generateCardDiv
+        /*let carddiv = generateCardDiv(card.name, card.description, 'images/transport.png', 'Transport', 'Modifier', function() {
+            console.log('Modifier button clicked');
+            // Open the form
+            generateFormFromJson(carddiv, true);
+        }
+        );
+        let cardListUser = document.getElementById('cardListUser');
+        cardListUser.appendChild(card);*/
+
+        let cardListUser = document.getElementById('cardListUser'); // Get the user's card list
+
+        // Clone the card and change the button text to "Modifier"
         let cardElement = document.createElement('div');
         cardElement.className = 'card';
 
         let div = document.createElement('div');
 
         let h3 = document.createElement('h3');
-        h3.textContent = card.name;
+        h3.textContent = card.category;
         div.appendChild(h3);
 
         let p = document.createElement('p');
@@ -339,7 +359,19 @@ function loadSavedCards() {
         cardElement.appendChild(div);
 
         cardListUser.appendChild(cardElement);
+
+        
+
     });
+
+    // Save the cardSelection to localStorage
+    localStorage.setItem('cardSelection', JSON.stringify(cardSelection));
+
+    // Display the card list
+    console.log(cardSelection);
+
+    // Hide processing message
+    //toggleProcessingMessage(false);
 }
 
 console.log('formulaire.js loaded');
@@ -395,7 +427,7 @@ function sendForm() {
         //send the card list to the server
         sendFormData(cardSelection);
 
-        
+
 
     });
 }
