@@ -1,3 +1,7 @@
+
+var COMPUTE_FORM_BACKEND_ENDPOINT = 'https://192.168.75.79/back_test/carbon/compute';
+
+
 // function to generate the field form from a json file
 function generateFormFromJson(card) {
     
@@ -225,6 +229,33 @@ function saveCard(card) {
 }
 
 console.log('formulaire.js loaded');
+
+function sendForm(data) {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Authorization", sessionStorage.getItem("jwt"));
+    fetch(COMPUTE_FORM_BACKEND_ENDPOINT, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(data),
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('Response: ', response);
+            return response.json();
+        } else {
+            console.log('Response: ', response);
+            // Hide processing message
+            toggleProcessingMessage(false);
+            //stay on the same page
+            throw new Error("Erreur lors de l\'envoie du formulaire.")
+        }
+    }).then(json =>  {
+        return json;
+    }).catch(err => {
+        serverError(err);
+    });
+}
 
 // Call the function to generate the cards
 generateCardsFromJson();
