@@ -1,3 +1,29 @@
+var COMPUTE_FORM_BACKEND_ENDPOINT = 'https://192.168.75.79/back_test/carbon/compute';
+
+function toggleProcessingMessage(show) {
+    let processingDiv = document.getElementById('processingMessage');
+    if (!processingDiv) {
+        processingDiv = document.createElement('div');
+        processingDiv.id = 'processingMessage';
+        processingDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+        processingDiv.style.color = 'white';
+        processingDiv.style.position = 'fixed';
+        processingDiv.style.top = '0';
+        processingDiv.style.left = '0';
+        processingDiv.style.width = '100%';
+        processingDiv.style.height = '100%';
+        processingDiv.style.zIndex = '1001';
+        processingDiv.style.display = 'flex';
+        processingDiv.style.justifyContent = 'center';
+        processingDiv.style.alignItems = 'center';
+        processingDiv.style.fontSize = '20px';
+        processingDiv.textContent = 'Processing your request...';
+        document.body.appendChild(processingDiv);
+    }
+    processingDiv.style.display = show ? 'flex' : 'none';
+}
+
+
 // function to generate the field form from a json file
 function generateFormFromJson(card, modify = false) {
 
@@ -296,33 +322,6 @@ function loadSavedCards() {
     });
 }
 
-//Function to make the "send" button work
-function sendForm() {
-    //get button of id "sendCards"
-    let sendButton = document.getElementById('sendCards');
-    //add event listener to the button
-    sendButton.addEventListener('click', function() {
-        //get the card list in the localStorage
-        let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
-        //check if the card list is empty
-        if (cardSelection.length === 0) {
-            alert('Please add at least one card');
-            return;
-        }
-        //display the card list
-        console.log(cardSelection);
-
-        //display a success message
-        let successMessage = document.createElement('div');
-        successMessage.textContent = 'Cartes envoyées avec succès';
-        document.body.appendChild(successMessage);
-        setTimeout(() => {
-            successMessage.remove();
-        }, 3000);
-
-    });
-}
-
 console.log('formulaire.js loaded');
 
 function sendFormData(data) {
@@ -349,6 +348,44 @@ function sendFormData(data) {
         return json;
     }).catch(err => {
         serverError(err);
+    });
+}
+
+//Function to make the "send" button work
+function sendForm() {
+    //get button of id "sendCards"
+    let sendButton = document.getElementById('sendCards');
+    //add event listener to the button
+    sendButton.addEventListener('click', function() {
+        //get the card list in the localStorage
+        let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
+        //check if the card list is empty
+        if (cardSelection.length === 0) {
+            alert('Please add at least one card');
+            return;
+        }
+        //display the card list
+        console.log(cardSelection);
+
+        // Show processing message
+        toggleProcessingMessage(true);
+
+        //send the card list to the server (sendFormData returns json data)
+        sendFormData(cardSelection).then(data => {
+            console.log(data);
+            // Hide processing message
+            toggleProcessingMessage(false);
+            //display a success message
+            let successMessage = document.createElement('div');
+            successMessage.textContent = 'Cartes envoyées avec succès';
+            document.body.appendChild(successMessage);
+            setTimeout(() => {
+                successMessage.remove();
+            }, 3000);
+        }).catch(err => {
+            serverError(err);
+        });
+
     });
 }
 
