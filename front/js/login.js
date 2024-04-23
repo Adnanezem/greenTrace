@@ -184,7 +184,6 @@ function logout() {
     fetch(LOGOUT_BACKEND_ENDPOINT, {
         method: 'POST',
         headers: headers,
-        body: JSON.stringify(data),
     }).then(response => {
         if (response.ok) {
             console.log('Response: ', response);
