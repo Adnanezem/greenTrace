@@ -4,6 +4,7 @@ var log_in = true;
 
 var CONTACT_BACKEND_ENDPOINT = 'https://192.168.75.79/back_test/contact';
 var LOGIN_BACKEND_ENDPOINT = 'https://192.168.75.79/back_test/users/login';
+var LOGOUT_BACKEND_ENDPOINT = 'https://192.168.75.79/back_test/users/logout';
 var SIGNUP_BACKEND_ENDPOINT = 'https://192.168.75.79/back_test/users/register';
 
 
@@ -21,10 +22,10 @@ function serverError(comment) {
     div.innerHTML = 'Erreur: ' + comment;
     document.body.appendChild(div);
 
-    setTimeout(function() {
+    setTimeout(function () {
         div.remove();
     }
-    , 5000);
+        , 5000);
 }
 
 function toggleProcessingMessage(show) {
@@ -62,7 +63,7 @@ function fillForm() {
 function buttonEventSetup() {
 
     // When "login-btn" submit input is clicked
-    document.getElementById('login-btn').addEventListener('click', function() {
+    document.getElementById('login-btn').addEventListener('click', function () {
         // Get username and password inputs
         var login = document.getElementById('si-username').value;
         var password = document.getElementById('si-password').value;
@@ -90,16 +91,27 @@ function buttonEventSetup() {
             },
             body: JSON.stringify(data),
         })
-        .then(response => {
-            if (response.ok) {
-                console.log('Response: ', response);
-                // Hide processing message
-                toggleProcessingMessage(false);
-                sessionStorage.setItem("jwt", response.headers.get("Authorization"));
-                // Redirect to the home page
-                window.location.href = './';
-            } else {
-                console.log('Response: ', response);
+            .then(response => {
+                if (response.ok) {
+                    console.log('Response: ', response);
+                    // Hide processing message
+                    toggleProcessingMessage(false);
+                    sessionStorage.setItem("jwt", response.headers.get("Authorization"));
+                    // Redirect to the home page
+                    window.location.href = './';
+                } else {
+                    console.log('Response: ', response);
+                    serverError('Impossible de se connecter');
+                    // Hide processing message
+                    toggleProcessingMessage(false);
+                    // Empty the password input
+                    document.getElementById('si-password').value = '';
+                    //stay on the same page
+                    return;
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
                 serverError('Impossible de se connecter');
                 // Hide processing message
                 toggleProcessingMessage(false);
@@ -107,22 +119,11 @@ function buttonEventSetup() {
                 document.getElementById('si-password').value = '';
                 //stay on the same page
                 return;
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            serverError('Impossible de se connecter');
-            // Hide processing message
-            toggleProcessingMessage(false);
-            // Empty the password input
-            document.getElementById('si-password').value = '';
-            //stay on the same page
-            return;
-        });
+            });
     });
 
     // When "signup-btn" submit input is clicked
-    document.getElementById('signup-btn').addEventListener('click', function() {
+    document.getElementById('signup-btn').addEventListener('click', function () {
         var login = document.getElementById('su-login').value;
         var fname = document.getElementById('su-username').value;
         var lname = document.getElementById('su-userlastname').value;
@@ -153,26 +154,53 @@ function buttonEventSetup() {
             },
             body: JSON.stringify(data),
         })
-        .then(response => {
-            if (response.ok) {
-                console.log('Response: ', response);
-                // Hide processing message
-                toggleProcessingMessage(false);
-                // Redirect to the home page
-                window.location.href = './';
-            } else {
-                console.log('Response: ', response);
+            .then(response => {
+                if (response.ok) {
+                    console.log('Response: ', response);
+                    // Hide processing message
+                    toggleProcessingMessage(false);
+                    // Redirect to the home page
+                    window.location.href = './';
+                } else {
+                    console.log('Response: ', response);
+                    serverError('Impossible de s\'inscrire');
+                    toggleProcessingMessage(false);
+                    document.getElementById('su-password').value = '';
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
                 serverError('Impossible de s\'inscrire');
                 toggleProcessingMessage(false);
                 document.getElementById('su-password').value = '';
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            serverError('Impossible de s\'inscrire');
+            });
+    });
+}
+
+function logout() {
+    const data = {
+        "login": localStorage.getItem("localData").login
+    };
+    const headers = new Headers();
+    headers.append("Authorization", sessionStorage.getItem("jwt"));
+    fetch(LOGOUT_BACKEND_ENDPOINT, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(data),
+    }).then(response => {
+        if (response.ok) {
+            console.log('Response: ', response);
+            sessionStorage.clear();
+            window.location.href = './';
+        } else {
+            console.log('Response: ', response);
+            // Hide processing message
             toggleProcessingMessage(false);
-            document.getElementById('su-password').value = '';
-        });
+            //stay on the same page
+            throw new Error("Erreur lors de la déconnexion.")
+        }
+    }).catch(err => {
+        serverError(err);
     });
 }
 
