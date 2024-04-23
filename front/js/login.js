@@ -178,11 +178,9 @@ function buttonEventSetup() {
 }
 
 function logout() {
-    const data = {
-        "login": JSON.parse(localStorage.getItem("loginData")).login
-    };
     const headers = new Headers();
     headers.append("Authorization", sessionStorage.getItem("jwt"));
+    headers.append("U-Login", JSON.parse(localStorage.getItem("loginData")).login)
     fetch(LOGOUT_BACKEND_ENDPOINT, {
         method: 'POST',
         headers: headers,
