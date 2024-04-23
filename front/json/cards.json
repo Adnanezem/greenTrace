@@ -21,7 +21,7 @@
                     "options": ["town", "sport", "highway"]
                 },
                 {
-                    "name": "car type",
+                    "name": "vehicle type",
                     "type": "scrolllist",
                     "options": ["sedan", "SUV", "break", "compact"]
                 },
@@ -40,7 +40,19 @@
             "image": {
                 "icon": "../images/bike_icon.png",
                 "alt": "bike"
-            }
+            },
+            "fields": [
+                {
+                    "name": "distance traveled",
+                    "type": "number input",
+                    "unit": "km"
+                },
+                {
+                    "name": "vehicle type",
+                    "type": "scrolllist",
+                    "options": ["city", "mountain", "road", "electric"]
+                }
+            ]
         },
         {
             "id": 3,
@@ -50,7 +62,24 @@
             "image": {
                 "icon": "../images/bus_icon.png",
                 "alt": "bus"
-            }
+            },
+            "fields": [
+                {
+                    "name": "distance traveled",
+                    "type": "number input",
+                    "unit": "km"
+                },
+                {
+                    "name": "vehicle type",
+                    "type": "scrolllist",
+                    "options": ["city", "intercity", "school", "tourism"]
+                },
+                {
+                    "name": "fuel type",
+                    "type": "scrolllist",
+                    "options": ["diesel", "electric"]
+                }
+            ]
         },
         {
             "id": 4,
@@ -60,7 +89,24 @@
             "image": {
                 "icon": "../images/plane_icon.png",
                 "alt": "plane"
-            }
+            },
+            "fields": [
+                {
+                    "name": "distance traveled",
+                    "type": "number input",
+                    "unit": "km"
+                },
+                {
+                    "name": "flight class",
+                    "type": "scrolllist",
+                    "options": ["economy", "business", "first"]
+                },
+                {
+                    "name": "vehicle type",
+                    "type": "scrolllist",
+                    "options": ["short haul", "medium haul", "long haul"]
+                }
+            ]
         }
     ],
     "repas": [
