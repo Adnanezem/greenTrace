@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil - Green Trace</title>
+    <link rel="stylesheet" href="../css/profil.css">
+    <link rel="icon" type="image/png" href="../images/logoicon.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body class="accueil">
+    <header>
+        <a class="logo" href="./"><img src="./images/logo.png"></a>
+        <nav>
+            <div class="nav-links">
+                <ul>
+                    <li class="nav-items"><a href="index.html?page=accueil" class="active">Home</a></li>
+                    <li class="nav-items"><a href="index.html?page=formulaire">Start</a></li>
+                    <li class="nav-items"><a href="index.html?page=contact">Contact</a></li>
+                    <li class="nav-items"><a href="index.html?page=login">Login</a></li>
+                </ul>
+            </div>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="bilanCO2" class="card">
+            <h2>Votre Bilan CO2</h2>
+            <div id="bilanCO2Result" class="result">
+                <!-- Les résultats du bilan CO2 seront affichés ici après le calcul -->
+            </div>
+        </section>        
+
+        <section id="comparaisonMoyenne" class="card">
+            <h2>Comparaison avec la moyenne</h2>
+            <canvas id="comparaisonChart"></canvas> 
+        </section>
+        
+        <section id="historiqueBilans" class="card">
+            <h2>Historique des Bilans</h2>
+            <ul id="listeHistorique" class="timeline">
+                <!-- L'historique des bilans sera affiché ici -->
+            </ul>
+        </section>
+        
+    </main>
+    
+    <footer>
+        
+    </footer>
+
+    <script src="../js/hamburger.js"></script>
+</body>
+</html>
