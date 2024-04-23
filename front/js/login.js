@@ -179,7 +179,7 @@ function buttonEventSetup() {
 
 function logout() {
     const data = {
-        "login": JSON.parse(localStorage.getItem("localData")).login
+        "login": JSON.parse(localStorage.getItem("loginData")).login
     };
     const headers = new Headers();
     headers.append("Authorization", sessionStorage.getItem("jwt"));
