@@ -23,7 +23,7 @@ variables:
 
 deploy-front-test:
   stage: deploy
-  image: alpine
+  image: maven:3.8.5-openjdk-17
   only:
     refs:
       - test
@@ -54,7 +54,7 @@ deploy-back-test:
 
 deploy-front-prod:
   stage: deploy
-  image: alpine
+  image: maven:3.8.5-openjdk-17
   only:
     refs:
       - main

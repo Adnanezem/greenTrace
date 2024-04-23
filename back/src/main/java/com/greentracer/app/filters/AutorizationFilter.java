@@ -60,10 +60,10 @@ public class AutorizationFilter implements Filter {
                 response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden\nAccessing profile of other user.");
                 return; 
             } else {
-                response.sendError(HttpServletResponse.SC_ACCEPTED, "Success");
+                chain.doFilter(request, response);
                 return;
             }
         }
-        response.sendError(HttpServletResponse.SC_NO_CONTENT, "Nothing happened");
+        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while parsing url");
     }
 }

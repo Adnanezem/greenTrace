@@ -2,6 +2,7 @@
     "transport": [
         {
             "id": 1,
+            "category": "transport",
             "name": "Trajet en voiture",
             "description": "Ajouter un trajet en voiture",
             "image": {
@@ -20,7 +21,7 @@
                     "options": ["town", "sport", "highway"]
                 },
                 {
-                    "name": "car type",
+                    "name": "vehicle type",
                     "type": "scrolllist",
                     "options": ["sedan", "SUV", "break", "compact"]
                 },
@@ -33,35 +34,85 @@
         },
         {
             "id": 2,
+            "category": "transport",
             "name": "Trajet en vélo",
             "description": "Ajouter un trajet en vélo",
             "image": {
                 "icon": "../images/bike_icon.png",
                 "alt": "bike"
-            }
+            },
+            "fields": [
+                {
+                    "name": "distance traveled",
+                    "type": "number input",
+                    "unit": "km"
+                },
+                {
+                    "name": "vehicle type",
+                    "type": "scrolllist",
+                    "options": ["city", "mountain", "road", "electric"]
+                }
+            ]
         },
         {
             "id": 3,
+            "category": "transport",
             "name": "Trajet en bus",
             "description": "Ajouter un trajet en bus",
             "image": {
                 "icon": "../images/bus_icon.png",
                 "alt": "bus"
-            }
+            },
+            "fields": [
+                {
+                    "name": "distance traveled",
+                    "type": "number input",
+                    "unit": "km"
+                },
+                {
+                    "name": "vehicle type",
+                    "type": "scrolllist",
+                    "options": ["city", "intercity", "school", "tourism"]
+                },
+                {
+                    "name": "fuel type",
+                    "type": "scrolllist",
+                    "options": ["diesel", "electric"]
+                }
+            ]
         },
         {
             "id": 4,
+            "category": "transport",
             "name": "Trajet en avion",
             "description": "Ajouter un trajet en avion",
             "image": {
                 "icon": "../images/plane_icon.png",
                 "alt": "plane"
-            }
+            },
+            "fields": [
+                {
+                    "name": "distance traveled",
+                    "type": "number input",
+                    "unit": "km"
+                },
+                {
+                    "name": "flight class",
+                    "type": "scrolllist",
+                    "options": ["economy", "business", "first"]
+                },
+                {
+                    "name": "vehicle type",
+                    "type": "scrolllist",
+                    "options": ["short haul", "medium haul", "long haul"]
+                }
+            ]
         }
     ],
     "repas": [
         {
             "id": 5,
+            "category": "repas",
             "name": "Repas au restaurant",
             "description": "Ajouter un repas au restaurant",
             "image": {
@@ -71,6 +122,7 @@
         },
         {
             "id": 6,
+            "category": "repas",
             "name": "Repas à la maison",
             "description": "Ajouter un repas à la maison",
             "image": {
@@ -80,6 +132,7 @@
         },
         {
             "id": 7,
+            "category": "repas",
             "name": "Repas à emporter",
             "description": "Ajouter un repas à emporter",
             "image": {
@@ -91,6 +144,7 @@
     "loisirs": [
         {
             "id": 8,
+            "category": "loisirs",
             "name": "Visite d'un musée",
             "description": "Ajouter une visite d'un musée",
             "image": {
@@ -100,6 +154,7 @@
         },
         {
             "id": 9,
+            "category": "loisirs",
             "name": "Visite d'un parc",
             "description": "Ajouter une visite d'un parc",
             "image": {
@@ -109,6 +164,7 @@
         },
         {
             "id": 10,
+            "category": "loisirs",
             "name": "Visite d'un zoo",
             "description": "Ajouter une visite d'un zoo",
             "image": {
@@ -118,6 +174,7 @@
         },
         {
             "id": 11,
+            "category": "loisirs",
             "name": "Visite d'un aquarium",
             "description": "Ajouter une visite d'un aquarium",
             "image": {
@@ -127,6 +184,7 @@
         },
         {
             "id": 12,
+            "category": "loisirs",
             "name": "Visite d'un parc d'attraction",
             "description": "Ajouter une visite d'un parc d'attraction",
             "image": {
