@@ -1,26 +1,5 @@
 // function to generate the field form from a json file
 function generateFormFromJson(card) {
-    /*"fields": [
-        {
-            "name": "distance traveled",
-            "type": "number input",
-            "unit": "km"
-        },
-        {
-            "name": "drive mode",
-            "type": "radio",
-            "options": ["town", "sport", "highway"]
-        },
-        {
-            "name": "car type",
-            "type": "radio",
-            "options": ["sedan", "SUV", "break", "compact"]
-        },
-        {
-            "name": "departure time",
-            "type": "time"
-        }
-    ]*/
     
     // We create a floating div to contain the form
     let form = document.createElement('div');
@@ -103,7 +82,15 @@ function generateFormFromJson(card) {
 
     // We add an event listener to the form
     formElement.addEventListener('submit', function(event) {
+        //Check if the form is filled
+        if (!check_form_filled(form)) {
+            alert('Please fill all the fields');
+            return;
+        }
         event.preventDefault();
+
+        // check the type of the card
+        console.log(card.type);
         let data = {};
         card.fields.forEach(field => {
             data[field.name] = formElement.querySelector('[name="' + field.name + '"]').value;
@@ -129,7 +116,19 @@ function generateFormFromJson(card) {
     });
 }
 
+// Function to check if the form is filled
+function check_form_filled(form) {
+    let fields = form.querySelectorAll('input');
+    let filled = true;
+    fields.forEach(field => {
+        if (field.value === '') {
+            filled = false;
+        }
+    });
+    return filled;
+}
 
+// Function to generate the cards from a json file
 function generateCardsFromJson() {
     fetch('../json/cards.json')
         .then(response => response.json())
@@ -166,7 +165,15 @@ function generateCardsFromJson() {
                         // Clone the card and change the button text
                         let clonedCard = card.cloneNode(true); // Clone the card
                         clonedCard.querySelector('button').textContent = 'Modifier'; // Change the button text in the cloned card
+                        
+                        let closeBut = document.createElement('button')
+                        closeBut.textContent = 'Retirer'
+                        clonedCard.appendChild(closeBut)
+
+
                         cardListUser.appendChild(clonedCard); // Append the cloned card to the user's card list
+
+
                     });
                     div.appendChild(button);
 
@@ -176,6 +183,45 @@ function generateCardsFromJson() {
                 });
             });
         });
+}
+
+// Function to load the saved cards from localStorage
+function loadSavedCards() {
+    let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
+    cardSelection.forEach(card => {
+        let cardElement = document.createElement('div');
+        cardElement.className = 'card';
+
+        let div = document.createElement('div');
+
+        let h3 = document.createElement('h3');
+        h3.textContent = card.name;
+        div.appendChild(h3);
+
+        let p = document.createElement('p');
+        p.textContent = card.description;
+        div.appendChild(p);
+
+        let button = document.createElement('button');
+        button.textContent = 'Modifier';
+        button.addEventListener('click', function() {
+            console.log('Modifier button clicked');
+            // Open the form
+            generateFormFromJson(card);
+        });
+        div.appendChild(button);
+
+        cardElement.appendChild(div);
+
+        cardListUser.appendChild(cardElement);
+    });
+}
+
+// Function to save a card to localStorage
+function saveCard(card) {
+    let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
+    cardSelection.push(card);
+    localStorage.setItem('cardSelection', JSON.stringify(cardSelection));
 }
 
 console.log('formulaire.js loaded');
