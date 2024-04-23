@@ -4,6 +4,7 @@ function loadPage() {
     $(document).ready(function() {
 
         var page = window.location.search.substring(1).split('=')[1] || 'accueil';
+        isConnected();
         $('#content').load(`../html/${page}.html`);
     });
 }
