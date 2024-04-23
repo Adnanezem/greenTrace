@@ -10,6 +10,7 @@ function loadPage() {
 }
 
 function isConnected() {
+    console.log(document)
     const profilNav = document.querySelector('#profilNav')
     const loginNav = document.querySelector('#loginNav')
     if(sessionStorage.getItem("jwt") === null) {
