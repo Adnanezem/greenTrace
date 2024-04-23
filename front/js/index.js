@@ -13,11 +13,11 @@ function isConnected() {
     const profilNav = document.querySelector('#profilNav')
     const loginNav = document.querySelector('#loginNav')
     if(sessionStorage.getItem("jwt") === null) {
-        profilNav.display = 'none';
-        loginNav.display = 'flex';
+        profilNav.style.display = 'none';
+        loginNav.style.display = 'flex';
     } else { // on est connecté
-        profilNav.display = 'flex';
-        loginNav.hidden = 'none';
+        profilNav.style.display = 'flex';
+        loginNav.style.display = 'none';
     }
 }
 
