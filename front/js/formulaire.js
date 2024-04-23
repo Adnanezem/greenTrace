@@ -465,3 +465,9 @@ console.log('formulaire.js loaded');
 
 // Call the function to generate the cards
 generateCardsFromJson();
+
+// Call the function to load the saved cards
+loadSavedCards();
+
+// Call the function to make the "send" button work
+sendForm();
