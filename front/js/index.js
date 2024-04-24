@@ -14,8 +14,6 @@ function isConnected() {
     console.log(document)
     const profilNav = document.querySelector('#profilNav')
     const loginNav = document.querySelector('#loginNav')
-    console.log('elem profil: ', profilNav)
-    console.log('elem login: ', loginNav)
     if(sessionStorage.getItem("jwt") === null) {
         profilNav.style.display = 'none';
         loginNav.style.display = 'flex';
