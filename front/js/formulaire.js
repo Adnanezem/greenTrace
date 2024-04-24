@@ -404,6 +404,7 @@ function sendFormData(formData) {
             throw new Error("Erreur lors de l\'envoie du formulaire.")
         }
     }).then(json =>  {
+        toggleProcessingMessage(false);
         console.log(json);
         return json;
     }).catch(err => {
