@@ -376,13 +376,16 @@ function loadSavedCards() {
 
 console.log('formulaire.js loaded');
 
-function sendFormData(data) {
+function sendFormData(formData) {
     console.log('sendFormData:');
+    data = {
+        "form" : formData,
+        "login" : sessionStorage.getItem("U-Login"),
+    }
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", sessionStorage.getItem("jwt"));
     headers.append("U-Login", sessionStorage.getItem("U-Login"));
-    data["login"] = sessionStorage.getItem("U-Login");
     console.log('data', data);
     fetch(COMPUTE_FORM_BACKEND_ENDPOINT, {
         method: 'POST',
@@ -429,9 +432,6 @@ function sendForm() {
 
         //send the card list to the server
         sendFormData(cardSelection);
-
-
-
     });
 }
 
