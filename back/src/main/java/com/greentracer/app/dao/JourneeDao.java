@@ -25,11 +25,11 @@ public class JourneeDao implements Dao<String, Journee> {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private final String findRequest = "SELECT * FROM Journee j INNER JOIN user u ON j.id_patient = u.login WHERE u.login = ?";
-    private final String findByDateRequest = "SELECT * FROM Journee j INNER JOIN user u ON j.id_patient = u.login WHERE u.login = ? AND j.date = ?";
-    private final String deleteRequest = "DELETE FROM Journee j INNER JOIN user u ON j.id_patient = u.login WHERE u.login = ?";
-    private final String updateRequest = "UPDATE Journee j INNER JOIN user u ON j.id_patient = u.login SET j.date = ?, j.resultat = ? ";
-    private final String insertRequest = "INSERT INTO Journee( id_patient, date, resultat) VALUES (?, ?, ?)";
+    private final String findRequest = "SELECT * FROM journee j INNER JOIN user u ON j.idP = u.login WHERE u.login = ?";
+    private final String findByDateRequest = "SELECT * FROM journee j INNER JOIN user u ON j.idP = u.login WHERE u.login = ? AND j.date = ?";
+    private final String deleteRequest = "DELETE FROM journee j INNER JOIN user u ON j.idP = u.login WHERE u.login = ?";
+    private final String updateRequest = "UPDATE journee j INNER JOIN user u ON j.idP = u.login SET j.Date = ?, j.resultat = ? ";
+    private final String insertRequest = "INSERT INTO journee( idP, Date, resultat) VALUES (?, ?, ?)";
     private final String findAllRequest = "select * from journee";
 
     @Autowired
