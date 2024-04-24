@@ -378,7 +378,7 @@ console.log('formulaire.js loaded');
 
 function sendFormData(formData) {
     console.log('sendFormData:');
-    data = {
+    const data = {
         "form" : formData,
         "login" : sessionStorage.getItem("U-Login"),
     }
