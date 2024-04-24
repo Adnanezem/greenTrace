@@ -79,6 +79,7 @@ function buttonEventSetup() {
         console.log('Data: ', data);
         // Store data in local storage
         localStorage.setItem('loginData', JSON.stringify(data))
+        sessionStorage.setItem('U-Login', data.login);
 
         // Show processing message
         toggleProcessingMessage(true);
@@ -180,7 +181,7 @@ function buttonEventSetup() {
 function logout() {
     const headers = new Headers();
     headers.append("Authorization", sessionStorage.getItem("jwt"));
-    headers.append("U-Login", JSON.parse(localStorage.getItem("loginData")).login)
+    headers.append("U-Login", sessionStorage.getItem("U-Login"))
     fetch(LOGOUT_BACKEND_ENDPOINT, {
         method: 'POST',
         headers: headers,
