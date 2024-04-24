@@ -382,6 +382,7 @@ function sendFormData(data) {
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", sessionStorage.getItem("jwt"));
     headers.append("U-Login", sessionStorage.getItem("U-Login"));
+    console.log('data', data);
     fetch(COMPUTE_FORM_BACKEND_ENDPOINT, {
         method: 'POST',
         headers: headers,
