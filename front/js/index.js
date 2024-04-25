@@ -20,9 +20,17 @@ function isConnected() {
     if(sessionStorage.getItem("jwt") === null) {
         profilNav.style.display = 'none';
         loginNav.style.display = 'flex';
+        profilNav.style.position = 'absolute'; 
+        profilNav.style.height = '0'; 
+        loginNav.style.visibility = 'visible';
+        loginNav.style.position = 'static';
     } else { // on est connecté
         profilNav.style.display = 'flex';
         loginNav.style.display = 'none';
+        profilNav.style.visibility = 'visible';
+        profilNav.style.position = 'static';
+        profilNav.style.height = 'auto';
+        loginNav.style.visibility = 'hidden';
     }
 }
 
