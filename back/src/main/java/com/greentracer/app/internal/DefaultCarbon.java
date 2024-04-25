@@ -66,7 +66,6 @@ public class DefaultCarbon {
             JourneeResponse resp = new JourneeResponse("journée resp", 201, newJ);
             res.put(true, resp);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
             res.put(false, new ErrorResponse("Error in compute", 400));
         }
         return res;
@@ -100,7 +99,6 @@ public class DefaultCarbon {
             return res;
         } catch (ParseException e) {
             res.put(false, new ErrorResponse("error", 400));
-            e.printStackTrace();
             return res;
         }
     }

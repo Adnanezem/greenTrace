@@ -34,7 +34,6 @@ public class DefaultGreenTracer {
             System.out.println(t.content());
             return t;
         } catch (SQLException e) {
-            e.printStackTrace();
             TestRecord t = new TestRecord("Hello " + login + " !");
             System.out.println(t.content());
             return new TestRecord("Hello " + login + " !");
