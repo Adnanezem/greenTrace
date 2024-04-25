@@ -144,6 +144,24 @@ h2 {
   left: -6px;
   top: 0;
 }
+.card{
+  text-align: center;
+}
+#logoutBtn {
+  padding: 10px 20px;
+  font-size: 16px; 
+  border-radius: 5px;
+  border-color: #2a9d62;
+  background-color: #3CB371; 
+  color: white;
+  cursor: pointer; 
+  transition: background-color 0.3s ease;
+  align-items: center; 
+}
+
+#logoutBtn:hover {
+  background-color: #2a9d62; 
+}
 
   
   /*RESPONSIVE BAR*/
