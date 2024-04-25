@@ -105,6 +105,10 @@
                     "name": "vehicle type",
                     "type": "scrolllist",
                     "options": ["short haul", "medium haul", "long haul"]
+                },
+                {
+                    "name": "airplane color",
+                    "type": "color input"
                 }
             ]
         }

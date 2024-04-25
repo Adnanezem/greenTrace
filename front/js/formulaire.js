@@ -43,6 +43,26 @@ function serverError(comment) {
     , 5000);
 }
 
+function serverSuccess(comment) {
+    var div = document.createElement('div');
+    div.style.backgroundColor = 'green';
+    div.style.color = 'white';
+    div.style.position = 'fixed';
+    div.style.top = '0';
+    div.style.left = '0';
+    div.style.width = '100%';
+    div.style.zIndex = '1000';
+    div.style.padding = '10px';
+    div.style.textAlign = 'center';
+    div.innerHTML = 'Success: ' + comment;
+    document.body.appendChild(div);
+
+    setTimeout(function() {
+        div.remove();
+    }
+    , 5000);
+}
+
 
 // function to generate the field form from a json file
 function generateFormFromJson(card, modify = false) {
@@ -141,6 +161,22 @@ function generateFormFromJson(card, modify = false) {
 
                 fieldDiv.appendChild(time_input);
                 break;
+            case 'color input':
+                // We create an input element
+                let color_input = document.createElement('input');
+                color_input.type = 'color';
+                color_input.name = field.name;
+
+                if (modify) {
+                    let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
+                    let cardIndex = cardSelection.length - 1;
+                    if (cardSelection[cardIndex][field.name]) {
+                        color_input.value = cardSelection[cardIndex][field.name];
+                    }
+                }
+
+                fieldDiv.appendChild(color_input);
+                break;
             default:
                 console.error('Unknown field type: ' + field.type);
                 break;
@@ -178,7 +214,6 @@ function generateFormFromJson(card, modify = false) {
 
         //Check if the form is filled
         if (!check_form_filled(form)) {
-            alert('Please fill all the fields');
             return;
         }
 
@@ -247,13 +282,29 @@ function generateFormFromJson(card, modify = false) {
 // Function to check if the form is filled
 function check_form_filled(form) {
     let fields = form.querySelectorAll('input');
-    let filled = true;
+    let pass = true;
     fields.forEach(field => {
         if (field.value === '') {
-            filled = false;
+            pass = false;
+            alert('Please fill in all the fields');
         }
     });
-    return filled;
+
+    //check if the distances are rational in the case of "distance traveled"
+    let distance = form.querySelector('[name="distance traveled"]');
+    if (distance) {
+        if (distance.value < 1) {
+            pass = false;
+            alert('Please enter a positive distance');
+        }
+        //limit to 100000 km
+        if (distance.value > 100000) {
+            pass = false;
+            alert('Please enter a distance less than 100000 km');
+        }
+    }
+
+    return pass;
 }
 
 //function to generate the card's div
@@ -395,6 +446,10 @@ function sendFormData(formData) {
     .then(response => {
         if (response.ok) {
             console.log('Response: ', response);
+            //success message
+            serverSuccess('Carbon footprint calculated successfully');
+            // Hide processing message
+            toggleProcessingMessage(false);
             return response.json();
         } else {
             console.log('Response: ', response);
@@ -408,6 +463,7 @@ function sendFormData(formData) {
         console.log(json);
         return json;
     }).catch(err => {
+
         serverError(err);
     });
 }
@@ -433,6 +489,33 @@ function sendForm() {
 
         //send the card list to the server
         sendFormData(cardSelection);
+
+        // Clear the card list
+        localStorage.setItem('cardSelection', JSON.stringify([]));
+
+        // Clear the card list in the DOM (but keep the title) by moving the cards away
+        let cardListUser = document.getElementById('cardListUser');
+        let cards = cardListUser.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.style.transition = 'transform 5s ease';
+            card.style.transform = 'translateY(-1000%)';
+        });
+        // Delete the cards after a delay
+        setTimeout(() => {
+            cards.forEach(card => {
+                card.remove();
+            });
+        }, 5000);
+
+        // Hide processing message
+        //toggleProcessingMessage(false);
+
+        // Display a success message
+        //serverSuccess('Carbon footprint calculated successfully');
+
+        // Redirect to the home page
+        //window.location.href = './';
+
     });
 }
 
