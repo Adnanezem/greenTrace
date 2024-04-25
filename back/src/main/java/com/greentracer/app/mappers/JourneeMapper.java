@@ -16,8 +16,8 @@ public class JourneeMapper implements RowMapper<Journee> {
     @Override
     public Journee mapRow(ResultSet rs, int rowNum) throws SQLException {
         Journee j = new Journee();
-        j.setid(rs.getInt("id_journee"));
-        j.setpatientId(rs.getString("id_patient"));
+        j.setid(rs.getInt("idJournee"));
+        j.setpatientId(rs.getString("idP"));
         j.setdate(rs.getDate("Date"));
         j.setresultat(rs.getFloat("resultat"));
 

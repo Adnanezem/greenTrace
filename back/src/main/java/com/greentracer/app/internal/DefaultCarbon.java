@@ -41,11 +41,27 @@ public class DefaultCarbon {
         ObjectMapper mapper = new ObjectMapper();
         try {
             JsonNode json = mapper.readTree(body);
-            // TODO definir comment lire le json (quel clef etc)...
+            JsonNode form = json.get("form");
+            float resultat = 0;
+            if(form.isArray()) {
+                for(JsonNode node : form) {
+                    String category = JSONUtils.getStringField(node, "category");
+                    switch (category) {
+                        case "transport":
+                            String fuel = JSONUtils.getStringField(node, "fuel type");
+                            String distance = JSONUtils.getStringField(node, "distance traveled");
+                            if(!fuel.isBlank()) { //  TODO: À CHANGER
+                                resultat += 3.3 * Integer.parseInt(distance);
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
             String login = JSONUtils.getStringField(json, "login");
             Date currentDate = new Date(System.currentTimeMillis());
-            float resultat = 0; // TODO : calcul à faire
-            Journee newJ = new Journee(0, login, currentDate, 0);
+            Journee newJ = new Journee(0, login, currentDate, resultat);
             journeeDao.create(newJ);
             JourneeResponse resp = new JourneeResponse("journée resp", 201, newJ);
             res.put(true, resp);

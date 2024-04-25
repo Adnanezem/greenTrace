@@ -44,7 +44,7 @@ class DefaultCarbonTest {
     @Test
     void defaultCompute_validInput_returnsTrue() throws Exception {
         // Arrange
-        String jsonBody = "{\"login\":\"testUser\"}";
+        String jsonBody = "{\"login\":\"testUser\", \"form\":[]}";
         Journee journee = new Journee(0, "testUser", new Date(System.currentTimeMillis()), 0);
         when(journeeDaoMock.create(Mockito.any(Journee.class))).thenReturn(true);
 

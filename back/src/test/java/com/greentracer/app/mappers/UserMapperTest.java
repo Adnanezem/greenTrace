@@ -26,9 +26,9 @@ public class UserMapperTest {
     public void mapRow_validResultSet_returnsUser() throws SQLException {
         // Arrange
         when(resultSetMock.getString("login")).thenReturn("testLogin");
-        when(resultSetMock.getString("Nom")).thenReturn("testFname");
-        when(resultSetMock.getString("Prenom")).thenReturn("testLname");
-        when(resultSetMock.getString("MDPS")).thenReturn("testPassword");
+        when(resultSetMock.getString("nom")).thenReturn("testFname");
+        when(resultSetMock.getString("prenom")).thenReturn("testLname");
+        when(resultSetMock.getString("mdps")).thenReturn("testPassword");
 
         // Act
         User result = userMapper.mapRow(resultSetMock, 1);
