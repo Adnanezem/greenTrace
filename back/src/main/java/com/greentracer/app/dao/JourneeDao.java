@@ -25,12 +25,12 @@ public class JourneeDao implements Dao<String, Journee> {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private final String findRequest = "SELECT * FROM journee j INNER JOIN user u ON j.\"idP\" = u.login WHERE u.login = ?";
-    private final String findByDateRequest = "SELECT * FROM journee j INNER JOIN user u ON j.\"idP\" = u.login WHERE u.login = ? AND j.\"Date\" = ?";
-    private final String deleteRequest = "DELETE FROM journee j INNER JOIN user u ON j.\"idP\" = u.login WHERE u.login = ?";
-    private final String updateRequest = "UPDATE journee j INNER JOIN user u ON j.\"idP\" = u.login SET j.\"Date\" = ?, j.resultat = ? ";
-    private final String insertRequest = "INSERT INTO journee( \"idP\", \"Date\", resultat) VALUES (?, ?, ?)";
-    private final String findAllRequest = "select * from journee";
+    private final String findRequest = "SELECT * FROM public.journee INNER JOIN public.user  ON \"idP\" = login WHERE login = ?";
+    private final String findByDateRequest = "SELECT * FROM public.journee INNER JOIN public.user ON \"idP\" = login WHERE u.login = ? AND j.\"Date\" = ?";
+    private final String deleteRequest = "DELETE FROM public.journee INNER JOIN public.\"user\" ON \"idP\" = login WHERE u.login = ?";
+    private final String updateRequest = "UPDATE public.journee j INNER JOIN public.user ON \"idP\" = login SET \"Date\" = ?, j.resultat = ? ";
+    private final String insertRequest = "INSERT INTO public.journee( \"idP\", \"Date\", resultat) VALUES (?, ?, ?)";
+    private final String findAllRequest = "select * from public.journee";
 
     @Autowired
     public JourneeDao(DataSource dataSource) {

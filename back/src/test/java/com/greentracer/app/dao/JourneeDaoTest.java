@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 public class JourneeDaoTest {
 
-    private Journee journee;
+   /*private Journee journee;
 
     @Autowired
     private UserDao userDao;
@@ -25,7 +25,7 @@ public class JourneeDaoTest {
     @Autowired
     private JourneeDao journeeDao;
 
-    /*@BeforeEach
+    @BeforeEach
     public void setUp() {
         User user = new User();
         user.setLogin("test");
@@ -43,7 +43,8 @@ public class JourneeDaoTest {
 
     @AfterEach // a remmetre quand la requete sera correcte (DELETE)
     public void tearDown() {
-        journeeDao.delete(journee);
+        //journeeDao.delete(journee);
+        userDao.delete(userDao.getById("test"));
     }
 
 
