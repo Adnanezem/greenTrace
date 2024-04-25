@@ -45,7 +45,10 @@ public class AutorizationFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        if(request.getAttribute("user") == null) {
+        String user = request.getHeader("U-login");
+
+        //Accessing a place where we don't need to be connected
+        if(user.equals(null)){
             chain.doFilter(request, response);
             return;
         }
@@ -56,13 +59,30 @@ public class AutorizationFilter implements Filter {
     
 
         if (Stream.of(RESOURCES_WITH_LIMITATIONS).anyMatch(pattern -> UrlUtils.matchRequest(request, pattern))) {
-            if(url[0].equals("users")  && !url[1].equals(jwtHelper.getUsernameFromToken(token))) {
-                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden\nAccessing profile of other user.");
-                return; 
-            } else {
-                chain.doFilter(request, response);
-                return;
+            switch (url[0]) {
+                case "users" -> {
+                    if(url[1].equals(user)) {
+                        chain.doFilter(request, response);
+                        return;
+                    } else {
+                        response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden\nAccessing profile of other user.");
+                        return;
+                    }
+                }
+
+                case "carbon" -> {
+                    if(url[1].equals(user)) {
+                        chain.doFilter(request, response);
+                        return;
+                    } else {
+                        response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden\nAccessing profile of other user.");
+                        return;
+                    }
+                }
             }
+        } else {
+            chain.doFilter(request, response);
+            return;
         }
         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while parsing url");
     }
