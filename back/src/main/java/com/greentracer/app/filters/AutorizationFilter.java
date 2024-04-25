@@ -45,19 +45,18 @@ public class AutorizationFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        String user = request.getHeader("U-login");
+        String user = request.getHeader("U-Login");
 
         //Accessing a place where we don't need to be connected
-        if(user.equals(null)){
+        if(user == null){
             chain.doFilter(request, response);
             return;
         }
 
 
-        String token = request.getHeader("Authorization").split(" ")[1];
         String[] url = UrlUtils.getUrlParts((HttpServletRequest) request);
     
-
+        //Dans les faits, on doit tester la même chose, en théorie, c'est peu probable
         if (Stream.of(RESOURCES_WITH_LIMITATIONS).anyMatch(pattern -> UrlUtils.matchRequest(request, pattern))) {
             switch (url[0]) {
                 case "users" -> {
@@ -78,6 +77,9 @@ public class AutorizationFilter implements Filter {
                         response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden\nAccessing profile of other user.");
                         return;
                     }
+                }
+                default -> {
+                    break;
                 }
             }
         } else {

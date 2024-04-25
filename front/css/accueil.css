@@ -57,6 +57,10 @@ nav {
 .nav-links ul{
   margin: 0;
   padding: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 .nav-links ul li{
   list-style: none;
@@ -77,14 +81,6 @@ nav {
 .nav-links a.active{
   color: #3CB371 ;
   font-weight: bold;
-}
-.btn-donate{
-  padding: 7px 10px;
-  background: #248951;
-  margin-top: -10px;
-  text-decoration: none;
-  color: #fff;
-  border-radius: 3px;
 }
 
 .hamburger{
@@ -260,19 +256,6 @@ transition: 0.3s;
 }
 .contenu .text .info-btn:hover{
 background: #248951;
-}
-.media-icons{
-  margin-top: 100px;
-  display: flex;
-  justify-content: center;
-}
-
-.media-icons a{
-  color: #3CB371;
-  font-size: 2em;
-  margin: 60px;
-  text-decoration: none;
-  
 }
 .advertisements {
   display: flex;

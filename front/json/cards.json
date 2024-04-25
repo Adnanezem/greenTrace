@@ -105,6 +105,10 @@
                     "name": "vehicle type",
                     "type": "scrolllist",
                     "options": ["short haul", "medium haul", "long haul"]
+                },
+                {
+                    "name": "airplane color",
+                    "type": "color input"
                 }
             ]
         }
@@ -118,7 +122,23 @@
             "image": {
                 "icon": "../images/restaurant_icon.png",
                 "alt": "restaurant"
-            }
+            },
+            "fields": [
+                {
+                    "name": "meal type",
+                    "type": "scrolllist",
+                    "options": ["breakfast", "brunch", "lunch", "dinner", "snack"]
+                },
+                {
+                    "name": "restaurant type",
+                    "type": "scrolllist",
+                    "options": ["fast food", "traditional", "gourmet", "vegan", "vegetarian"]
+                },
+                {
+                    "name": "number of people",
+                    "type": "number input"
+                }
+            ]
         },
         {
             "id": 6,
@@ -128,7 +148,18 @@
             "image": {
                 "icon": "../images/home_icon.png",
                 "alt": "home"
-            }
+            },
+            "fields": [
+                {
+                    "name": "meal type",
+                    "type": "scrolllist",
+                    "options": ["breakfast", "brunch", "lunch", "dinner", "snack"]
+                },
+                {
+                    "name": "number of people",
+                    "type": "number input"
+                }
+            ]
         },
         {
             "id": 7,
@@ -138,7 +169,32 @@
             "image": {
                 "icon": "../images/takeaway_icon.png",
                 "alt": "takeaway"
-            }
+            },
+            "fields": [
+                {
+                    "name": "meal type",
+                    "type": "scrolllist",
+                    "options": ["breakfast", "brunch", "lunch", "dinner", "snack"]
+                },
+                {
+                    "name": "restaurant type",
+                    "type": "scrolllist",
+                    "options": ["fast food", "traditional", "gourmet", "vegan", "vegetarian"]
+                },
+                {
+                    "name": "number of people",
+                    "type": "number input"
+                },
+                {
+                    "name": "delivery mode",
+                    "type": "scrolllist",
+                    "options": ["bike", "car", "scooter", "walking"]
+                },
+                {
+                    "name": "delivery time",
+                    "type": "time input"
+                }
+            ]
         }
     ],
     "loisirs": [
@@ -150,7 +206,18 @@
             "image": {
                 "icon": "../images/museum_icon.png",
                 "alt": "museum"
-            }
+            },
+            "fields": [
+                {
+                    "name": "museum type",
+                    "type": "scrolllist",
+                    "options": ["art", "history", "science", "technology", "natural history"]
+                },
+                {
+                    "name": "time spent",
+                    "type": "time input"
+                }
+            ]
         },
         {
             "id": 9,
@@ -160,7 +227,18 @@
             "image": {
                 "icon": "../images/park_icon.png",
                 "alt": "park"
-            }
+            },
+            "fields": [
+                {
+                    "name": "park type",
+                    "type": "scrolllist",
+                    "options": ["botanical", "national", "regional", "urban"]
+                },
+                {
+                    "name": "time spent",
+                    "type": "time input"
+                }
+            ]
         },
         {
             "id": 10,
@@ -170,7 +248,13 @@
             "image": {
                 "icon": "../images/zoo_icon.png",
                 "alt": "zoo"
-            }
+            },
+            "fields": [
+                {
+                    "name": "time spent",
+                    "type": "time input"
+                }
+            ]
         },
         {
             "id": 11,
@@ -180,7 +264,13 @@
             "image": {
                 "icon": "../images/aquarium_icon.png",
                 "alt": "aquarium"
-            }
+            },
+            "fields": [
+                {
+                    "name": "time spent",
+                    "type": "time input"
+                }
+            ]
         },
         {
             "id": 12,
@@ -190,7 +280,13 @@
             "image": {
                 "icon": "../images/attraction_icon.png",
                 "alt": "attraction"
-            }
+            },
+            "fields": [
+                {
+                    "name": "time spent",
+                    "type": "time input"
+                }
+            ]
         }
     ]
 }

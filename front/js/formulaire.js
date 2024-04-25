@@ -17,13 +17,22 @@ function toggleProcessingMessage(show) {
         processingDiv.style.justifyContent = 'center';
         processingDiv.style.alignItems = 'center';
         processingDiv.style.fontSize = '20px';
+        processingDiv.style.transition = 'opacity 0.5s';
         processingDiv.textContent = 'Processing your request...';
         document.body.appendChild(processingDiv);
     }
-    processingDiv.style.display = show ? 'flex' : 'none';
+    processingDiv.style.opacity = show ? '1' : '0';
+
+    if (!show) {
+        setTimeout(function() {
+            processingDiv.remove();
+        }
+        , 500);
+    }
 }
 
 function serverError(comment) {
+    toggleProcessingMessage(false);
     var div = document.createElement('div');
     div.style.backgroundColor = 'red';
     div.style.color = 'white';
@@ -44,6 +53,7 @@ function serverError(comment) {
 }
 
 function serverSuccess(comment) {
+    toggleProcessingMessage(false);
     var div = document.createElement('div');
     div.style.backgroundColor = 'green';
     div.style.color = 'white';
@@ -67,16 +77,24 @@ function serverSuccess(comment) {
 // function to generate the field form from a json file
 function generateFormFromJson(card, modify = false) {
 
-    console.log('generateFormFromJson:');
-    console.log(card);
-    console.log('modify: ' + modify);
-    
     // We create a floating div to contain the form
     let form = document.createElement('div');
     form.className = 'floating_form';
 
     // We create a form element
     let formElement = document.createElement('form');
+
+    // Have the form slide and fade in
+    form.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
+    form.style.transform = 'translateY(-100%)';
+    form.style.opacity = '0';
+
+    // After a delay, we have the form slide and fade in
+    setTimeout(() => {
+        form.style.transform = 'translateY(0)';
+        form.style.opacity = '1';
+    }, 100);
+    
     form.appendChild(formElement);
 
     // We create a fieldset element
@@ -145,21 +163,63 @@ function generateFormFromJson(card, modify = false) {
 
                 fieldDiv.appendChild(select);
                 break;
-            case 'time':
-                // We create an input element
-                let time_input = document.createElement('input');
-                time_input.type = 'time';
-                time_input.name = field.name;
+            case 'time input':
+                // Create 3 number input elements for hours, minutes and seconds
+                let time_input = document.createElement('div');
+                time_input.className = 'time_input';
+
+                let hours = document.createElement('input');
+                hours.type = 'number';
+                hours.name = field.name + '_hours';
+                hours.min = 0;
+                hours.max = 23;
+                hours.style.width = '50px';
+                time_input.appendChild(hours);
+
+                let minutes = document.createElement('input');
+                minutes.type = 'number';
+                minutes.name = field.name + '_minutes';
+                minutes.min = 0;
+                minutes.max = 59;
+                minutes.style.width = '50px';
+                time_input.appendChild(minutes);
+
+                let seconds = document.createElement('input');
+                seconds.type = 'number';
+                seconds.name = field.name + '_seconds';
+                seconds.min = 0;
+                seconds.max = 59;
+                seconds.style.width = '50px';
+                time_input.appendChild(seconds);
 
                 if (modify) {
                     let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
                     let cardIndex = cardSelection.length - 1;
                     if (cardSelection[cardIndex][field.name]) {
-                        time_input.value = cardSelection[cardIndex][field.name];
+                        let time = cardSelection[cardIndex][field.name].split(':');
+                        hours.value = time[0];
+                        minutes.value = time[1];
+                        seconds.value = time[2];
                     }
                 }
 
                 fieldDiv.appendChild(time_input);
+                break;
+            case 'color input':
+                // We create an input element
+                let color_input = document.createElement('input');
+                color_input.type = 'color';
+                color_input.name = field.name;
+
+                if (modify) {
+                    let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
+                    let cardIndex = cardSelection.length - 1;
+                    if (cardSelection[cardIndex][field.name]) {
+                        color_input.value = cardSelection[cardIndex][field.name];
+                    }
+                }
+
+                fieldDiv.appendChild(color_input);
                 break;
             default:
                 console.error('Unknown field type: ' + field.type);
@@ -172,13 +232,33 @@ function generateFormFromJson(card, modify = false) {
     button.textContent = 'Envoyer';
     formElement.appendChild(button);
 
+    // Add a cancel div that looks like a button
+    let cancel = document.createElement('button');
+    cancel.textContent = 'Annuler';
+    cancel.type = 'button';
+    cancel.addEventListener('click', function() {
+        form.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
+        form.style.transform = 'translateY(-100%)';
+        form.style.opacity = '0';
+        setTimeout(() => {
+            form.remove();
+        }, 1000);
+    });
+    formElement.appendChild(cancel);
+
     // We append the form to the body
     document.body.appendChild(form);
 
     // If user presses the "esc" key, we close the form, and remove the event listener
     let closeForm = function(event) {
-        if (event.key === 'Escape') {
-            form.remove();
+        if (event.key === 'Escape') 
+        {
+            form.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
+            form.style.transform = 'translateY(-100%)';
+            form.style.opacity = '0';
+            setTimeout(() => {
+                form.remove();
+            }, 1000);
             document.removeEventListener('keydown', closeForm);
         }
     }
@@ -192,26 +272,40 @@ function generateFormFromJson(card, modify = false) {
         localStorage.setItem('cardSelection', JSON.stringify(cardSelection));
     }
 
-    // We add an event listener to the form (not modify)
+    // We add an event listener to the form if the "Envoyer" button is clicked
     formElement.addEventListener('submit', function(event) {
         event.preventDefault();
 
         //Check if the form is filled
         if (!check_form_filled(form)) {
-            alert('Please fill all the fields');
             return;
         }
 
         // check the card
-        console.log("Card: ", card);
         let data = {};
         data.category = card.category;
         card.fields.forEach(field => {
-            data[field.name] = formElement.querySelector('[name="' + field.name + '"]').value;
+            switch (field.type) {
+                case 'number input':
+                    data[field.name] = form.querySelector('[name="' + field.name + '"]').value;
+                    break;
+                case 'scrolllist':
+                    data[field.name] = form.querySelector('[name="' + field.name + '"]').value;
+                    break;
+                case 'time input':
+                    let hours = form.querySelector('[name="' + field.name + '_hours"]').value;
+                    let minutes = form.querySelector('[name="' + field.name + '_minutes"]').value;
+                    let seconds = form.querySelector('[name="' + field.name + '_seconds"]').value;
+                    data[field.name] = hours + ':' + minutes + ':' + seconds;
+                    break;
+                case 'color input':
+                    data[field.name] = form.querySelector('[name="' + field.name + '"]').value;
+                    break;
+                default:
+                    console.error('Unknown field type: ' + field.type);
+                    break;
+            }
         });
-        console.log('submit Data:');
-        console.log(data);
-        console.log('----');
 
         // Load the "cardSelection" from localStorage
         let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
@@ -219,8 +313,15 @@ function generateFormFromJson(card, modify = false) {
         // Add the new card to the "cardSelection"
         cardSelection.push(data);
 
-        // We close the form
-        form.remove();
+        // Have the form slide and fade out
+        form.style.transition = 'transform 1s ease, opacity 1s ease';
+        form.style.transform = 'translateY(-100%)';
+        form.style.opacity = '0';
+
+        // After a delay, we remove the form
+        setTimeout(() => {
+            form.remove();
+        }, 1000);
 
         // We display a success message
         let successMessage = document.createElement('div');
@@ -250,6 +351,12 @@ function generateFormFromJson(card, modify = false) {
         button.textContent = 'Modifier';
         button.addEventListener('click', function() {
             console.log('Modifier button clicked');
+            //cool down on button click
+            button.disabled = true;
+            setTimeout(() => {
+                button.disabled = false;
+            }, 1000);
+
             // Open the form
             generateFormFromJson(card, true);
         });
@@ -267,13 +374,29 @@ function generateFormFromJson(card, modify = false) {
 // Function to check if the form is filled
 function check_form_filled(form) {
     let fields = form.querySelectorAll('input');
-    let filled = true;
+    let pass = true;
     fields.forEach(field => {
         if (field.value === '') {
-            filled = false;
+            pass = false;
+            alert('Please fill in all the fields');
         }
     });
-    return filled;
+
+    //check if the distances are rational in the case of "distance traveled"
+    let distance = form.querySelector('[name="distance traveled"]');
+    if (distance) {
+        if (distance.value < 1) {
+            pass = false;
+            alert('Please enter a positive distance');
+        }
+        //limit to 100000 km
+        if (distance.value > 100000) {
+            pass = false;
+            alert('Please enter a distance less than 100000 km');
+        }
+    }
+
+    return pass;
 }
 
 //function to generate the card's div
@@ -297,7 +420,14 @@ function generateCardDiv(title, description, background_icon, background_alt, bu
     //create a button element
     let cardButton = document.createElement('button');
     cardButton.textContent = button_text;
-    cardButton.addEventListener('click', button_function);
+    //cooldown on button click
+    cardButton.addEventListener('click', function() {
+        cardButton.disabled = true;
+        setTimeout(() => {
+            cardButton.disabled = false;
+        }, 1000);
+        button_function();
+    });
     //append the elements to the card
     card.appendChild(img);
     cardContent.appendChild(cardTitle);
@@ -317,10 +447,6 @@ function generateCardsFromJson() {
             ['transport', 'repas', 'loisirs'].forEach(category => {
                 data[category].forEach(item => {
                     let card = generateCardDiv(item.name, item.description, item.image.icon, item.image.alt, 'Remplir', function() {
-                        console.log('Remplir button clicked');
-                        console.log(item);
-                        console.log('category: ' + item.category);
-                        // Open the form
                         generateFormFromJson(item);
                     }
                     );
@@ -400,7 +526,7 @@ function sendFormData(formData) {
     console.log('sendFormData:');
     const data = {
         "form" : formData,
-        "login" : sessionStorage.getItem("U-Login"),
+        "U-Login" : sessionStorage.getItem("U-Login"),
     }
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
@@ -417,18 +543,13 @@ function sendFormData(formData) {
             console.log('Response: ', response);
             //success message
             serverSuccess('Carbon footprint calculated successfully');
-            // Hide processing message
-            toggleProcessingMessage(false);
             return response.json();
         } else {
             console.log('Response: ', response);
-            // Hide processing message
-            toggleProcessingMessage(false);
             //stay on the same page
             throw new Error("Erreur lors de l\'envoie du formulaire.")
         }
     }).then(json =>  {
-        toggleProcessingMessage(false);
         console.log(json);
         return json;
     }).catch(err => {
@@ -447,7 +568,7 @@ function sendForm() {
         let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
         //check if the card list is empty
         if (cardSelection.length === 0) {
-            alert('Please add at least one card');
+            alert('Aucune carte à envoyer!');
             return;
         }
         //display the card list

@@ -58,9 +58,13 @@ nav {
   margin-bottom: auto;
 }
 
-.nav-links ul {
+.nav-links ul{
   margin: 0;
   padding: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
 .nav-links ul li {
@@ -87,14 +91,6 @@ nav {
   font-weight: bold;
 }
 
-.btn-donate {
-  padding: 7px 10px;
-  background: #248951;
-  margin-top: -10px;
-  text-decoration: none;
-  color: #fff;
-  border-radius: 3px;
-}
 
 .hamburger {
   display: none;
@@ -401,10 +397,6 @@ form.sign-up-form {
     height: 100%;
     margin: 0;
     padding: 0;
-  }
-
-  .btn-donate {
-    margin: 14px 0;
   }
 
   .nav-items {

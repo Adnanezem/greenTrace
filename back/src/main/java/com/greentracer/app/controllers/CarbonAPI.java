@@ -2,6 +2,8 @@ package com.greentracer.app.controllers;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -16,10 +18,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.greentracer.app.internal.DefaultCarbon;
 import com.greentracer.app.responses.GreenTracerResponse;
 import com.greentracer.app.responses.HistoriqueResponse;
 import com.greentracer.app.responses.JourneeResponse;
+import com.greentracer.app.utils.JSONUtils;
 
 /**
  * API Pour le calcul et la prise d'information sur les empreintes carbonnes.
@@ -58,11 +65,24 @@ public class CarbonAPI {
             if (!res.getKey()) {
                 return ResponseEntity.badRequest().build();
             }
-            uri = new URI("uriadefinir");
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode json = mapper.readTree(body);
+            String login = JSONUtils.getStringField(json, "login");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            Date d = new Date(System.currentTimeMillis());
+            String utilDate = dateFormat.format(d);
+            logger.info("date URI : {}", utilDate);
+            uri = new URI("/" + login + "/history/" + utilDate);
             return ResponseEntity.created(uri).body(res.getValue());
         } catch (URISyntaxException e) {
             logger.info(body);
             return ResponseEntity.badRequest().build();
+        } catch (JsonMappingException e) {
+            logger.error("request body malformed: {}", body);
+            return ResponseEntity.badRequest().body("Malformed JSON.");
+        } catch (JsonProcessingException e) {
+            logger.error("request body process failed: {}", body);
+            return ResponseEntity.badRequest().body("JSON Process failed in CarbonAPI.compute.");
         }
     }
 
