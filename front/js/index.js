@@ -12,6 +12,14 @@ function loadPage() {
         });
     });
 }
+function updateNavSpacing() {
+    const links = document.querySelectorAll('.nav-items');
+    const visibleLinks = Array.from(links).filter(link => link.style.visibility !== 'hidden');
+
+    visibleLinks.forEach(link => {
+        link.style.flex = `1 0 ${100 / visibleLinks.length}%`;
+    });
+}
 
 function isConnected() {
     console.log(document)
@@ -20,18 +28,11 @@ function isConnected() {
     if(sessionStorage.getItem("jwt") === null) {
         profilNav.style.display = 'none';
         loginNav.style.display = 'flex';
-        profilNav.style.position = 'absolute'; 
-        profilNav.style.height = '0'; 
-        loginNav.style.visibility = 'visible';
-        loginNav.style.position = 'static';
     } else { // on est connecté
         profilNav.style.display = 'flex';
         loginNav.style.display = 'none';
-        profilNav.style.visibility = 'visible';
-        profilNav.style.position = 'static';
-        profilNav.style.height = 'auto';
-        loginNav.style.visibility = 'hidden';
     }
+    updateNavSpacing();
 }
 
 function loadCarbonHistory() {
