@@ -36,6 +36,7 @@ sonarqube-check-test:
       - test
     changes:
     - back/**/*
+    - .gitlab-ci.yml
 
 deploy-front-test:
   stage: deploy
