@@ -523,7 +523,7 @@ function sendForm() {
         let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
         //check if the card list is empty
         if (cardSelection.length === 0) {
-            alert('Please add at least one card');
+            alert('Aucune carte à envoyer!');
             return;
         }
         //display the card list
