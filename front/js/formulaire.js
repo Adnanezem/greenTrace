@@ -43,6 +43,26 @@ function serverError(comment) {
     , 5000);
 }
 
+function serverSuccess(comment) {
+    var div = document.createElement('div');
+    div.style.backgroundColor = 'green';
+    div.style.color = 'white';
+    div.style.position = 'fixed';
+    div.style.top = '0';
+    div.style.left = '0';
+    div.style.width = '100%';
+    div.style.zIndex = '1000';
+    div.style.padding = '10px';
+    div.style.textAlign = 'center';
+    div.innerHTML = 'Success: ' + comment;
+    document.body.appendChild(div);
+
+    setTimeout(function() {
+        div.remove();
+    }
+    , 5000);
+}
+
 
 // function to generate the field form from a json file
 function generateFormFromJson(card, modify = false) {
@@ -395,6 +415,10 @@ function sendFormData(formData) {
     .then(response => {
         if (response.ok) {
             console.log('Response: ', response);
+            //success message
+            serverSuccess('Carbon footprint calculated successfully');
+            // Hide processing message
+            toggleProcessingMessage(false);
             return response.json();
         } else {
             console.log('Response: ', response);
@@ -408,6 +432,7 @@ function sendFormData(formData) {
         console.log(json);
         return json;
     }).catch(err => {
+
         serverError(err);
     });
 }
@@ -437,12 +462,29 @@ function sendForm() {
         // Clear the card list
         localStorage.setItem('cardSelection', JSON.stringify([]));
 
-        // Clear the card list in the DOM
+        // Clear the card list in the DOM (but keep the title) by moving the cards away
         let cardListUser = document.getElementById('cardListUser');
-        cardListUser.innerHTML = '';
+        let cards = cardListUser.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.style.transition = 'transform 5s ease';
+            card.style.transform = 'translateY(-1000%)';
+        });
+        // Delete the cards after a delay
+        setTimeout(() => {
+            cards.forEach(card => {
+                card.remove();
+            });
+        }, 5000);
 
         // Hide processing message
-        toggleProcessingMessage(false);
+        //toggleProcessingMessage(false);
+
+        // Display a success message
+        //serverSuccess('Carbon footprint calculated successfully');
+
+        // Redirect to the home page
+        //window.location.href = './';
+
     });
 }
 
