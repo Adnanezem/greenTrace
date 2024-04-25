@@ -22,6 +22,13 @@ function toggleProcessingMessage(show) {
         document.body.appendChild(processingDiv);
     }
     processingDiv.style.opacity = show ? '1' : '0';
+
+    if (!show) {
+        setTimeout(function() {
+            processingDiv.remove();
+        }
+        , 500);
+    }
 }
 
 function serverError(comment) {
