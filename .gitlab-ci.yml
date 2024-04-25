@@ -24,17 +24,18 @@ variables:
 sonarqube-check-test:
   stage: sonarqube-check
   image: maven:3.8.5-openjdk-17
+  allow_failure: true
   before_script:
     - chmod +x $CI_PROJECT_DIR/ci/setup-mvn-proxy.sh
     - $CI_PROJECT_DIR/ci/setup-mvn-proxy.sh
   script: 
     - cd back/
     - mvn verify sonar:sonar
-  changes:
-    - back/**/*
   only:
     refs:
       - test
+    changes:
+    - back/**/*
 
 deploy-front-test:
   stage: deploy

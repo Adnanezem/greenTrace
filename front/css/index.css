@@ -59,10 +59,14 @@ nav {
     margin-bottom: auto;
 }
 
-.nav-links ul {
+.nav-links ul{
     margin: 0;
     padding: 0;
-}
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
 
 .nav-links ul li {
     list-style: none;
