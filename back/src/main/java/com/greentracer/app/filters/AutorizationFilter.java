@@ -54,7 +54,6 @@ public class AutorizationFilter implements Filter {
         }
 
 
-        String token = request.getHeader("Authorization").split(" ")[1];
         String[] url = UrlUtils.getUrlParts((HttpServletRequest) request);
     
 
