@@ -78,6 +78,9 @@ public class AutorizationFilter implements Filter {
                         return;
                     }
                 }
+                default -> {
+                    break;
+                }
             }
         } else {
             chain.doFilter(request, response);

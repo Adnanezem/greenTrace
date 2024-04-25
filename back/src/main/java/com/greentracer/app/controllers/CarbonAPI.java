@@ -71,7 +71,7 @@ public class CarbonAPI {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
             Date d = new Date(System.currentTimeMillis());
             String utilDate = dateFormat.format(d);
-            logger.info("date URI : {}",utilDate);
+            logger.info("date URI : {}", utilDate);
             uri = new URI("/" + login + "/history/" + utilDate);
             return ResponseEntity.created(uri).body(res.getValue());
         } catch (URISyntaxException e) {
