@@ -66,7 +66,4 @@ public class HistoriqueDao implements Dao<String, Historique> {
         return jdbcTemplate.query(findAllRequest, new HistoriqueMapper());
     }
 
-
-
-
 }

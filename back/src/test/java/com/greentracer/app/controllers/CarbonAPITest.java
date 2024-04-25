@@ -40,10 +40,10 @@ public class CarbonAPITest {
     @Test
     @DisplayName("Should create resource when compute is successful")
     public void computeSuccessful() throws URISyntaxException {
-        String requestBody = "example body";
+        String requestBody = "{\"login\":\"testUser\", \"form\":[]}";
         GreenTracerResponse successResponse = new GreenTracerResponse("Success", 201);
         Map<Boolean, GreenTracerResponse> result = Collections.singletonMap(true, successResponse);
-        URI uri = new URI("uriadefinir");
+        URI uri = new URI("/testUser/history/25-04-2024");
 
         when(defaultCarbon.defaultCompute(requestBody)).thenReturn(result);
 
