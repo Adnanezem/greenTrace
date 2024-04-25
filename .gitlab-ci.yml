@@ -30,11 +30,11 @@ sonarqube-check-test:
   script: 
     - cd back/
     - mvn verify sonar:sonar
-  changes:
-    - back/**/*
   only:
     refs:
       - test
+    changes:
+    - back/**/*
 
 deploy-front-test:
   stage: deploy
