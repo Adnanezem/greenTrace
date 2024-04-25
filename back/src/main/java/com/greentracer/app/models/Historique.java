@@ -6,8 +6,8 @@ package com.greentracer.app.models;
  */
 public class Historique {
 
-    private int idhistr;
-    private String idp;
+    private int idHistr;
+    private String idP;
     private float historique;
 
     /**
@@ -23,8 +23,8 @@ public class Historique {
      * @param historique
      */
     public Historique(int idhistr, String idp, float historique) {
-        this.idhistr = idhistr;
-        this.idp = idp;
+        this.idHistr = idhistr;
+        this.idP = idp;
         this.historique = historique;
     }
 
@@ -33,7 +33,7 @@ public class Historique {
      * @return
      */
     public int getid() {
-        return idhistr;
+        return idHistr;
     }
 
     /**
@@ -41,7 +41,7 @@ public class Historique {
      * @param idHist
      */
     public void setid(int idHist) {
-        this.idhistr = idHist;
+        this.idHistr = idHist;
     }
 
     /**
@@ -49,7 +49,7 @@ public class Historique {
      * @return
      */
     public String getidp() {
-        return idp;
+        return idP;
     }
 
     /**
@@ -57,7 +57,7 @@ public class Historique {
      * @param idp
      */
     public void setidp(String idp) {
-        this.idp = idp;
+        this.idP = idp;
     }
 
     /**
@@ -78,6 +78,6 @@ public class Historique {
 
     @Override
     public String toString() {
-        return "User [id=" + idhistr + ", IDpatient=" + idp + ", historique=" + historique + "]";
+        return "User [id=" + idHistr + ", IDpatient=" + idP + ", historique=" + historique + "]";
     }
 }

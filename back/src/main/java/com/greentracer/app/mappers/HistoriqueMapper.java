@@ -16,8 +16,8 @@ public class HistoriqueMapper implements RowMapper<Historique> {
     @Override
     public Historique mapRow(ResultSet rs, int rowNum) throws SQLException {
         Historique h = new Historique();
-        h.setid(rs.getInt("id_histr"));
-        h.setidp(rs.getString("id_p"));
+        h.setid(rs.getInt("idHistr"));
+        h.setidp(rs.getString("idP"));
         h.sethistorique(rs.getFloat("historique"));
         return h;
 
