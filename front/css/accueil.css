@@ -257,19 +257,6 @@ transition: 0.3s;
 .contenu .text .info-btn:hover{
 background: #248951;
 }
-.media-icons{
-  margin-top: 100px;
-  display: flex;
-  justify-content: center;
-}
-
-.media-icons a{
-  color: #3CB371;
-  font-size: 2em;
-  margin: 60px;
-  text-decoration: none;
-  
-}
 .advertisements {
   display: flex;
   justify-content: center;
