@@ -433,6 +433,16 @@ function sendForm() {
 
         //send the card list to the server
         sendFormData(cardSelection);
+
+        // Clear the card list
+        localStorage.setItem('cardSelection', JSON.stringify([]));
+
+        // Clear the card list in the DOM
+        let cardListUser = document.getElementById('cardListUser');
+        cardListUser.innerHTML = '';
+
+        // Hide processing message
+        toggleProcessingMessage(false);
     });
 }
 
