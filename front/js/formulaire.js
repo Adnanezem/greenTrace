@@ -77,12 +77,6 @@ function serverSuccess(comment) {
 // function to generate the field form from a json file
 function generateFormFromJson(card, modify = false) {
 
-    //console.log('generateFormFromJson:');
-    //console.log(card);
-    //console.log('modify: ' + modify);
-
-
-    
     // We create a floating div to contain the form
     let form = document.createElement('div');
     form.className = 'floating_form';
@@ -212,12 +206,27 @@ function generateFormFromJson(card, modify = false) {
     button.textContent = 'Envoyer';
     formElement.appendChild(button);
 
+    // Add a cancel div that looks like a button
+    let cancel = document.createElement('button');
+    cancel.textContent = 'Annuler';
+    cancel.type = 'button';
+    cancel.addEventListener('click', function() {
+        form.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
+        form.style.transform = 'translateY(-100%)';
+        form.style.opacity = '0';
+        setTimeout(() => {
+            form.remove();
+        }, 1000);
+    });
+    formElement.appendChild(cancel);
+
     // We append the form to the body
     document.body.appendChild(form);
 
     // If user presses the "esc" key, we close the form, and remove the event listener
     let closeForm = function(event) {
-        if (event.key === 'Escape') {
+        if (event.key === 'Escape') 
+        {
             form.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
             form.style.transform = 'translateY(-100%)';
             form.style.opacity = '0';
@@ -237,7 +246,7 @@ function generateFormFromJson(card, modify = false) {
         localStorage.setItem('cardSelection', JSON.stringify(cardSelection));
     }
 
-    // We add an event listener to the form (not modify)
+    // We add an event listener to the form if the "Envoyer" button is clicked
     formElement.addEventListener('submit', function(event) {
         event.preventDefault();
 
@@ -247,15 +256,11 @@ function generateFormFromJson(card, modify = false) {
         }
 
         // check the card
-        //console.log("Card: ", card);
         let data = {};
         data.category = card.category;
         card.fields.forEach(field => {
             data[field.name] = formElement.querySelector('[name="' + field.name + '"]').value;
         });
-        //console.log('submit Data:');
-        //console.log(data);
-        //console.log('----');
 
         // Load the "cardSelection" from localStorage
         let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
@@ -301,6 +306,12 @@ function generateFormFromJson(card, modify = false) {
         button.textContent = 'Modifier';
         button.addEventListener('click', function() {
             console.log('Modifier button clicked');
+            //cool down on button click
+            button.disabled = true;
+            setTimeout(() => {
+                button.disabled = false;
+            }, 1000);
+
             // Open the form
             generateFormFromJson(card, true);
         });
@@ -364,7 +375,14 @@ function generateCardDiv(title, description, background_icon, background_alt, bu
     //create a button element
     let cardButton = document.createElement('button');
     cardButton.textContent = button_text;
-    cardButton.addEventListener('click', button_function);
+    //cooldown on button click
+    cardButton.addEventListener('click', function() {
+        cardButton.disabled = true;
+        setTimeout(() => {
+            cardButton.disabled = false;
+        }, 1000);
+        button_function();
+    });
     //append the elements to the card
     card.appendChild(img);
     cardContent.appendChild(cardTitle);
@@ -384,10 +402,6 @@ function generateCardsFromJson() {
             ['transport', 'repas', 'loisirs'].forEach(category => {
                 data[category].forEach(item => {
                     let card = generateCardDiv(item.name, item.description, item.image.icon, item.image.alt, 'Remplir', function() {
-                        console.log('Remplir button clicked');
-                        console.log(item);
-                        console.log('category: ' + item.category);
-                        // Open the form
                         generateFormFromJson(item);
                     }
                     );
