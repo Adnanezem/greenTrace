@@ -75,14 +75,6 @@ nav {
     color: #3CB371 ;
     font-weight: bold;
 }
-.btn-donate{
-    padding: 7px 10px;
-    background: #248951;
-    margin-top: -10px;
-    text-decoration: none;
-    color: #fff;
-    border-radius: 3px;
-}
 
 .hamburger{
     display: none;
