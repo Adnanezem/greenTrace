@@ -45,7 +45,7 @@ public class AutorizationFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        String user = request.getHeader("U-login");
+        String user = request.getHeader("U-Login");
 
         //Accessing a place where we don't need to be connected
         if(user == null){
