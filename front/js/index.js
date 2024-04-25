@@ -28,9 +28,10 @@ function isConnected() {
 
 function loadCarbonHistory() {
     const headers = new Headers();
+    const login = sessionStorage.getItem("U-Login");
     headers.append("Authorization", sessionStorage.getItem("jwt"));
-    headers.append("U-Login", sessionStorage.getItem("U-Login"));
-    fetch(CARBON_BACKEND_ENDPOINT, {
+    headers.append("U-Login", login);
+    fetch(CARBON_BACKEND_ENDPOINT + login + "/history", {
         method: 'GET',
         headers: headers,
     }).then(response => {
