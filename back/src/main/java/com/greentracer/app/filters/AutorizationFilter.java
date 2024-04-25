@@ -56,7 +56,7 @@ public class AutorizationFilter implements Filter {
 
         String[] url = UrlUtils.getUrlParts((HttpServletRequest) request);
     
-
+        //Dans les faits, on doit tester la même chose, en théorie, c'est peu probable
         if (Stream.of(RESOURCES_WITH_LIMITATIONS).anyMatch(pattern -> UrlUtils.matchRequest(request, pattern))) {
             switch (url[0]) {
                 case "users" -> {
