@@ -467,7 +467,7 @@ function sendFormData(formData) {
     console.log('sendFormData:');
     const data = {
         "form" : formData,
-        "login" : sessionStorage.getItem("U-Login"),
+        "U-Login" : sessionStorage.getItem("U-Login"),
     }
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
