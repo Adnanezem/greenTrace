@@ -161,6 +161,22 @@ function generateFormFromJson(card, modify = false) {
 
                 fieldDiv.appendChild(time_input);
                 break;
+            case 'color input':
+                // We create an input element
+                let color_input = document.createElement('input');
+                color_input.type = 'color';
+                color_input.name = field.name;
+
+                if (modify) {
+                    let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
+                    let cardIndex = cardSelection.length - 1;
+                    if (cardSelection[cardIndex][field.name]) {
+                        color_input.value = cardSelection[cardIndex][field.name];
+                    }
+                }
+
+                fieldDiv.appendChild(color_input);
+                break;
             default:
                 console.error('Unknown field type: ' + field.type);
                 break;
@@ -198,7 +214,6 @@ function generateFormFromJson(card, modify = false) {
 
         //Check if the form is filled
         if (!check_form_filled(form)) {
-            alert('Please fill all the fields');
             return;
         }
 
@@ -267,13 +282,29 @@ function generateFormFromJson(card, modify = false) {
 // Function to check if the form is filled
 function check_form_filled(form) {
     let fields = form.querySelectorAll('input');
-    let filled = true;
+    let pass = true;
     fields.forEach(field => {
         if (field.value === '') {
-            filled = false;
+            pass = false;
+            alert('Please fill in all the fields');
         }
     });
-    return filled;
+
+    //check if the distances are rational in the case of "distance traveled"
+    let distance = form.querySelector('[name="distance traveled"]');
+    if (distance) {
+        if (distance.value < 1) {
+            pass = false;
+            alert('Please enter a positive distance');
+        }
+        //limit to 100000 km
+        if (distance.value > 100000) {
+            pass = false;
+            alert('Please enter a distance less than 100000 km');
+        }
+    }
+
+    return pass;
 }
 
 //function to generate the card's div
