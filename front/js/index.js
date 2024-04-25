@@ -12,14 +12,6 @@ function loadPage() {
         });
     });
 }
-function updateNavSpacing() {
-    const links = document.querySelectorAll('.nav-items');
-    const visibleLinks = Array.from(links).filter(link => link.style.visibility !== 'hidden');
-
-    visibleLinks.forEach(link => {
-        link.style.flex = `1 0 ${100 / visibleLinks.length}%`;
-    });
-}
 
 function isConnected() {
     console.log(document)
@@ -32,7 +24,6 @@ function isConnected() {
         profilNav.style.display = 'flex';
         loginNav.style.display = 'none';
     }
-    updateNavSpacing();
 }
 
 function loadCarbonHistory() {
