@@ -56,7 +56,7 @@ public class AutorizationFilter implements Filter {
     
 
         if (Stream.of(RESOURCES_WITH_LIMITATIONS).anyMatch(pattern -> UrlUtils.matchRequest(request, pattern))) {
-            if(url[0] == "users" && !url[1].equals(jwtHelper.getUsernameFromToken(token))) {
+            if(url[0].equals("users")  && !url[1].equals(jwtHelper.getUsernameFromToken(token))) {
                 response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden\nAccessing profile of other user.");
                 return; 
             } else {
