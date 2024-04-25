@@ -23,7 +23,7 @@ public class HistoriqueDao implements Dao<String, Historique> {
     private final JdbcTemplate jdbcTemplate;
 
     private final String findRequest = "SELECT * FROM historique h INNER JOIN user u ON h.id_p = u.login WHERE u.login = ?";
-    private final String deleteRequest = "DELETE FROM historique h INNER JOIN user u ON h.id_p = u.login WHERE u.login = ?";
+    private final String deleteRequest = "DELETE FROM historique WHERE id_p IN (SELECT id_p FROM user WHERE login = ?)";
     private final String updateRequest = "UPDATE historique h INNER JOIN user u ON h.id_p = u.login SET  h.historique = ? ";
     private final String insertRequest = "INSERT INTO historique( id_p, historique) VALUES ( ?, ?)";
     private final String findAllRequest = "select * from historique";
