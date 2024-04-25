@@ -48,7 +48,7 @@ public class AutorizationFilter implements Filter {
         String user = request.getHeader("U-login");
 
         //Accessing a place where we don't need to be connected
-        if(user.equals(null)){
+        if(user == null){
             chain.doFilter(request, response);
             return;
         }
