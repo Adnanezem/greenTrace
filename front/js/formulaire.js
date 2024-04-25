@@ -17,13 +17,15 @@ function toggleProcessingMessage(show) {
         processingDiv.style.justifyContent = 'center';
         processingDiv.style.alignItems = 'center';
         processingDiv.style.fontSize = '20px';
+        processingDiv.style.transition = 'opacity 0.5s';
         processingDiv.textContent = 'Processing your request...';
         document.body.appendChild(processingDiv);
     }
-    processingDiv.style.display = show ? 'flex' : 'none';
+    processingDiv.style.opacity = show ? '1' : '0';
 }
 
 function serverError(comment) {
+    toggleProcessingMessage(false);
     var div = document.createElement('div');
     div.style.backgroundColor = 'red';
     div.style.color = 'white';
@@ -44,6 +46,7 @@ function serverError(comment) {
 }
 
 function serverSuccess(comment) {
+    toggleProcessingMessage(false);
     var div = document.createElement('div');
     div.style.backgroundColor = 'green';
     div.style.color = 'white';
@@ -67,9 +70,11 @@ function serverSuccess(comment) {
 // function to generate the field form from a json file
 function generateFormFromJson(card, modify = false) {
 
-    console.log('generateFormFromJson:');
-    console.log(card);
-    console.log('modify: ' + modify);
+    //console.log('generateFormFromJson:');
+    //console.log(card);
+    //console.log('modify: ' + modify);
+
+
     
     // We create a floating div to contain the form
     let form = document.createElement('div');
@@ -77,6 +82,18 @@ function generateFormFromJson(card, modify = false) {
 
     // We create a form element
     let formElement = document.createElement('form');
+
+    // Have the form slide and fade in
+    form.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
+    form.style.transform = 'translateY(-100%)';
+    form.style.opacity = '0';
+
+    // After a delay, we have the form slide and fade in
+    setTimeout(() => {
+        form.style.transform = 'translateY(0)';
+        form.style.opacity = '1';
+    }, 100);
+    
     form.appendChild(formElement);
 
     // We create a fieldset element
@@ -194,7 +211,12 @@ function generateFormFromJson(card, modify = false) {
     // If user presses the "esc" key, we close the form, and remove the event listener
     let closeForm = function(event) {
         if (event.key === 'Escape') {
-            form.remove();
+            form.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
+            form.style.transform = 'translateY(-100%)';
+            form.style.opacity = '0';
+            setTimeout(() => {
+                form.remove();
+            }, 1000);
             document.removeEventListener('keydown', closeForm);
         }
     }
@@ -218,15 +240,15 @@ function generateFormFromJson(card, modify = false) {
         }
 
         // check the card
-        console.log("Card: ", card);
+        //console.log("Card: ", card);
         let data = {};
         data.category = card.category;
         card.fields.forEach(field => {
             data[field.name] = formElement.querySelector('[name="' + field.name + '"]').value;
         });
-        console.log('submit Data:');
-        console.log(data);
-        console.log('----');
+        //console.log('submit Data:');
+        //console.log(data);
+        //console.log('----');
 
         // Load the "cardSelection" from localStorage
         let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
@@ -234,8 +256,15 @@ function generateFormFromJson(card, modify = false) {
         // Add the new card to the "cardSelection"
         cardSelection.push(data);
 
-        // We close the form
-        form.remove();
+        // Have the form slide and fade out
+        form.style.transition = 'transform 1s ease, opacity 1s ease';
+        form.style.transform = 'translateY(-100%)';
+        form.style.opacity = '0';
+
+        // After a delay, we remove the form
+        setTimeout(() => {
+            form.remove();
+        }, 1000);
 
         // We display a success message
         let successMessage = document.createElement('div');
@@ -448,18 +477,13 @@ function sendFormData(formData) {
             console.log('Response: ', response);
             //success message
             serverSuccess('Carbon footprint calculated successfully');
-            // Hide processing message
-            toggleProcessingMessage(false);
             return response.json();
         } else {
             console.log('Response: ', response);
-            // Hide processing message
-            toggleProcessingMessage(false);
             //stay on the same page
             throw new Error("Erreur lors de l\'envoie du formulaire.")
         }
     }).then(json =>  {
-        toggleProcessingMessage(false);
         console.log(json);
         return json;
     }).catch(err => {
