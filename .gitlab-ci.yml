@@ -30,7 +30,7 @@ sonarqube-check-test:
     - $CI_PROJECT_DIR/ci/setup-mvn-proxy.sh
   script: 
     - cd back/
-    - mvn verify sonar:sonar
+    - mvn verify sonar:sonar -Dsonar.branch=test
   only:
     refs:
       - test
