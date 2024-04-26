@@ -65,8 +65,8 @@ public class AutorizationFilter implements Filter {
                         chain.doFilter(request, response);
                         return;
                     } else {
-                        System.out.println("");
-                        System.out.println("Erreur authorization users.");
+
+                        response.addHeader("Error", "When requesting users.");
                         response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden\nAccessing profile of other user.");
                         return;
                     }
@@ -81,6 +81,7 @@ public class AutorizationFilter implements Filter {
                             chain.doFilter(request, response);
                             return;
                         } else {
+                            response.addHeader("Error", "When requesting carbon.");
                             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden\nAccessing profile of other user.");
                             return;
                         }

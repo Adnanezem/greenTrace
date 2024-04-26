@@ -60,6 +60,7 @@ public class AuthFilter implements Filter {
             chain.doFilter(request, response);
             return;
         } else {
+            response.addHeader("Error", "When bad authantification.");
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden");
             return;
         }
