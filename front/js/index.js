@@ -57,6 +57,7 @@ function loadCarbonHistory() {
             const avgBilanTxt = document.createTextNode("Moyenne hebdomadaire: " + avgBilan);
             bilanSection.appendChild(avgBilanTxt);
             const currentDate = new Date();
+            console.log('currentDate: ', currentDate);
             previousDate = getPreviousSevenDays(currentDate);
             histTab = document.createElement("table");
             histTab.id = "userHistTab";
