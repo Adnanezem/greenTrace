@@ -101,8 +101,7 @@ public class CarbonAPI {
         if (!res.getKey()) {
             if(res.getValue() != null) {
                 return ResponseEntity.status(res.getValue().getStatus()).body(res.getValue());
-            }
-            else {
+            } else {
                 return ResponseEntity.notFound().build();
             }
         }
