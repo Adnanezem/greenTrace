@@ -54,6 +54,16 @@ public class DefaultCarbon {
             Journee newJ = new Journee(0, login, currentDate, resultat);
             journeeDao.create(newJ);
             JourneeResponse resp = new JourneeResponse("journée resp", 201, newJ);
+            Historique h = histDao.getById(login);
+            if(h == null) {
+                Historique newH = new Historique(0, login, 0); // calcul auto du resultat.
+                histDao.create(newH);
+            } else {
+                float newRes = h.gethistorique() + resultat;
+                Historique newH = new Historique(0, login, newRes);
+                histDao.delete(h);
+                histDao.create(newH);
+            }
             res.put(true, resp);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
