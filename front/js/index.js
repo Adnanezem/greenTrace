@@ -53,13 +53,14 @@ function loadCarbonHistory() {
         if(json !== undefined) {
             const bilanSection = document.querySelector('#historiqueBilans')
             console.log(json);
-            const avgBilan = json.historique;
+            const avgBilan = json.historique.historique;
             const avgBilanTxt = document.createTextNode("Moyenne hebdomadaire: " + avgBilan);
             bilanSection.appendChild(avgBilanTxt);
             const currentDate = new Date();
             previousDate = getPreviousSevenDays(currentDate);
             histTab = document.createElement("table");
             histTab.id = "userHistTab";
+            console.log('previousDate: ', previousDate);
             previousDate.array.forEach(async date => {
                 const formattedDate = date.toLocaleDateString('fr-FR', {
                     day: '2-digit',
