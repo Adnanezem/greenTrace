@@ -61,7 +61,7 @@ function loadCarbonHistory() {
             histTab = document.createElement("table");
             histTab.id = "userHistTab";
             console.log('previousDate: ', previousDate);
-            previousDate.array.forEach(async date => {
+            previousDate.forEach(async date => {
                 const formattedDate = date.toLocaleDateString('fr-FR', {
                     day: '2-digit',
                     month: '2-digit',
