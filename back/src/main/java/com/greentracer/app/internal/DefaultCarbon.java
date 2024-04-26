@@ -50,50 +50,26 @@ public class DefaultCarbon {
                     String distance = JSONUtils.getStringField(node, "distance traveled");
                     switch (category) {
                         case "transport":
+                        /*
+                         * https://avenirclimatique.org/calculer-empreinte-carbone-trajet/
+                         */
                         String transportType = JSONUtils.getStringField(node, "transport type");
                         switch (transportType) {
                             case "Trajet en voiture":
                                 /*
                                  * https://calculis.net/co2
                                  */
-                                if(!fuel.isBlank()) {
-                                    if (fuel.equals("Diesel")) {
-                                        // Calcul pour voiture diesel
-                                        resultat += 160 * Integer.parseInt(distance);
-                                    }
-                                    if (fuel.equals("electric")) {
-                                        // Calcul pour voiture electric
-                                        resultat += 70 * Integer.parseInt(distance);
-                                    }
-                                    if (fuel.equals("gasoline")) {
-                                        // Calcul pour voiture gasoline
-                                        resultat += 180 * Integer.parseInt(distance);
-                                    }
-                                }
+                                resultat += CarbonCalculator.computeCarEmissions(fuel, Integer.parseInt(distance));
                             break; 
                             case "Trajet en bus":
                             /*
                              * https://ekwateur.fr/blog/enjeux-environnementaux/empreinte-carbone-bus/
                              */
-                                if(!fuel.isBlank()) {
-
-                                    if(!fuel.isBlank()) {
-                                        if (fuel.equals("Diesel")) {
-                                            // Calcul pour bus diesel
-                                            resultat += 1100 * Integer.parseInt(distance);
-                                        }
-                                        if (fuel.equals("electric")) {
-                                            // Calcul pour bus electric
-                                            resultat += 200 * Integer.parseInt(distance);
-                                        }
-
-                                    }
-                                }
+                            resultat += CarbonCalculator.computeBusEmissions(fuel, Integer.parseInt(distance));
                             break;
                             default:
                                 break;
                         }
-
                             break;
                         default:
                             break;
