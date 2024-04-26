@@ -72,7 +72,7 @@ public class DefaultCarbon {
             }
             res.put(true, resp);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             res.put(false, new ErrorResponse("Error in compute", 400));
         }
         return res;
