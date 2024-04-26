@@ -73,6 +73,7 @@ public class AutorizationFilter implements Filter {
 
                 case "carbon" -> {
                     if(url[1].equals(user) || url[1].equals("compute")) {
+                        System.out.println("Ça passe");
                         chain.doFilter(request, response);
                         return;
                     } else {
