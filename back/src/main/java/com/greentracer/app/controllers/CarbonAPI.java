@@ -26,6 +26,7 @@ import com.greentracer.app.internal.DefaultCarbon;
 import com.greentracer.app.responses.GreenTracerResponse;
 import com.greentracer.app.responses.HistoriqueResponse;
 import com.greentracer.app.responses.JourneeResponse;
+import com.greentracer.app.responses.JourneesResponse;
 import com.greentracer.app.utils.JSONUtils;
 
 /**
@@ -126,7 +127,7 @@ public class CarbonAPI {
             return ResponseEntity.status(res.getValue().getStatus()).body(res.getValue());
         }
         if (res.getValue() != null) {
-            JourneeResponse response = (JourneeResponse) res.getValue();
+            JourneesResponse response = (JourneesResponse) res.getValue();
             return ResponseEntity.ok().body(response);
         } else {
             return ResponseEntity.notFound().build();
