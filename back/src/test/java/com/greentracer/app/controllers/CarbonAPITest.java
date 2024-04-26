@@ -43,7 +43,7 @@ public class CarbonAPITest {
         String requestBody = "{\"login\":\"testUser\", \"form\":[]}";
         GreenTracerResponse successResponse = new GreenTracerResponse("Success", 201);
         Map<Boolean, GreenTracerResponse> result = Collections.singletonMap(true, successResponse);
-        URI uri = new URI("/testUser/history/25-04-2024");
+        URI uri = new URI("/testUser/history/26-04-2024");
 
         when(defaultCarbon.defaultCompute(requestBody)).thenReturn(result);
 

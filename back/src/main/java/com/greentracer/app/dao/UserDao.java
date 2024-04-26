@@ -27,7 +27,7 @@ public class UserDao implements Dao<String, User> {
 
     private final String findRequest = "select * from public.\"user\" where login = ?";
     private final String deleteRequest = "delete from public.\"user\" where login = ?";
-    private final String updateRequest = "update public.\"user\" set prenom = ?, nom = ?, mdps = ? where login = ?";
+    private final String updateRequest = "UPDATE public.user SET mdps = ?, nom = ?, prenom = ? WHERE login = ?";
     private final String findAllRequest = "select * from public.\"user\"";
     private final String insertRequest = "insert into public.\"user\"(login, prenom, nom, mdps) values(?,?,?,?)";
 
@@ -61,8 +61,8 @@ public class UserDao implements Dao<String, User> {
 
     @Override
     public Boolean update(User obj) {
-        return jdbcTemplate.update(updateRequest, obj.getFname(),
-                obj.getLname(), obj.getPassword(), obj.getLogin()) > 0;
+        return jdbcTemplate.update(updateRequest, obj.getPassword(), obj.getFname(),
+                obj.getLname(), obj.getLogin()) > 0;
     }
 
     @Override

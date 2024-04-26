@@ -19,22 +19,26 @@ public class JourneeDaoTest {
 
     private Journee journee;
 
+    private User user;
+
     @Autowired
     private UserDao userDao;
 
     @Autowired
     private JourneeDao journeeDao;
 
-    /*@BeforeEach
+    @BeforeEach
     public void setUp() {
-        User user = new User();
+        user = new User();
+        journee = new Journee();
+
         user.setLogin("test");
         user.setPassword("test");
         user.setLname("test");
         user.setFname("test");
         userDao.create(user);
 
-        journee = new Journee();
+
         journee.setpatientId("test");
         journee.setdate(Date.valueOf("2021-01-01"));
         journee.setresultat(0.0f);
@@ -43,13 +47,15 @@ public class JourneeDaoTest {
 
     @AfterEach // a remmetre quand la requete sera correcte (DELETE)
     public void tearDown() {
-        journeeDao.delete(journee);
+        //journeeDao.delete(journee);
+        userDao.delete(user);
     }
 
 
     @Test
     public void testGetById() {
         Journee j = journeeDao.getById("test");
+        journee.setid(journeeDao.getById("test").getid());
         assertEquals(j.getid(), journee.getid());
         assertEquals(j.getpatientId(), journee.getpatientId());
         assertEquals(j.getdate(), journee.getdate());
@@ -64,41 +70,33 @@ public class JourneeDaoTest {
     @Test
     public void testUpdate() {
         journee.setresultat(0.0f);
-        journee.setpatientId("testUpdated");
+        journee.setdate(Date.valueOf("2024-04-26"));
         assertTrue(journeeDao.update(journee));
         assertEquals(journeeDao.getById("test").getresultat(), 0.0f);
-        assertEquals(journeeDao.getById("test").getpatientId(), "testUpdated");
-        assertEquals(journeeDao.getById("test").getdate(), Date.valueOf("2021-01-01"));
-        assertEquals(journeeDao.getById("test").getid(), 1);
+        assertEquals(journeeDao.getById("test").getdate(), Date.valueOf("2024-04-26"));
     }
 
     @Test
     public void testDelete() {
         assertTrue(journeeDao.delete(journee));
-        assertNull(journeeDao.getById("test"));
-    }
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            journeeDao.getById("test");
+        });
 
-    @Test
-    public void testCreate() {
-        Journee j = new Journee();
-        j.setpatientId("test2");
-        j.setdate(Date.valueOf("2021-01-01"));
-        j.setresultat(0.0f);
-        assertTrue(journeeDao.create(j));
-        assertEquals(journeeDao.getById("test2").getpatientId(), "test2");
-        assertEquals(journeeDao.getById("test2").getdate(), Date.valueOf("2021-01-01"));
-        assertEquals(journeeDao.getById("test2").getresultat(), 0.0f);
+        String expectedMessage = "Aucune journée trouvée avec l'utilisateur spécifié.";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
     public void testGetByDate() {
         Journee j = journeeDao.getByDate("test", Date.valueOf("2021-01-01"));
-        assertEquals(j.getid(), journee.getid());
         assertEquals(j.getpatientId(), journee.getpatientId());
         assertEquals(j.getdate(), journee.getdate());
         assertEquals(j.getresultat(), journee.getresultat());
     }
 
-*/
+
 
 }

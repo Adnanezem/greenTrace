@@ -46,13 +46,54 @@ public class DefaultCarbon {
             if(form.isArray()) {
                 for(JsonNode node : form) {
                     String category = JSONUtils.getStringField(node, "category");
+                    String fuel = JSONUtils.getStringField(node, "fuel type");
+                    String distance = JSONUtils.getStringField(node, "distance traveled");
                     switch (category) {
                         case "transport":
-                            String fuel = JSONUtils.getStringField(node, "fuel type");
-                            String distance = JSONUtils.getStringField(node, "distance traveled");
-                            if(!fuel.isBlank()) { //  TODO: À CHANGER
-                                resultat += 3.3 * Integer.parseInt(distance);
-                            }
+                        String transportType = JSONUtils.getStringField(node, "transport type");
+                        switch (transportType) {
+                            case "Trajet en voiture":
+                                /*
+                                 * https://calculis.net/co2
+                                 */
+                                if(!fuel.isBlank()) {
+                                    if (fuel.equals("Diesel")) {
+                                        // Calcul pour voiture diesel
+                                        resultat += 160 * Integer.parseInt(distance);
+                                    }
+                                    if (fuel.equals("electric")) {
+                                        // Calcul pour voiture electric
+                                        resultat += 70 * Integer.parseInt(distance);
+                                    }
+                                    if (fuel.equals("gasoline")) {
+                                        // Calcul pour voiture gasoline
+                                        resultat += 180 * Integer.parseInt(distance);
+                                    }
+                                }
+                            break; 
+                            case "Trajet en bus":
+                            /*
+                             * https://ekwateur.fr/blog/enjeux-environnementaux/empreinte-carbone-bus/
+                             */
+                                if(!fuel.isBlank()) {
+
+                                    if(!fuel.isBlank()) {
+                                        if (fuel.equals("Diesel")) {
+                                            // Calcul pour bus diesel
+                                            resultat += 1100 * Integer.parseInt(distance);
+                                        }
+                                        if (fuel.equals("electric")) {
+                                            // Calcul pour bus electric
+                                            resultat += 200 * Integer.parseInt(distance);
+                                        }
+
+                                    }
+                                }
+                            break;
+                            default:
+                                break;
+                        }
+
                             break;
                         default:
                             break;
@@ -66,6 +107,7 @@ public class DefaultCarbon {
             JourneeResponse resp = new JourneeResponse("journée resp", 201, newJ);
             res.put(true, resp);
         } catch (JsonProcessingException e) {
+            e.printStackTrace();
             res.put(false, new ErrorResponse("Error in compute", 400));
         }
         return res;

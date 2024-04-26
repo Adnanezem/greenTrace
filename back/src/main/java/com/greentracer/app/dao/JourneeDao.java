@@ -25,12 +25,12 @@ public class JourneeDao implements Dao<String, Journee> {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private final String findRequest = "SELECT * FROM journee j INNER JOIN user u ON j.\"idP\" = u.login WHERE u.login = ?";
-    private final String findByDateRequest = "SELECT * FROM journee j INNER JOIN user u ON j.\"idP\" = u.login WHERE u.login = ? AND j.\"Date\" = ?";
-    private final String deleteRequest = "DELETE FROM journee j INNER JOIN user u ON j.\"idP\" = u.login WHERE u.login = ?";
-    private final String updateRequest = "UPDATE journee j INNER JOIN user u ON j.\"idP\" = u.login SET j.\"Date\" = ?, j.resultat = ? ";
-    private final String insertRequest = "INSERT INTO journee( \"idP\", \"Date\", resultat) VALUES (?, ?, ?)";
-    private final String findAllRequest = "select * from journee";
+    private final String findRequest = "SELECT * FROM public.journee INNER JOIN public.user  ON \"idP\" = login WHERE login = ?";
+    private final String findByDateRequest = "SELECT * FROM public.journee INNER JOIN public.user ON \"idP\" = login WHERE login = ? AND \"Date\" = ?";
+    private final String deleteRequest = "DELETE FROM public.journee WHERE \"idP\" = ?";
+    private final String updateRequest = "UPDATE public.journee SET \"Date\" = ?, resultat = ? WHERE \"idP\" = ?";
+    private final String insertRequest = "INSERT INTO public.journee( \"idP\", \"Date\", resultat) VALUES (?, ?, ?)";
+    private final String findAllRequest = "select * from public.journee";
 
     @Autowired
     public JourneeDao(DataSource dataSource) {
@@ -71,12 +71,12 @@ public class JourneeDao implements Dao<String, Journee> {
 
     @Override
     public Boolean update(Journee journee) {
-        return jdbcTemplate.update(updateRequest, journee.getdate(), journee.getresultat()) > 0;
+        return jdbcTemplate.update(updateRequest, journee.getdate(), journee.getresultat(), journee.getpatientId()) > 0;
     }
     
     @Override
     public Boolean delete(Journee journee) {
-        return jdbcTemplate.update(deleteRequest, journee.getid()) > 0;
+        return jdbcTemplate.update(deleteRequest, journee.getpatientId()) > 0;
     }
 
     @Override
