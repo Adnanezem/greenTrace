@@ -562,19 +562,15 @@ function loadSavedCards() {
 
 function sendFormData(formData) {
     console.log('sendFormData:');
-    const data = {
-        "form" : formData,
-        "U-Login" : sessionStorage.getItem("U-Login"),
-    }
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", sessionStorage.getItem("jwt"));
     headers.append("U-Login", sessionStorage.getItem("U-Login"));
-    console.log('data', data);
+    console.log('data', formData);
     fetch(COMPUTE_FORM_BACKEND_ENDPOINT, {
         method: 'POST',
         headers: headers,
-        body: JSON.stringify(data),
+        body: JSON.stringify(formData),
     })
     .then(response => {
         if (response.ok) {
