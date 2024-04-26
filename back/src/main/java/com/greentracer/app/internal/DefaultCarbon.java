@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hibernate.engine.jdbc.env.internal.LobCreationLogging_.logger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,7 +100,7 @@ public class DefaultCarbon {
             res.put(true, resp);
             return res;
         } catch (IllegalArgumentException e) {
-            logger.error("erreur defaultGetDetailledHistory: {}", e);
+            logger.error("erreur defaultGetDetailledHistory: ", e);
             res.put(false, new ErrorResponse("error", 400));
             return res;
         } catch (ParseException e) {
