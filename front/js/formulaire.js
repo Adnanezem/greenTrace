@@ -31,7 +31,7 @@ function toggleProcessingMessage(show) {
     }
 }
 
-function serverError(comment) {
+function ErrorMessage(comment, server = true) {
     toggleProcessingMessage(false);
     var div = document.createElement('div');
     div.style.backgroundColor = 'red';
@@ -43,7 +43,11 @@ function serverError(comment) {
     div.style.zIndex = '1000';
     div.style.padding = '10px';
     div.style.textAlign = 'center';
-    div.innerHTML = 'Erreur serveur: ' + comment;
+    if (server) {
+        div.innerHTML = 'Erreur serveur: ' + comment;
+    } else {
+        div.innerHTML = 'Erreur: ' + comment;
+    }
     document.body.appendChild(div);
 
     setTimeout(function() {
@@ -52,7 +56,7 @@ function serverError(comment) {
     , 5000);
 }
 
-function serverSuccess(comment) {
+function SuccessMessage(comment) {
     toggleProcessingMessage(false);
     var div = document.createElement('div');
     div.style.backgroundColor = 'green';
@@ -74,232 +78,135 @@ function serverSuccess(comment) {
 }
 
 
-// function to generate the field form from a json file
-function generateFormFromJson(card, modify = false) {
-
-    // We create a floating div to contain the form
-    let form = document.createElement('div');
-    form.className = 'floating_form';
-
-    // We create a form element
-    let formElement = document.createElement('form');
-
-    // Have the form slide and fade in
+function closeForm(form) {
     form.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
     form.style.transform = 'translateY(-100%)';
     form.style.opacity = '0';
-
-    // After a delay, we have the form slide and fade in
     setTimeout(() => {
-        form.style.transform = 'translateY(0)';
-        form.style.opacity = '1';
-    }, 100);
-    
-    form.appendChild(formElement);
+        form.remove();
+    }, 1000);
+}
 
-    // We create a fieldset element
-    let fieldset = document.createElement('fieldset');
-    formElement.appendChild(fieldset);
+// function to generate the field form from a json file
+//Return a tuple with what the user entered, and a bool to cancel the form
+async function generateFormFromJson(cardJson, modify = false) {
 
-    // We create a legend element
-    let legend = document.createElement('legend');
-    legend.textContent = 'Formulaire';
-    fieldset.appendChild(legend);
+    // make the promise
+    return new Promise((resolve, reject) => {
 
-    // We create a div element to contain the fields
-    let fields = document.createElement('div');
-    fields.className = 'form_field_container';
-    fieldset.appendChild(fields);
+        console.log('generateFormFromJson:');
+        console.log(cardJson);
+        console.log('----');
 
-    // We loop through the fields
-    card.fields.forEach(field => {
-        // We create a div element to contain the field
-        let fieldDiv = document.createElement('div');
-        fieldDiv.className = 'form_field';
-        fields.appendChild(fieldDiv);
+        // We create a floating div to contain the form
+        let form = document.createElement('div');
+        form.className = 'floating_form';
 
-        // We create a label element
-        let label = document.createElement('label');
-        label.textContent = field.name;
-        fieldDiv.appendChild(label);
+        // We create a form element
+        let formElement = document.createElement('form');
 
-        console.log(field);
-
-        // We switch on the field type
-        switch (field.type) {
-            case 'number input':
-                // We create an input element
-                let number_input = document.createElement('input');
-                number_input.type = 'number';
-                number_input.name = field.name;
-                number_input.placeholder = field.unit;
-                if (modify) {
-                    let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
-                    let cardIndex = cardSelection.length - 1;
-                    if (cardSelection[cardIndex][field.name]) {
-                        number_input.value = cardSelection[cardIndex][field.name];
-                    }
-                }
-                fieldDiv.appendChild(number_input);
-                break;
-            case 'scrolllist':
-                // We create a select element
-                let select = document.createElement('select');
-                select.name = field.name;
-                field.options.forEach(option => {
-                    let optionElement = document.createElement('option');
-                    optionElement.value = option;
-                    optionElement.textContent = option;
-                    select.appendChild(optionElement);
-                });
-
-                if (modify) {
-                    let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
-                    let cardIndex = cardSelection.length - 1;
-                    if (cardSelection[cardIndex][field.name]) {
-                        select.value = cardSelection[cardIndex][field.name];
-                    }
-                }
-
-                fieldDiv.appendChild(select);
-                break;
-            case 'time input':
-                // Create 3 number input elements for hours, minutes and seconds
-                let time_input = document.createElement('div');
-                time_input.className = 'time_input';
-
-                let hours = document.createElement('input');
-                hours.type = 'number';
-                hours.name = field.name + '_hours';
-                hours.min = 0;
-                hours.max = 23;
-                hours.style.width = '50px';
-                time_input.appendChild(hours);
-
-                let minutes = document.createElement('input');
-                minutes.type = 'number';
-                minutes.name = field.name + '_minutes';
-                minutes.min = 0;
-                minutes.max = 59;
-                minutes.style.width = '50px';
-                time_input.appendChild(minutes);
-
-                let seconds = document.createElement('input');
-                seconds.type = 'number';
-                seconds.name = field.name + '_seconds';
-                seconds.min = 0;
-                seconds.max = 59;
-                seconds.style.width = '50px';
-                time_input.appendChild(seconds);
-
-                if (modify) {
-                    let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
-                    let cardIndex = cardSelection.length - 1;
-                    if (cardSelection[cardIndex][field.name]) {
-                        let time = cardSelection[cardIndex][field.name].split(':');
-                        hours.value = time[0];
-                        minutes.value = time[1];
-                        seconds.value = time[2];
-                    }
-                }
-
-                fieldDiv.appendChild(time_input);
-                break;
-            case 'color input':
-                // We create an input element
-                let color_input = document.createElement('input');
-                color_input.type = 'color';
-                color_input.name = field.name;
-
-                if (modify) {
-                    let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
-                    let cardIndex = cardSelection.length - 1;
-                    if (cardSelection[cardIndex][field.name]) {
-                        color_input.value = cardSelection[cardIndex][field.name];
-                    }
-                }
-
-                fieldDiv.appendChild(color_input);
-                break;
-            default:
-                console.error('Unknown field type: ' + field.type);
-                break;
-        }
-    });
-
-    // We create a button element
-    let button = document.createElement('button');
-    button.textContent = 'Envoyer';
-    formElement.appendChild(button);
-
-    // Add a cancel div that looks like a button
-    let cancel = document.createElement('button');
-    cancel.textContent = 'Annuler';
-    cancel.type = 'button';
-    cancel.addEventListener('click', function() {
+        // Have the form slide and fade in
         form.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
         form.style.transform = 'translateY(-100%)';
         form.style.opacity = '0';
+
+        // After a delay, we have the form slide and fade in
         setTimeout(() => {
-            form.remove();
-        }, 1000);
-    });
-    formElement.appendChild(cancel);
+            form.style.transform = 'translateY(0)';
+            form.style.opacity = '1';
+        }, 100);
+        
+        form.appendChild(formElement);
 
-    // We append the form to the body
-    document.body.appendChild(form);
+        // We create a fieldset element
+        let fieldset = document.createElement('fieldset');
+        formElement.appendChild(fieldset);
 
-    // If user presses the "esc" key, we close the form, and remove the event listener
-    let closeForm = function(event) {
-        if (event.key === 'Escape') 
-        {
-            form.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
-            form.style.transform = 'translateY(-100%)';
-            form.style.opacity = '0';
-            setTimeout(() => {
-                form.remove();
-            }, 1000);
-            document.removeEventListener('keydown', closeForm);
-        }
-    }
+        // We create a legend element
+        let legend = document.createElement('legend');
+        legend.textContent = 'Formulaire';
+        fieldset.appendChild(legend);
 
-    document.addEventListener('keydown', closeForm);
+        // We create a div element to contain the fields
+        let fields = document.createElement('div');
+        fields.className = 'form_field_container';
+        fieldset.appendChild(fields);
 
-    // If in modify mode, we remove the last card from the cardSelection
-    if (modify) {
-        let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
-        cardSelection.pop();
-        localStorage.setItem('cardSelection', JSON.stringify(cardSelection));
-    }
+        // We loop through the fields
+        cardJson.fields.forEach(field => {
+            // We create a div element to contain the field
+            let fieldDiv = document.createElement('div');
+            fieldDiv.className = 'form_field';
+            fields.appendChild(fieldDiv);
 
-    // We add an event listener to the form if the "Envoyer" button is clicked
-    formElement.addEventListener('submit', function(event) {
-        event.preventDefault();
+            // We create a label element
+            let label = document.createElement('label');
+            label.textContent = field.name;
+            fieldDiv.appendChild(label);
 
-        //Check if the form is filled
-        if (!check_form_filled(form)) {
-            return;
-        }
+            console.log(field);
 
-        // check the card
-        let data = {};
-        data.category = card.category;
-        card.fields.forEach(field => {
+            // We switch on the field type
             switch (field.type) {
                 case 'number input':
-                    data[field.name] = form.querySelector('[name="' + field.name + '"]').value;
+                    // We create an input element
+                    let number_input = document.createElement('input');
+                    number_input.type = 'number';
+                    number_input.name = field.name;
+                    number_input.placeholder = field.unit;
+                    fieldDiv.appendChild(number_input);
                     break;
                 case 'scrolllist':
-                    data[field.name] = form.querySelector('[name="' + field.name + '"]').value;
+                    // We create a select element
+                    let select = document.createElement('select');
+                    select.name = field.name;
+                    field.options.forEach(option => {
+                        let optionElement = document.createElement('option');
+                        optionElement.value = option;
+                        optionElement.textContent = option;
+                        select.appendChild(optionElement);
+                    });
+
+                    fieldDiv.appendChild(select);
                     break;
                 case 'time input':
-                    let hours = form.querySelector('[name="' + field.name + '_hours"]').value;
-                    let minutes = form.querySelector('[name="' + field.name + '_minutes"]').value;
-                    let seconds = form.querySelector('[name="' + field.name + '_seconds"]').value;
-                    data[field.name] = hours + ':' + minutes + ':' + seconds;
+                    // Create 3 number input elements for hours, minutes and seconds
+                    let time_input = document.createElement('div');
+                    time_input.className = 'time_input';
+
+                    let hours = document.createElement('input');
+                    hours.type = 'number';
+                    hours.name = field.name + '_hours';
+                    hours.min = 0;
+                    hours.max = 23;
+                    hours.style.width = '50px';
+                    time_input.appendChild(hours);
+
+                    let minutes = document.createElement('input');
+                    minutes.type = 'number';
+                    minutes.name = field.name + '_minutes';
+                    minutes.min = 0;
+                    minutes.max = 59;
+                    minutes.style.width = '50px';
+                    time_input.appendChild(minutes);
+
+                    let seconds = document.createElement('input');
+                    seconds.type = 'number';
+                    seconds.name = field.name + '_seconds';
+                    seconds.min = 0;
+                    seconds.max = 59;
+                    seconds.style.width = '50px';
+                    time_input.appendChild(seconds);
+
+                    fieldDiv.appendChild(time_input);
                     break;
                 case 'color input':
-                    data[field.name] = form.querySelector('[name="' + field.name + '"]').value;
+                    // We create an input element
+                    let color_input = document.createElement('input');
+                    color_input.type = 'color';
+                    color_input.name = field.name;
+
+                    fieldDiv.appendChild(color_input);
                     break;
                 default:
                     console.error('Unknown field type: ' + field.type);
@@ -307,68 +214,83 @@ function generateFormFromJson(card, modify = false) {
             }
         });
 
-        // Load the "cardSelection" from localStorage
-        let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
-
-        // Add the new card to the "cardSelection"
-        cardSelection.push(data);
-
-        // Have the form slide and fade out
-        form.style.transition = 'transform 1s ease, opacity 1s ease';
-        form.style.transform = 'translateY(-100%)';
-        form.style.opacity = '0';
-
-        // After a delay, we remove the form
-        setTimeout(() => {
-            form.remove();
-        }, 1000);
-
-        // We display a success message
-        let successMessage = document.createElement('div');
-        successMessage.textContent = 'Formulaire envoyé avec succès';
-        document.body.appendChild(successMessage);
-        setTimeout(() => {
-            successMessage.remove();
-        }, 3000);
-
-        let cardListUser = document.getElementById('cardListUser'); // Get the user's card list
-
-        // Clone the card and change the button text to "Modifier"
-        let cardElement = document.createElement('div');
-        cardElement.className = 'card';
-
-        let div = document.createElement('div');
-
-        let h3 = document.createElement('h3');
-        h3.textContent = card.name;
-        div.appendChild(h3);
-
-        let p = document.createElement('p');
-        p.textContent = card.description;
-        div.appendChild(p);
-
+        // We create a button element
         let button = document.createElement('button');
-        button.textContent = 'Modifier';
-        button.addEventListener('click', function() {
-            console.log('Modifier button clicked');
-            //cool down on button click
-            button.disabled = true;
-            setTimeout(() => {
-                button.disabled = false;
-            }, 1000);
+        button.textContent = 'Envoyer';
+        formElement.appendChild(button);
 
-            // Open the form
-            generateFormFromJson(card, true);
+        // Add a cancel button
+        let cancel = document.createElement('button');
+        cancel.textContent = 'Annuler';
+        cancel.type = 'button';
+        formElement.appendChild(cancel);
+
+        // We append the form to the body
+        document.body.appendChild(form);
+
+        // If cancel button is pressed, or escape key is pressed, we close the form
+        cancel.addEventListener('click', function() {
+            closeForm(form);
         });
-        div.appendChild(button);
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeForm(form);
+            }
+        });
 
-        cardElement.appendChild(div);
+        // We add an event listener to the form if the "Envoyer" button is clicked
+        formElement.addEventListener('submit', function(event) {
+            event.preventDefault();
+        
+            //Check if the form is filled
+            if (!check_form_filled(form)) {
+                resolve({complete: false, data: null}); // Resolve the promise here
+                return;
+            }
+        
+            // check the card
+            let data = {};
+            data.category = cardJson.category;
+            cardJson.fields.forEach(field => {
+                switch (field.type) {
+                    case 'number input':
+                        data[field.name] = form.querySelector('[name="' + field.name + '"]').value;
+                        break;
+                    case 'scrolllist':
+                        data[field.name] = form.querySelector('[name="' + field.name + '"]').value;
+                        break;
+                    case 'time input':
+                        let hours = form.querySelector('[name="' + field.name + '_hours"]').value;
+                        let minutes = form.querySelector('[name="' + field.name + '_minutes"]').value;
+                        let seconds = form.querySelector('[name="' + field.name + '_seconds"]').value;
+                        data[field.name] = hours + ':' + minutes + ':' + seconds;
+                        break;
+                    case 'color input':
+                        data[field.name] = form.querySelector('[name="' + field.name + '"]').value;
+                        break;
+                    default:
+                        console.error('Unknown field type: ' + field.type);
+                        break;
+                }
+            });
+        
+            // We close the form
+            closeForm(form);
+        
+            // We display a success message
+            let successMessage = document.createElement('div');
+            successMessage.textContent = 'Formulaire envoyé avec succès';
+            document.body.appendChild(successMessage);
+            setTimeout(() => {
+                successMessage.remove();
+            }, 3000);
+        
+            resolve({complete: true, data: data}); // Resolve the promise here
+        });
 
-        cardListUser.appendChild(cardElement);
-
-        // Save the card to localStorage
-        localStorage.setItem('cardSelection', JSON.stringify(cardSelection));
     });
+
+
 }
 
 // Function to check if the form is filled
@@ -399,35 +321,111 @@ function check_form_filled(form) {
     return pass;
 }
 
+function addNewCard(cardJson) {
+    // Create a random ID
+    let cardID = Math.random().toString(36).substring(7);
+    console.log('cardID: ' + cardID);
+
+    // Replace the "Ajouter" of the cardJson description with "Modifier"
+    cardJson.description = cardJson.description.replace('Ajouter', 'Modifier');
+
+    // Add the ID to cardJson
+    cardJson.id = cardID;
+
+
+    console.log('cardJson:');
+    console.log(cardJson);
+    console.log('----');
+
+    // Create a form from the cardJson
+    generateFormFromJson(cardJson).then(form => {
+
+        console.log('form:');
+        console.log(form);
+        console.log('----');
+
+        // If the form is complete, we add the card to the user's card list
+        if (form.complete) {
+
+            // Create a json with infos: the data, the cardJSON, and the ID
+            let savedCard = {
+                data: form.data,
+                cardJson: cardJson,
+                id: cardID
+            };
+
+            // Save the card
+            saveCard(savedCard);
+
+            // Create a card element
+            let cardElement = generateCardDiv(cardJson, false);
+
+            cardListUser.appendChild(cardElement);
+
+            // Display a success message
+            SuccessMessage('Carte ajoutée avec succès!');
+        }
+    }
+    );
+
+}
+
+//Function to update a card in the saved data
+function saveCard(savedCard) {
+    // Load the "cardSelection" from localStorage
+    let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
+
+    // If the card already exists, we remove it
+    let index = cardSelection.findIndex(card => card.id === savedCard.id);
+    if (index !== -1) {
+        cardSelection.splice(index, 1);
+    }
+
+    // Add the updated card to the "cardSelection"
+    cardSelection.push(savedCard);
+
+    // Save the card to localStorage
+    localStorage.setItem('cardSelection', JSON.stringify(cardSelection));
+}
+
 //function to generate the card's div
-function generateCardDiv(title, description, background_icon, background_alt, button_text, button_function) {
+function generateCardDiv(cardJson, isPlaceholder = true) {
+
     //create a div element
     let card = document.createElement('div');
     card.className = 'card';
+
     //create an img element
     let img = document.createElement('img');
-    img.src = background_icon;
-    img.alt = background_alt;
+    img.src = cardJson.image.icon;
+    img.alt = cardJson.image.alt;
+
     //create a div element
     let cardContent = document.createElement('div');
     cardContent.className = 'card-content';
+
     //create a h3 element
     let cardTitle = document.createElement('h3');
-    cardTitle.textContent = title;
+    cardTitle.textContent = cardJson.name;
+
     //create a p element
     let cardDescription = document.createElement('p');
-    cardDescription.textContent = description;
+    cardDescription.textContent = cardJson.description;
+
     //create a button element
     let cardButton = document.createElement('button');
-    cardButton.textContent = button_text;
-    //cooldown on button click
-    cardButton.addEventListener('click', function() {
-        cardButton.disabled = true;
-        setTimeout(() => {
-            cardButton.disabled = false;
-        }, 1000);
-        button_function();
-    });
+
+    //Depending on the button text, we add an event listener to the button
+    if (isPlaceholder) {
+        cardButton.textContent = "Ajouter";
+        // call addNewCard function
+        cardButton.addEventListener('click', function() {
+            addNewCard(cardJson);
+        });
+    } else {
+        cardButton.textContent = "Modifier";
+    }
+
     //append the elements to the card
     card.appendChild(img);
     cardContent.appendChild(cardTitle);
@@ -446,10 +444,7 @@ function generateCardsFromJson() {
             let cardListNew = document.getElementById('cardListNew');
             ['transport', 'repas', 'loisirs'].forEach(category => {
                 data[category].forEach(item => {
-                    let card = generateCardDiv(item.name, item.description, item.image.icon, item.image.alt, 'Remplir', function() {
-                        generateFormFromJson(item);
-                    }
-                    );
+                    let card = generateCardDiv(item, 'Remplir');
                     cardListNew.appendChild(card);
                 });
             });
@@ -458,66 +453,12 @@ function generateCardsFromJson() {
 
 // Function to load the saved cards from localStorage
 function loadSavedCards() {
-    // Show processing message
-    //toggleProcessingMessage(true);
-
-    // Load the "cardSelection" from localStorage
     let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
-    console.log('cardSelection:');
-    console.log(cardSelection);
-    console.log('----');
-    cardSelection.forEach(card => {
-        // Create the cards using the data from the localStorage and generateCardDiv
-        /*let carddiv = generateCardDiv(card.name, card.description, 'images/transport.png', 'Transport', 'Modifier', function() {
-            console.log('Modifier button clicked');
-            // Open the form
-            generateFormFromJson(carddiv, true);
-        }
-        );
-        let cardListUser = document.getElementById('cardListUser');
-        cardListUser.appendChild(card);*/
-
-        let cardListUser = document.getElementById('cardListUser'); // Get the user's card list
-
-        // Clone the card and change the button text to "Modifier"
-        let cardElement = document.createElement('div');
-        cardElement.className = 'card';
-
-        let div = document.createElement('div');
-
-        let h3 = document.createElement('h3');
-        h3.textContent = card.category;
-        div.appendChild(h3);
-
-        let p = document.createElement('p');
-        p.textContent = card.description;
-        div.appendChild(p);
-
-        let button = document.createElement('button');
-        button.textContent = 'Modifier';
-        button.addEventListener('click', function() {
-            console.log('Modifier button clicked');
-            // Open the form
-            generateFormFromJson(card, true);
-        });
-        div.appendChild(button);
-
-        cardElement.appendChild(div);
-
-        cardListUser.appendChild(cardElement);
-
-        
-
+    let cardListUser = document.getElementById('cardListUser');
+    cardSelection.forEach(savedCard => {
+        let card = generateCardDiv(savedCard.cardJson, false);
+        cardListUser.appendChild(card);
     });
-
-    // Save the cardSelection to localStorage
-    localStorage.setItem('cardSelection', JSON.stringify(cardSelection));
-
-    // Display the card list
-    console.log(cardSelection);
-
-    // Hide processing message
-    //toggleProcessingMessage(false);
 }
 
 console.log('formulaire.js loaded');
@@ -542,7 +483,7 @@ function sendFormData(formData) {
         if (response.ok) {
             console.log('Response: ', response);
             //success message
-            serverSuccess('Carbon footprint calculated successfully');
+            SuccessMessage('Carbon footprint calculated successfully');
             return response.json();
         } else {
             console.log('Response: ', response);
@@ -554,7 +495,7 @@ function sendFormData(formData) {
         return json;
     }).catch(err => {
 
-        serverError(err);
+        ErrorMessage(err);
     });
 }
 
@@ -578,7 +519,7 @@ function sendForm() {
         toggleProcessingMessage(true);
 
         //send the card list to the server
-        sendFormData(cardSelection);
+        sendFormData(cardSelection.data);
 
         // Clear the card list
         localStorage.setItem('cardSelection', JSON.stringify([]));
