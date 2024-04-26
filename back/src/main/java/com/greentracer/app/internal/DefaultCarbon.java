@@ -37,7 +37,7 @@ public class DefaultCarbon {
         this.journeeDao = journeeDao;
     }
 
-    public Map<Boolean, GreenTracerResponse> defaultCompute(String body) {
+    public Map<Boolean, GreenTracerResponse> defaultCompute(String body)  {
         Map<Boolean, GreenTracerResponse> res = new HashMap<>();
         ObjectMapper mapper = new ObjectMapper();
         try {

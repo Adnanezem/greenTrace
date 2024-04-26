@@ -4,9 +4,27 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UrlUtilsTest {
+
+
+
+    @Test
+    public void testPrivateConstructor() {
+        assertThrows(UnsupportedOperationException.class, () -> {
+            try {
+                Constructor<UrlUtils> constructor = UrlUtils.class.getDeclaredConstructor();
+                constructor.setAccessible(true);
+                constructor.newInstance();
+            } catch (InvocationTargetException e) {
+                throw (RuntimeException) e.getTargetException();
+            }
+        });
+    }
 
     @Test
     public void testGetUrlParts() {

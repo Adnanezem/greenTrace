@@ -62,11 +62,29 @@ public class JourneeDaoTest {
         assertEquals(j.getpatientId(), journee.getpatientId());
         assertEquals(j.getdate(), journee.getdate());
         assertEquals(j.getresultat(), journee.getresultat());
+        //a corriger
+        //assertEquals(journee, j);
     }
 
     @Test
     public void testGetAll() {
+
         assertNotNull(journeeDao.getAll());
+        User  userTest = new User();
+        userTest.setLogin("test2");
+        userTest.setPassword("test2");
+        userTest.setLname("test2");
+        userTest.setFname("test2");
+        userDao.create(userTest);
+
+        Journee journee2 = new Journee();
+        journee2.setpatientId("test2");
+        journee2.setdate(Date.valueOf("2021-01-01"));
+        journee2.setresultat(150.0f);
+        journeeDao.create(journee2);
+
+        assertEquals(journeeDao.getAll().size(), 2);
+        userDao.delete(userTest);
     }
 
     @Test
@@ -92,11 +110,39 @@ public class JourneeDaoTest {
     }
 
     @Test
+    public void testCreate() {
+        User userTest = new User();
+        userTest.setLogin("test2");
+        userTest.setPassword("test2");
+        userTest.setLname("test2");
+        userTest.setFname("test2");
+        userDao.create(userTest);
+
+        Journee journee = new Journee();
+        journee.setpatientId("test2");
+        journee.setdate(Date.valueOf("2024-01-01"));
+        journee.setresultat(150.0f);
+        assertTrue(journeeDao.create(journee));
+
+        //supression a la fin du test
+        userDao.delete(userTest);
+
+    }
+    @Test
     public void testGetByDate() {
         Journee j = journeeDao.getByDate("test", Date.valueOf("2021-01-01"));
         assertEquals(j.getpatientId(), journee.getpatientId());
         assertEquals(j.getdate(), journee.getdate());
         assertEquals(j.getresultat(), journee.getresultat());
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            journeeDao.getByDate("nonexistent", Date.valueOf("2022-02-02"));
+        });
+
+        String expectedMessage = "Aucune journée trouvée avec l'utilisateur et la date spécifiée.";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
 
