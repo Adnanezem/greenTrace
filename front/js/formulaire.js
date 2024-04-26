@@ -145,9 +145,44 @@ async function generateFormFromJson(cardJson, modify = false) {
                 if (index !== -1) {
                     data = cardSelection[index].data;
                 }
-
-                
             }
+
+            // Add a Delete button
+            let deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Supprimer';
+            deleteButton.type = 'button';
+            formElement.appendChild(deleteButton);
+
+            // Add an event listener to the Delete button
+            deleteButton.addEventListener('click', function() {
+                // We remove the card from the saved cards
+                let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
+                let index = cardSelection.findIndex(card => card.id === cardJson.id);
+                if (index !== -1) {
+                    cardSelection.splice(index, 1);
+                    localStorage.setItem('cardSelection', JSON.stringify(cardSelection));
+                }
+
+                // We remove the card from the DOM
+                let cardListUser = document.getElementById('cardListUser');
+                let cards = cardListUser.querySelectorAll('.card');
+                cards.forEach(card => {
+                    if (card.querySelector('h3').textContent === cardJson.name) {
+                        card.remove();
+                    }
+                });
+
+                // We close the form
+                closeForm(form);
+
+                // We display a success message
+                let successMessage = document.createElement('div');
+                successMessage.textContent = 'Carte supprimée avec succès';
+                document.body.appendChild(successMessage);
+                setTimeout(() => {
+                    successMessage.remove();
+                }, 3000);
+            });
         }
 
         // We loop through the fields
@@ -376,7 +411,7 @@ function addNewCard(cardJson) {
     console.log('----');
 
     // Create a form from the cardJson
-    generateFormFromJson(cardJson, true).then(form => {
+    generateFormFromJson(cardJson).then(form => {
 
         console.log('form:');
         console.log(form);
@@ -581,9 +616,6 @@ function sendForm() {
         //send the card list to the server
         sendFormData(cardSelection.data);
 
-        // Clear the card list
-        localStorage.setItem('cardSelection', JSON.stringify([]));
-
         // Clear the card list in the DOM (but keep the title) by moving the cards away
         let cardListUser = document.getElementById('cardListUser');
         let cards = cardListUser.querySelectorAll('.card');
@@ -597,6 +629,9 @@ function sendForm() {
                 card.remove();
             });
         }, 5000);
+
+        // Clear the card list in localStorage
+        localStorage.setItem('cardSelection', JSON.stringify([]));
 
         // Hide processing message
         //toggleProcessingMessage(false);
