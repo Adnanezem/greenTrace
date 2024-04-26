@@ -115,11 +115,12 @@ function loadCarbonHistoryDetail(date) {
 
 function getPreviousSevenDays(startDate) {
     const dates = [];
-    const date = new Date(startDate);
+    const baseDate = new Date(startDate);
 
     for (let i = 0; i < 7; i++) {
+        const date = new Date(baseDate);
+        date.setDate(baseDate.getDate() - i);
         dates.push(date);
-        date.setDate(date.getDate() - i);
     }
     return dates;
 }
