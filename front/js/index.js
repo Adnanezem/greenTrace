@@ -39,9 +39,15 @@ function loadCarbonHistory() {
             console.log('Response: ', response);
             return response.json();
         } else {
-            console.log('Response: ', response);
-            toggleProcessingMessage(false);
-            throw new Error("Erreur lors de la récupération de l'historique de l'utilisateur.")
+            if (response.status === 404) {
+                const bilanSection = document.querySelector('#historiqueBilans')
+                const noContentTxt = document.createTextNode("Vous n'avez pas de données disponible.");
+                bilanSection.appendChild(noContentTxt);
+            } else {
+                console.log('Response: ', response);
+                toggleProcessingMessage(false);
+                throw new Error("Erreur lors de la récupération de l'historique de l'utilisateur.")
+            }
         }
     }).then(json => {
         const bilanSection = document.querySelector('#historiqueBilans')
