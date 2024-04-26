@@ -65,7 +65,6 @@ public class AutorizationFilter implements Filter {
                         chain.doFilter(request, response);
                         return;
                     } else {
-
                         response.addHeader("Error", "When requesting users.");
                         response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden\nAccessing profile of other user.");
                         return;
@@ -90,6 +89,7 @@ public class AutorizationFilter implements Filter {
             chain.doFilter(request, response);
             return;
         }
+        response.addHeader("Error", url.toString());
         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while parsing url");
     }
 }
