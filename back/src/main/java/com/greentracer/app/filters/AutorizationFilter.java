@@ -73,18 +73,13 @@ public class AutorizationFilter implements Filter {
                 }
 
                 case "carbon" -> {
-                    if (request.getMethod() == "POST") {
+                    if(url[1].equals(user) || url[1].equals("compute")) {
                         chain.doFilter(request, response);
                         return;
                     } else {
-                        if(url[1].equals(user)) {
-                            chain.doFilter(request, response);
-                            return;
-                        } else {
-                            response.addHeader("Error", "When requesting carbon.");
-                            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden\nAccessing profile of other user.");
-                            return;
-                        }
+                        response.addHeader("Error", "When requesting carbon.");
+                        response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden\nAccessing profile of other user.");
+                        return;
                     }
                 }
                 default -> {
