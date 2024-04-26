@@ -132,6 +132,24 @@ async function generateFormFromJson(cardJson, modify = false) {
         fields.className = 'form_field_container';
         fieldset.appendChild(fields);
 
+        let data = null;
+
+        if (modify) {
+
+            // We get the data from the saved card
+            let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
+            //if cardSelection is empty, we set data to null
+            if (cardSelection.length > 0) {
+                // if the card is already saved, we get the data
+                let index = cardSelection.findIndex(card => card.id === cardJson.id);
+                if (index !== -1) {
+                    data = cardSelection[index].data;
+                }
+
+                
+            }
+        }
+
         // We loop through the fields
         cardJson.fields.forEach(field => {
             // We create a div element to contain the field
@@ -154,6 +172,9 @@ async function generateFormFromJson(cardJson, modify = false) {
                     number_input.type = 'number';
                     number_input.name = field.name;
                     number_input.placeholder = field.unit;
+                    if (modify && data) {
+                        number_input.value = data[field.name];
+                    }
                     fieldDiv.appendChild(number_input);
                     break;
                 case 'scrolllist':
@@ -166,6 +187,10 @@ async function generateFormFromJson(cardJson, modify = false) {
                         optionElement.textContent = option;
                         select.appendChild(optionElement);
                     });
+
+                    if (modify && data) {
+                        select.value = data[field.name];
+                    }
 
                     fieldDiv.appendChild(select);
                     break;
@@ -198,6 +223,13 @@ async function generateFormFromJson(cardJson, modify = false) {
                     seconds.style.width = '50px';
                     time_input.appendChild(seconds);
 
+                    if (modify && data) {
+                        let time = data[field.name].split(':');
+                        hours.value = time[0];
+                        minutes.value = time[1];
+                        seconds.value = time[2];
+                    }
+
                     fieldDiv.appendChild(time_input);
                     break;
                 case 'color input':
@@ -206,6 +238,10 @@ async function generateFormFromJson(cardJson, modify = false) {
                     color_input.type = 'color';
                     color_input.name = field.name;
 
+                    if (modify && data) {
+                        color_input.value = data[field.name];
+                    }
+
                     fieldDiv.appendChild(color_input);
                     break;
                 default:
@@ -213,6 +249,8 @@ async function generateFormFromJson(cardJson, modify = false) {
                     break;
             }
         });
+
+        
 
         // We create a button element
         let button = document.createElement('button');
@@ -338,7 +376,7 @@ function addNewCard(cardJson) {
     console.log('----');
 
     // Create a form from the cardJson
-    generateFormFromJson(cardJson).then(form => {
+    generateFormFromJson(cardJson, true).then(form => {
 
         console.log('form:');
         console.log(form);
@@ -424,6 +462,28 @@ function generateCardDiv(cardJson, isPlaceholder = true) {
         });
     } else {
         cardButton.textContent = "Modifier";
+        // call generateFormFromJson function
+        cardButton.addEventListener('click', function() {
+            generateFormFromJson(cardJson, true).then(form => {
+                console.log('Modify button, opening form:');
+                console.log(form);
+                console.log('----');
+                if (form.complete) {
+                    // Create a json with infos: the data, the cardJSON, and the ID
+                    let savedCard = {
+                        data: form.data,
+                        cardJson: cardJson,
+                        id: cardJson.id
+                    };
+
+                    // Save the card
+                    saveCard(savedCard);
+
+                    // Display a success message
+                    SuccessMessage('Carte modifiée avec succès!');
+                }
+            });
+        });
     }
 
     //append the elements to the card
@@ -444,7 +504,7 @@ function generateCardsFromJson() {
             let cardListNew = document.getElementById('cardListNew');
             ['transport', 'repas', 'loisirs'].forEach(category => {
                 data[category].forEach(item => {
-                    let card = generateCardDiv(item, 'Remplir');
+                    let card = generateCardDiv(item, true);
                     cardListNew.appendChild(card);
                 });
             });
@@ -453,15 +513,15 @@ function generateCardsFromJson() {
 
 // Function to load the saved cards from localStorage
 function loadSavedCards() {
+    console.log('loadSavedCards:');
     let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
     let cardListUser = document.getElementById('cardListUser');
     cardSelection.forEach(savedCard => {
         let card = generateCardDiv(savedCard.cardJson, false);
         cardListUser.appendChild(card);
     });
+    console.log('----');
 }
-
-console.log('formulaire.js loaded');
 
 function sendFormData(formData) {
     console.log('sendFormData:');
