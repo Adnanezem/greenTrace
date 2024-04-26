@@ -63,11 +63,7 @@ function loadCarbonHistory() {
             histTab.id = "userHistTab";
             console.log('previousDate: ', previousDate);
             previousDate.forEach(async date => {
-                const formattedDate = date.toLocaleDateString('fr-FR', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit'
-                }).replace(/\//g, '-');
+                const formattedDate = formatToSQLDate(date)
                 const res = await loadCarbonHistoryDetail(formattedDate);
                 const row = document.createElement("tr");
     
@@ -123,6 +119,14 @@ function getPreviousSevenDays(startDate) {
         dates.push(date);
     }
     return dates;
+}
+
+function formatToSQLDate(date) {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
 }
 
 loadPage();
