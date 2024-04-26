@@ -1,10 +1,29 @@
-package com.greentracer.app.internal;
+package com.greentracer.app.utils;
 
-import java.util.Map;
 
-import com.greentracer.app.responses.GreenTracerResponse;
+/**
+ * Implémente les méthodes pour calculer l'empreinte carbonne.
+ * Sources des chiffres utilisées :
+ * https://ekwateur.fr/blog/enjeux-environnementaux/empreinte-carbone-bus/
+ * https://calculis.net/co2
+ * https://avenirclimatique.org/calculer-empreinte-carbone-trajet/
+ *
+ */
+public final class CarbonCalculator {
 
-public class CarbonCalculator {
+    /**
+     * Constructeur privé (checkstyle).
+     */
+    private CarbonCalculator() {
+
+    }
+
+    /**
+     * 
+     * @param fuel
+     * @param distance
+     * @return
+     */
     public static float computeCarEmissions(String fuel, int distance) {
         float emissions = 0;
         if (!fuel.isBlank()) {
@@ -19,13 +38,19 @@ public class CarbonCalculator {
         return emissions;
     }
 
+    /**
+     * 
+     * @param fuel
+     * @param distance
+     * @return
+     */
     public static float computeBusEmissions(String fuel, int distance) {
         float emissions = 0;
         if (!fuel.isBlank()) {
             if (fuel.equals("Diesel")) {
-                emissions += 200 * distance; //1100 pour tt le bus
+                emissions += 200 * distance; // 1100 pour tt le bus
             } else if (fuel.equals("electric")) {
-                emissions += 80 * distance; //200
+                emissions += 80 * distance; // 200
             }
         }
         return emissions;
