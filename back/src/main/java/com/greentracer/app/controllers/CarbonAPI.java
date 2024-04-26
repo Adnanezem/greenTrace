@@ -68,7 +68,7 @@ public class CarbonAPI {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode json = mapper.readTree(body);
             String login = JSONUtils.getStringField(json, "login");
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date d = new Date(System.currentTimeMillis());
             String utilDate = dateFormat.format(d);
             logger.info("date URI : {}", utilDate);

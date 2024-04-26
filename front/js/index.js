@@ -64,10 +64,10 @@ function loadCarbonHistory() {
             console.log('previousDate: ', previousDate);
             previousDate.forEach(async date => {
                 const formattedDate = date.toLocaleDateString('fr-FR', {
-                    day: '2-digit',
+                    year: 'numeric',
                     month: '2-digit',
-                    year: 'numeric'
-                });
+                    day: '2-digit'
+                }).replace(/\//g, '-');
                 const res = await loadCarbonHistoryDetail(formattedDate);
                 const row = document.createElement("tr");
     
