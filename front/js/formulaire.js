@@ -289,8 +289,10 @@ async function generateFormFromJson(cardJson, modify = false) {
 
         // We create a button element
         let button = document.createElement('button');
-        button.textContent = 'Envoyer';
         formElement.appendChild(button);
+        // if modify is true, we set the button text to "Modifier", else we set it to "Envoyer"
+        button.textContent = modify ? 'Modifier' : 'Envoyer';
+        button.type = 'submit';
 
         // Add a cancel button
         let cancel = document.createElement('button');
