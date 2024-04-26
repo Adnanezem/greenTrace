@@ -20,6 +20,9 @@
 		<sonar.projectKey>multimif_multimif-8_AY6FQPc7u4zgX3p-IR2I</sonar.projectKey>
   		<sonar.projectName>Multimif 8</sonar.projectName>
   		<sonar.qualitygate.wait>true</sonar.qualitygate.wait>
+		<sonar.sources>src/main</sonar.sources>
+		<sonar.tests>src/test</sonar.tests>
+		<sonar.java.binaries>target/classes</sonar.java.binaries>
 	</properties>
 	<dependencies>
 		<dependency>

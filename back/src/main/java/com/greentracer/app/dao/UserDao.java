@@ -73,7 +73,10 @@ public class UserDao implements Dao<String, User> {
 
     public int countUsers() {
         String sql = "select COUNT(*) from \"user\"";
-        return jdbcTemplate.queryForObject(sql, Integer.class);
+        Integer result = jdbcTemplate.queryForObject(sql, Integer.class);
+        return result != null ? result : -1;
+            
+        
     }
 
 }

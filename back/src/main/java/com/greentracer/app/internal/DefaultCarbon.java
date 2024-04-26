@@ -94,13 +94,9 @@ public class DefaultCarbon {
             JourneeResponse resp = new JourneeResponse("journee resp", 200, j);
             res.put(true, resp);
             return res;
-        } catch (IllegalArgumentException e) {
-            res.put(false, new ErrorResponse("error", 400));
-            return res;
-        } catch (ParseException e) {
+        } catch (IllegalArgumentException | ParseException e) {
             res.put(false, new ErrorResponse("error", 400));
             return res;
         }
     }
-
 }
