@@ -610,13 +610,20 @@ function sendForm() {
             return;
         }
         //display the card list
-        console.log(cardSelection);
+        console.log("cardSelection: ",cardSelection);
 
         // Show processing message
         toggleProcessingMessage(true);
+        let dataToSend = {
+            login: sessionStorage.getItem("U-Login"),
+            form: []
+        };
 
+        cardSelection.forEach(elem => {
+            dataToSend.form.push(elem.data);
+        });
         //send the card list to the server
-        sendFormData(cardSelection.data);
+        sendFormData(dataToSend);
 
         // Clear the card list in the DOM (but keep the title) by moving the cards away
         let cardListUser = document.getElementById('cardListUser');
