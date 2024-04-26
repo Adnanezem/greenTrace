@@ -99,7 +99,7 @@ public class CarbonAPI {
         Iterator<Map.Entry<Boolean, GreenTracerResponse>> iterator = resMap.entrySet().iterator();
         Map.Entry<Boolean, GreenTracerResponse> res = iterator.next();
         if (!res.getKey()) {
-            if(res.getValue() != null) {
+            if (res.getValue() != null) {
                 return ResponseEntity.status(res.getValue().getStatus()).body(res.getValue());
             } else {
                 return ResponseEntity.notFound().build();
@@ -125,8 +125,12 @@ public class CarbonAPI {
         if (!res.getKey()) {
             return ResponseEntity.status(res.getValue().getStatus()).body(res.getValue());
         }
-        JourneeResponse response = (JourneeResponse) resMap.get(true);
-        return ResponseEntity.ok().body(response);
+        if (res.getValue() != null) {
+            JourneeResponse response = (JourneeResponse) res.getValue();
+            return ResponseEntity.ok().body(response);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }

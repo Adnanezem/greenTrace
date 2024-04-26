@@ -20,6 +20,7 @@ import com.greentracer.app.responses.ErrorResponse;
 import com.greentracer.app.responses.GreenTracerResponse;
 import com.greentracer.app.responses.HistoriqueResponse;
 import com.greentracer.app.responses.JourneeResponse;
+import com.greentracer.app.utils.CarbonCalculator;
 import com.greentracer.app.utils.JSONUtils;
 
 /**
@@ -43,61 +44,9 @@ public class DefaultCarbon {
             JsonNode json = mapper.readTree(body);
             JsonNode form = json.get("form");
             float resultat = 0;
-            if(form.isArray()) {
-                for(JsonNode node : form) {
-                    String category = JSONUtils.getStringField(node, "category");
-                    String fuel = JSONUtils.getStringField(node, "fuel type");
-                    String distance = JSONUtils.getStringField(node, "distance traveled");
-                    switch (category) {
-                        case "transport":
-                        String transportType = JSONUtils.getStringField(node, "transport type");
-                        switch (transportType) {
-                            case "Trajet en voiture":
-                                /*
-                                 * https://calculis.net/co2
-                                 */
-                                if(!fuel.isBlank()) {
-                                    if (fuel.equals("Diesel")) {
-                                        // Calcul pour voiture diesel
-                                        resultat += 160 * Integer.parseInt(distance);
-                                    }
-                                    if (fuel.equals("electric")) {
-                                        // Calcul pour voiture electric
-                                        resultat += 70 * Integer.parseInt(distance);
-                                    }
-                                    if (fuel.equals("gasoline")) {
-                                        // Calcul pour voiture gasoline
-                                        resultat += 180 * Integer.parseInt(distance);
-                                    }
-                                }
-                            break; 
-                            case "Trajet en bus":
-                            /*
-                             * https://ekwateur.fr/blog/enjeux-environnementaux/empreinte-carbone-bus/
-                             */
-                                if(!fuel.isBlank()) {
-
-                                    if(!fuel.isBlank()) {
-                                        if (fuel.equals("Diesel")) {
-                                            // Calcul pour bus diesel
-                                            resultat += 1100 * Integer.parseInt(distance);
-                                        }
-                                        if (fuel.equals("electric")) {
-                                            // Calcul pour bus electric
-                                            resultat += 200 * Integer.parseInt(distance);
-                                        }
-
-                                    }
-                                }
-                            break;
-                            default:
-                                break;
-                        }
-
-                            break;
-                        default:
-                            break;
-                    }
+            if (form.isArray()) {
+                for (JsonNode node : form) {
+                    resultat = computeCarbonEmission(node);
                 }
             }
             String login = JSONUtils.getStringField(json, "login");
@@ -146,4 +95,34 @@ public class DefaultCarbon {
         }
     }
 
+    /**
+     * Calcule les émissions carbonnes.
+     * 
+     * @param node la node json à traiter.
+     * @return le résultat en float.
+     */
+    private float computeCarbonEmission(final JsonNode node) {
+        float resultat = 0;
+        String category = JSONUtils.getStringField(node, "category");
+        String fuel = JSONUtils.getStringField(node, "fuel type");
+        String distance = JSONUtils.getStringField(node, "distance traveled");
+        switch (category) {
+            case "transport":
+                String transportType = JSONUtils.getStringField(node, "transport type");
+                switch (transportType) {
+                    case "Trajet en voiture":
+                        resultat += CarbonCalculator.computeCarEmissions(fuel, Integer.parseInt(distance));
+                        break;
+                    case "Trajet en bus":
+                        resultat += CarbonCalculator.computeBusEmissions(fuel, Integer.parseInt(distance));
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
+        return resultat;
+    }
 }
