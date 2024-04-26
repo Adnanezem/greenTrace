@@ -13,7 +13,6 @@ import com.greentracer.app.mappers.HistoriqueMapper;
 
 import com.greentracer.app.models.Historique;
 
-
 /**
  * Dao dédié aux journées.
  */
@@ -33,14 +32,13 @@ public class HistoriqueDao implements Dao<String, Historique> {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-
     @Override
-    public Historique getById(String id) throws IllegalArgumentException{
+    public Historique getById(String id) {
         try {
             Historique historique = jdbcTemplate.queryForObject(findRequest, new HistoriqueMapper(), id);
             return historique;
         } catch (IncorrectResultSizeDataAccessException e) {
-            throw new IllegalArgumentException("Aucun historique trouvé avec l'id spécifié.");
+            return null;
         }
 
     }
@@ -54,12 +52,11 @@ public class HistoriqueDao implements Dao<String, Historique> {
     public Boolean update(Historique historique) {
         return jdbcTemplate.update(updateRequest, historique.gethistorique()) > 0;
     }
-    
+
     @Override
     public Boolean delete(Historique historique) {
         return jdbcTemplate.update(deleteRequest, historique.getid()) > 0;
     }
-
 
     @Override
     public List<Historique> getAll() {
