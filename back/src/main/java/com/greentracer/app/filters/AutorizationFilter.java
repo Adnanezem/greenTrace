@@ -89,7 +89,7 @@ public class AutorizationFilter implements Filter {
             chain.doFilter(request, response);
             return;
         }
-        response.addHeader("Error", url.toString());
+        response.addHeader("Error-ajoutee", url.toString());
         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while parsing url");
     }
 }
