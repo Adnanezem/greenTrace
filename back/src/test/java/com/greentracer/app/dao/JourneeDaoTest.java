@@ -12,6 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 
 import java.sql.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -130,10 +131,10 @@ public class JourneeDaoTest {
     }
     @Test
     public void testGetByDate() {
-        Journee j = journeeDao.getByDate("test", Date.valueOf("2021-01-01"));
-        assertEquals(j.getpatientId(), journee.getpatientId());
-        assertEquals(j.getdate(), journee.getdate());
-        assertEquals(j.getresultat(), journee.getresultat());
+        List<Journee> j = journeeDao.getByDate("test", Date.valueOf("2021-01-01"));
+        assertEquals(j.get(0).getpatientId(), journee.getpatientId());
+        assertEquals(j.get(0).getdate(), journee.getdate());
+        assertEquals(j.get(0).getresultat(), journee.getresultat());
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             journeeDao.getByDate("nonexistent", Date.valueOf("2022-02-02"));
