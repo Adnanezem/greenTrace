@@ -1,6 +1,7 @@
 package com.greentracer.app.filters;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 import org.apache.logging.log4j.core.config.Order;
@@ -90,7 +91,7 @@ public class AutorizationFilter implements Filter {
             chain.doFilter(request, response);
             return;
         }
-        response.addHeader("Error-ajoutee", url.toString());
+        response.addHeader("Error-ajoutee", Arrays.toString(url));
         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while parsing url");
     }
 }
