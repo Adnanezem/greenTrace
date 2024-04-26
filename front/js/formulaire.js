@@ -163,17 +163,43 @@ function generateFormFromJson(card, modify = false) {
 
                 fieldDiv.appendChild(select);
                 break;
-            case 'time':
-                // We create an input element
-                let time_input = document.createElement('input');
-                time_input.type = 'time';
-                time_input.name = field.name;
+            case 'time input':
+                // Create 3 number input elements for hours, minutes and seconds
+                let time_input = document.createElement('div');
+                time_input.className = 'time_input';
+
+                let hours = document.createElement('input');
+                hours.type = 'number';
+                hours.name = field.name + '_hours';
+                hours.min = 0;
+                hours.max = 23;
+                hours.style.width = '50px';
+                time_input.appendChild(hours);
+
+                let minutes = document.createElement('input');
+                minutes.type = 'number';
+                minutes.name = field.name + '_minutes';
+                minutes.min = 0;
+                minutes.max = 59;
+                minutes.style.width = '50px';
+                time_input.appendChild(minutes);
+
+                let seconds = document.createElement('input');
+                seconds.type = 'number';
+                seconds.name = field.name + '_seconds';
+                seconds.min = 0;
+                seconds.max = 59;
+                seconds.style.width = '50px';
+                time_input.appendChild(seconds);
 
                 if (modify) {
                     let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
                     let cardIndex = cardSelection.length - 1;
                     if (cardSelection[cardIndex][field.name]) {
-                        time_input.value = cardSelection[cardIndex][field.name];
+                        let time = cardSelection[cardIndex][field.name].split(':');
+                        hours.value = time[0];
+                        minutes.value = time[1];
+                        seconds.value = time[2];
                     }
                 }
 
@@ -259,7 +285,26 @@ function generateFormFromJson(card, modify = false) {
         let data = {};
         data.category = card.category;
         card.fields.forEach(field => {
-            data[field.name] = formElement.querySelector('[name="' + field.name + '"]').value;
+            switch (field.type) {
+                case 'number input':
+                    data[field.name] = form.querySelector('[name="' + field.name + '"]').value;
+                    break;
+                case 'scrolllist':
+                    data[field.name] = form.querySelector('[name="' + field.name + '"]').value;
+                    break;
+                case 'time input':
+                    let hours = form.querySelector('[name="' + field.name + '_hours"]').value;
+                    let minutes = form.querySelector('[name="' + field.name + '_minutes"]').value;
+                    let seconds = form.querySelector('[name="' + field.name + '_seconds"]').value;
+                    data[field.name] = hours + ':' + minutes + ':' + seconds;
+                    break;
+                case 'color input':
+                    data[field.name] = form.querySelector('[name="' + field.name + '"]').value;
+                    break;
+                default:
+                    console.error('Unknown field type: ' + field.type);
+                    break;
+            }
         });
 
         // Load the "cardSelection" from localStorage

@@ -1,6 +1,7 @@
 package com.greentracer.app.dao;
 
 import com.greentracer.app.models.Historique;
+import com.greentracer.app.models.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,47 +19,49 @@ public class HistoriqueDaoTest {
 
     private Historique historique;
 
+    private User user;
+
     @Autowired
     private HistoriqueDao historiqueDao;
-/*
+
+    @Autowired
+    private UserDao userDao;
+
+    //allows to test the create request too
     @BeforeEach
     public void setUp() {
+        user = new User();
+        user.setLogin("testToDelete");
+        user.setPassword("test");
+        user.setLname("test");
+        user.setFname("test");
+        userDao.create(user);
         historique = new Historique();
-        historique.setidp("test");
+        historique.setidp(user.getLogin());
         historique.sethistorique(60.0f);
         historiqueDao.create(historique);
     }
 
-    //@AfterEach // a remmetre quand la requete sera correcte (DELETE)
+    @AfterEach // a remmetre quand la requete sera correcte (DELETE)
     public void tearDown() {
-        historiqueDao.delete(historique);
+        //historiqueDao.delete(historique);
+        userDao.delete(user);
     }
 
 
     @Test
     public void testGetById() {
-        Historique h = historiqueDao.getById("test");
+        Historique h = historiqueDao.getById("testToDelete");
         assertEquals(h.getidp(), historique.getidp());
         assertEquals(h.gethistorique(), historique.gethistorique());
     }
 
     @Test
-    public void testCreate() {
-        Historique h = new Historique();
-        h.setidp("test2");
-        h.sethistorique(0.0f);
-        assertTrue(historiqueDao.create(h));
-        assertEquals(historiqueDao.getById("test2").getidp(), "test2");
-        assertEquals(historiqueDao.getById("test2").gethistorique(), 0.0f);
-    }
-
-    @Test
     public void testUpdate() {
         historique.sethistorique(0.0f);
-        historique.setidp("testUpdated");
         assertTrue(historiqueDao.update(historique));
-        assertEquals(historiqueDao.getById("testUpdated").gethistorique(), 0.0f);
-        assertEquals(historiqueDao.getById("testUpdated").getidp(), "testUpdated");
+        assertEquals(historiqueDao.getById("testToDelete").gethistorique(), 0.0f);
+        assertEquals(historiqueDao.getById("testToDelete").getidp(), "testToDelete");
     }
 
     @Test
@@ -66,6 +69,6 @@ public class HistoriqueDaoTest {
         assertNotNull(historiqueDao.getAll());
     }
 
-*/
+
 
 }

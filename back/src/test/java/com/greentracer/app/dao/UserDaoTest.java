@@ -52,9 +52,9 @@ public class UserDaoTest {
 
     @Test
     public void testUpdate() {
-        user.setFname("testUpdated");
+        user.setFname("FnameUpdated");
         assertTrue(userDao.update(user));
-        //assertEquals(userDao.getById("test").getFname(), "testUpdated");
+        assertEquals(userDao.getById("test").getFname(), "FnameUpdated");
     }
 
     @Test
