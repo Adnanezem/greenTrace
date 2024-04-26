@@ -132,6 +132,59 @@ async function generateFormFromJson(cardJson, modify = false) {
         fields.className = 'form_field_container';
         fieldset.appendChild(fields);
 
+        let data = null;
+
+        if (modify) {
+
+            // We get the data from the saved card
+            let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
+            //if cardSelection is empty, we set data to null
+            if (cardSelection.length > 0) {
+                // if the card is already saved, we get the data
+                let index = cardSelection.findIndex(card => card.id === cardJson.id);
+                if (index !== -1) {
+                    data = cardSelection[index].data;
+                }
+            }
+
+            // Add a Delete button
+            let deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Supprimer';
+            deleteButton.type = 'button';
+            formElement.appendChild(deleteButton);
+
+            // Add an event listener to the Delete button
+            deleteButton.addEventListener('click', function() {
+                // We remove the card from the saved cards
+                let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
+                let index = cardSelection.findIndex(card => card.id === cardJson.id);
+                if (index !== -1) {
+                    cardSelection.splice(index, 1);
+                    localStorage.setItem('cardSelection', JSON.stringify(cardSelection));
+                }
+
+                // We remove the card from the DOM
+                let cardListUser = document.getElementById('cardListUser');
+                let cards = cardListUser.querySelectorAll('.card');
+                cards.forEach(card => {
+                    if (card.querySelector('h3').textContent === cardJson.name) {
+                        card.remove();
+                    }
+                });
+
+                // We close the form
+                closeForm(form);
+
+                // We display a success message
+                let successMessage = document.createElement('div');
+                successMessage.textContent = 'Carte supprimée avec succès';
+                document.body.appendChild(successMessage);
+                setTimeout(() => {
+                    successMessage.remove();
+                }, 3000);
+            });
+        }
+
         // We loop through the fields
         cardJson.fields.forEach(field => {
             // We create a div element to contain the field
@@ -154,6 +207,9 @@ async function generateFormFromJson(cardJson, modify = false) {
                     number_input.type = 'number';
                     number_input.name = field.name;
                     number_input.placeholder = field.unit;
+                    if (modify && data) {
+                        number_input.value = data[field.name];
+                    }
                     fieldDiv.appendChild(number_input);
                     break;
                 case 'scrolllist':
@@ -166,6 +222,10 @@ async function generateFormFromJson(cardJson, modify = false) {
                         optionElement.textContent = option;
                         select.appendChild(optionElement);
                     });
+
+                    if (modify && data) {
+                        select.value = data[field.name];
+                    }
 
                     fieldDiv.appendChild(select);
                     break;
@@ -198,6 +258,13 @@ async function generateFormFromJson(cardJson, modify = false) {
                     seconds.style.width = '50px';
                     time_input.appendChild(seconds);
 
+                    if (modify && data) {
+                        let time = data[field.name].split(':');
+                        hours.value = time[0];
+                        minutes.value = time[1];
+                        seconds.value = time[2];
+                    }
+
                     fieldDiv.appendChild(time_input);
                     break;
                 case 'color input':
@@ -205,6 +272,10 @@ async function generateFormFromJson(cardJson, modify = false) {
                     let color_input = document.createElement('input');
                     color_input.type = 'color';
                     color_input.name = field.name;
+
+                    if (modify && data) {
+                        color_input.value = data[field.name];
+                    }
 
                     fieldDiv.appendChild(color_input);
                     break;
@@ -214,10 +285,14 @@ async function generateFormFromJson(cardJson, modify = false) {
             }
         });
 
+        
+
         // We create a button element
         let button = document.createElement('button');
-        button.textContent = 'Envoyer';
         formElement.appendChild(button);
+        // if modify is true, we set the button text to "Modifier", else we set it to "Envoyer"
+        button.textContent = modify ? 'Modifier' : 'Envoyer';
+        button.type = 'submit';
 
         // Add a cancel button
         let cancel = document.createElement('button');
@@ -424,6 +499,28 @@ function generateCardDiv(cardJson, isPlaceholder = true) {
         });
     } else {
         cardButton.textContent = "Modifier";
+        // call generateFormFromJson function
+        cardButton.addEventListener('click', function() {
+            generateFormFromJson(cardJson, true).then(form => {
+                console.log('Modify button, opening form:');
+                console.log(form);
+                console.log('----');
+                if (form.complete) {
+                    // Create a json with infos: the data, the cardJSON, and the ID
+                    let savedCard = {
+                        data: form.data,
+                        cardJson: cardJson,
+                        id: cardJson.id
+                    };
+
+                    // Save the card
+                    saveCard(savedCard);
+
+                    // Display a success message
+                    SuccessMessage('Carte modifiée avec succès!');
+                }
+            });
+        });
     }
 
     //append the elements to the card
@@ -444,7 +541,7 @@ function generateCardsFromJson() {
             let cardListNew = document.getElementById('cardListNew');
             ['transport', 'repas', 'loisirs'].forEach(category => {
                 data[category].forEach(item => {
-                    let card = generateCardDiv(item, 'Remplir');
+                    let card = generateCardDiv(item, true);
                     cardListNew.appendChild(card);
                 });
             });
@@ -453,31 +550,27 @@ function generateCardsFromJson() {
 
 // Function to load the saved cards from localStorage
 function loadSavedCards() {
+    console.log('loadSavedCards:');
     let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
     let cardListUser = document.getElementById('cardListUser');
     cardSelection.forEach(savedCard => {
         let card = generateCardDiv(savedCard.cardJson, false);
         cardListUser.appendChild(card);
     });
+    console.log('----');
 }
-
-console.log('formulaire.js loaded');
 
 function sendFormData(formData) {
     console.log('sendFormData:');
-    const data = {
-        "form" : formData,
-        "U-Login" : sessionStorage.getItem("U-Login"),
-    }
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", sessionStorage.getItem("jwt"));
     headers.append("U-Login", sessionStorage.getItem("U-Login"));
-    console.log('data', data);
+    console.log('data', formData);
     fetch(COMPUTE_FORM_BACKEND_ENDPOINT, {
         method: 'POST',
         headers: headers,
-        body: JSON.stringify(data),
+        body: JSON.stringify(formData),
     })
     .then(response => {
         if (response.ok) {
@@ -513,16 +606,20 @@ function sendForm() {
             return;
         }
         //display the card list
-        console.log(cardSelection);
+        console.log("cardSelection: ",cardSelection);
 
         // Show processing message
         toggleProcessingMessage(true);
+        let dataToSend = {
+            login: sessionStorage.getItem("U-Login"),
+            form: []
+        };
 
+        cardSelection.forEach(elem => {
+            dataToSend.form.push(elem.data);
+        });
         //send the card list to the server
-        sendFormData(cardSelection.data);
-
-        // Clear the card list
-        localStorage.setItem('cardSelection', JSON.stringify([]));
+        sendFormData(dataToSend);
 
         // Clear the card list in the DOM (but keep the title) by moving the cards away
         let cardListUser = document.getElementById('cardListUser');
@@ -537,6 +634,9 @@ function sendForm() {
                 card.remove();
             });
         }, 5000);
+
+        // Clear the card list in localStorage
+        localStorage.setItem('cardSelection', JSON.stringify([]));
 
         // Hide processing message
         //toggleProcessingMessage(false);

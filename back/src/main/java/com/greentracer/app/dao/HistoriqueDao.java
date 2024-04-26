@@ -13,7 +13,6 @@ import com.greentracer.app.mappers.HistoriqueMapper;
 
 import com.greentracer.app.models.Historique;
 
-
 /**
  * Dao dédié aux journées.
  */
@@ -25,7 +24,8 @@ public class HistoriqueDao implements Dao<String, Historique> {
     private final String findRequest = "SELECT * FROM public.historique h INNER JOIN public.\"user\" u ON h.\"idP\" = u.login WHERE u.login = ?";
     private final String deleteRequest = "DELETE FROM public.historique WHERE \"idP\" IN (SELECT \"idP\" FROM public.\"user\" WHERE login = ?)";
     private final String updateRequest = "UPDATE public.historique SET historique = ? WHERE \"idP\" IN ( SELECT login FROM public.\"user\")";
-    private final String insertRequest = "INSERT INTO public.historique(\"idP\", historique) VALUES (?, ?)";
+    private final String insertRequest = "INSERT INTO public.historique(\"idP\", historique) SELECT ?, AVG(resultat) " +  
+                                           "FROM journee WHERE journee.\"Date\" >= CURRENT_DATE - INTERVAL '7 days' AND journee.\"Date\" <= CURRENT_DATE;";
     private final String findAllRequest = "select * from public.historique";
 
     @Autowired
@@ -33,33 +33,31 @@ public class HistoriqueDao implements Dao<String, Historique> {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-
     @Override
-    public Historique getById(String id) throws IllegalArgumentException{
+    public Historique getById(String id) {
         try {
             Historique historique = jdbcTemplate.queryForObject(findRequest, new HistoriqueMapper(), id);
             return historique;
         } catch (IncorrectResultSizeDataAccessException e) {
-            throw new IllegalArgumentException("Aucun historique trouvé avec l'id spécifié.");
+            return null;
         }
 
     }
 
     @Override
     public Boolean create(Historique historique) {
-        return jdbcTemplate.update(insertRequest, historique.getidp(), historique.gethistorique()) > 0;
+        return jdbcTemplate.update(insertRequest, historique.getidp()) > 0;
     }
 
     @Override
     public Boolean update(Historique historique) {
         return jdbcTemplate.update(updateRequest, historique.gethistorique()) > 0;
     }
-    
+
     @Override
     public Boolean delete(Historique historique) {
         return jdbcTemplate.update(deleteRequest, historique.getid()) > 0;
     }
-
 
     @Override
     public List<Historique> getAll() {

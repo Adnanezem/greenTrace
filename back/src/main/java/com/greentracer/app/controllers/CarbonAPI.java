@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.greentracer.app.internal.DefaultCarbon;
 import com.greentracer.app.responses.GreenTracerResponse;
 import com.greentracer.app.responses.HistoriqueResponse;
-import com.greentracer.app.responses.JourneeResponse;
+import com.greentracer.app.responses.JourneesResponse;
 import com.greentracer.app.utils.JSONUtils;
 
 /**
@@ -68,7 +68,7 @@ public class CarbonAPI {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode json = mapper.readTree(body);
             String login = JSONUtils.getStringField(json, "login");
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date d = new Date(System.currentTimeMillis());
             String utilDate = dateFormat.format(d);
             logger.info("date URI : {}", utilDate);
@@ -99,7 +99,7 @@ public class CarbonAPI {
         Iterator<Map.Entry<Boolean, GreenTracerResponse>> iterator = resMap.entrySet().iterator();
         Map.Entry<Boolean, GreenTracerResponse> res = iterator.next();
         if (!res.getKey()) {
-            if(res.getValue() != null) {
+            if (res.getValue() != null) {
                 return ResponseEntity.status(res.getValue().getStatus()).body(res.getValue());
             } else {
                 return ResponseEntity.notFound().build();
@@ -125,8 +125,12 @@ public class CarbonAPI {
         if (!res.getKey()) {
             return ResponseEntity.status(res.getValue().getStatus()).body(res.getValue());
         }
-        JourneeResponse response = (JourneeResponse) resMap.get(true);
-        return ResponseEntity.ok().body(response);
+        if (res.getValue() != null) {
+            JourneesResponse response = (JourneesResponse) res.getValue();
+            return ResponseEntity.ok().body(response);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }

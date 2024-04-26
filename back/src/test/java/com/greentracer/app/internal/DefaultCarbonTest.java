@@ -1,7 +1,7 @@
 package com.greentracer.app.internal;
 
 import org.mockito.Mockito;
-
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +13,7 @@ import com.greentracer.app.responses.ErrorResponse;
 import com.greentracer.app.responses.GreenTracerResponse;
 import com.greentracer.app.responses.HistoriqueResponse;
 import com.greentracer.app.responses.JourneeResponse;
-
+import com.greentracer.app.responses.JourneesResponse;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -21,6 +21,7 @@ import static org.mockito.Mockito.when;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -99,18 +100,20 @@ class DefaultCarbonTest {
     @Test
     void defaultGetDetailedHistory_validDate_returnsTrue() throws Exception {
         // Arrange
+        List<Journee> journees = new ArrayList<>();
         Journee journee = new Journee();
+        journees.add(journee);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         java.util.Date utilDate = dateFormat.parse("22-04-2024");
         Date sqlDate = new Date(utilDate.getTime());
-        when(journeeDaoMock.getByDate("user1", sqlDate)).thenReturn(journee);
+        when(journeeDaoMock.getByDate("user1", sqlDate)).thenReturn(journees);
 
         // Act
         Map<Boolean, GreenTracerResponse> result = defaultCarbon.defaultGetDetailledHistory("user1", "22-04-2024");
 
         // Assert
         assertTrue(result.containsKey(true));
-        assertTrue(result.get(true) instanceof JourneeResponse);
+        assertTrue(result.get(true) instanceof JourneesResponse);
     }
 
     @Test

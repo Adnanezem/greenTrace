@@ -53,19 +53,17 @@ function loadCarbonHistory() {
         if(json !== undefined) {
             const bilanSection = document.querySelector('#historiqueBilans')
             console.log(json);
-            const avgBilan = json.historique;
+            const avgBilan = json.historique.historique;
             const avgBilanTxt = document.createTextNode("Moyenne hebdomadaire: " + avgBilan);
             bilanSection.appendChild(avgBilanTxt);
             const currentDate = new Date();
+            console.log('currentDate: ', currentDate);
             previousDate = getPreviousSevenDays(currentDate);
             histTab = document.createElement("table");
             histTab.id = "userHistTab";
-            previousDate.array.forEach(async date => {
-                const formattedDate = date.toLocaleDateString('fr-FR', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric'
-                });
+            console.log('previousDate: ', previousDate);
+            previousDate.forEach(async date => {
+                const formattedDate = formatToSQLDate(date)
                 const res = await loadCarbonHistoryDetail(formattedDate);
                 const row = document.createElement("tr");
     
@@ -113,12 +111,22 @@ function loadCarbonHistoryDetail(date) {
 
 function getPreviousSevenDays(startDate) {
     const dates = [];
-    const date = new Date(startDate);
+    const baseDate = new Date(startDate);
 
     for (let i = 0; i < 7; i++) {
-        dates.push(new Date(date.getDate() - i));
+        const date = new Date(baseDate);
+        date.setDate(baseDate.getDate() - i);
+        dates.push(date);
     }
     return dates;
+}
+
+function formatToSQLDate(date) {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
 }
 
 loadPage();

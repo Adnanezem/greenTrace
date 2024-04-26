@@ -27,8 +27,6 @@ import org.slf4j.LoggerFactory;
 @RestController
 @RequestMapping("/users")
 public class UserAPI {
-    // TODO: CONNEXION, INSCRIPTION, DECONNEXION, MODIFICATION PRENOM / NOM / MDP.
-    // ACCES HISTORIQUE (=> REDIRECTION).
 
     private static Logger logger = LoggerFactory.getLogger(UserAPI.class);
 

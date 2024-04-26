@@ -57,6 +57,16 @@ public class JwtTokenUtilTest {
     }
 
 
+    @Test
+    public void testGetClaimFromToken() {
+        String token = jwtTokenUtil.generateToken("testUser");
+        assertEquals("testUser", jwtTokenUtil.getClaimFromToken(token, Claims::getSubject));
+    }
+
+
+
+
+
     //redéfinition de la méthode generateToken pour les besoins des tests
     private String generateToken(Map<String, Object> claims, String subject) {
         String encodedString = Base64.getEncoder().encodeToString(secret.getBytes());
@@ -64,4 +74,5 @@ public class JwtTokenUtilTest {
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
                 .signWith(SignatureAlgorithm.HS512, encodedString).compact();
     }
+
 }
