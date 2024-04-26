@@ -99,7 +99,12 @@ public class CarbonAPI {
         Iterator<Map.Entry<Boolean, GreenTracerResponse>> iterator = resMap.entrySet().iterator();
         Map.Entry<Boolean, GreenTracerResponse> res = iterator.next();
         if (!res.getKey()) {
-            return ResponseEntity.status(res.getValue().getStatus()).body(res.getValue());
+            if(res.getValue() != null) {
+                return ResponseEntity.status(res.getValue().getStatus()).body(res.getValue());
+            }
+            else {
+                return ResponseEntity.notFound().build();
+            }
         }
         HistoriqueResponse response = (HistoriqueResponse) resMap.get(true);
         return ResponseEntity.ok().body(response);

@@ -70,7 +70,9 @@ function loadCarbonHistory() {
 
             row.appendChild(col1);
             row.appendChild(col2);
+            histTab.appendChild(row)
         });
+        bilanSection.appendChild(histTab);
     }).catch(err => {
         serverError(err);
     });
@@ -91,10 +93,9 @@ function loadCarbonHistoryDetail(date) {
         } else {
             console.log('Response: ', response);
             toggleProcessingMessage(false);
-            throw new Error("Erreur lors de la récupération de l'historique de l'utilisateur.")
+            throw new Error("Erreur lors de la récupération des détail de l'historique de l'utilisateur.")
         }
     }).then(json => {
-        const bilanSection = document.querySelector('#historiqueBilans')
         console.log(json);
         return json;
     }).catch(err => {
