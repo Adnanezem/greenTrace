@@ -50,35 +50,37 @@ function loadCarbonHistory() {
             }
         }
     }).then(json => {
-        const bilanSection = document.querySelector('#historiqueBilans')
-        console.log(json);
-        const avgBilan = json.historique;
-        const avgBilanTxt = document.createTextNode("Moyenne hebdomadaire: " + avgBilan);
-        bilanSection.appendChild(avgBilanTxt);
-        const currentDate = new Date();
-        previousDate = getPreviousSevenDays(currentDate);
-        histTab = document.createElement("table");
-        histTab.id = "userHistTab";
-        previousDate.array.forEach(async date => {
-            const formattedDate = date.toLocaleDateString('fr-FR', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric'
+        if(json !== undefined) {
+            const bilanSection = document.querySelector('#historiqueBilans')
+            console.log(json);
+            const avgBilan = json.historique;
+            const avgBilanTxt = document.createTextNode("Moyenne hebdomadaire: " + avgBilan);
+            bilanSection.appendChild(avgBilanTxt);
+            const currentDate = new Date();
+            previousDate = getPreviousSevenDays(currentDate);
+            histTab = document.createElement("table");
+            histTab.id = "userHistTab";
+            previousDate.array.forEach(async date => {
+                const formattedDate = date.toLocaleDateString('fr-FR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+                const res = await loadCarbonHistoryDetail(formattedDate);
+                const row = document.createElement("tr");
+    
+                const col1 = document.createElement("td");
+                col1.textContent = formattedDate;
+    
+                const col2 = document.createElement("td");
+                col2.textContent = res.resultat;
+    
+                row.appendChild(col1);
+                row.appendChild(col2);
+                histTab.appendChild(row)
             });
-            const res = await loadCarbonHistoryDetail(formattedDate);
-            const row = document.createElement("tr");
-
-            const col1 = document.createElement("td");
-            col1.textContent = formattedDate;
-
-            const col2 = document.createElement("td");
-            col2.textContent = res.resultat;
-
-            row.appendChild(col1);
-            row.appendChild(col2);
-            histTab.appendChild(row)
-        });
-        bilanSection.appendChild(histTab);
+            bilanSection.appendChild(histTab);
+        }
     }).catch(err => {
         serverError(err);
     });
