@@ -25,7 +25,7 @@ public class HistoriqueDao implements Dao<String, Historique> {
     private final String findRequest = "SELECT * FROM public.historique h INNER JOIN public.\"user\" u ON h.\"idP\" = u.login WHERE u.login = ?";
     private final String deleteRequest = "DELETE FROM public.historique WHERE \"idP\" IN (SELECT \"idP\" FROM public.\"user\" WHERE login = ?)";
     private final String updateRequest = "UPDATE public.historique SET historique = ? WHERE \"idP\" IN ( SELECT login FROM public.\"user\")";
-    private final String insertRequest =  "INSERT INTO public.historique(idP, historique)  SELECT ?, AVG(resultat) FROM journne WHERE journne.date >= CURRENT_DATE - INTERVAL '7 days' AND journne.date <= CURRENT_DATE;";
+    private final String insertRequest = "INSERT INTO public.historique(idP, historique)  SELECT ?, AVG(resultat) FROM journne WHERE journne.date >= CURRENT_DATE - INTERVAL '7 days' AND journne.date <= CURRENT_DATE;";
     private final String findAllRequest = "select * from public.historique";
 
     @Autowired
