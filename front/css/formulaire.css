@@ -312,6 +312,11 @@ section h2{
     cursor: pointer;
 }
 
+.card_data {
+    /*hidden*/
+    display: none;
+}
+
 
 /* Formulaires cartes */
 
