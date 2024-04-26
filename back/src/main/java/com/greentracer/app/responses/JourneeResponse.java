@@ -1,5 +1,7 @@
 package com.greentracer.app.responses;
 
+import java.util.List;
+
 import com.greentracer.app.models.Journee;
 
 /**

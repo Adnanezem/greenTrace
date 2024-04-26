@@ -3,7 +3,9 @@ package com.greentracer.app.internal;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -22,6 +24,7 @@ import com.greentracer.app.responses.ErrorResponse;
 import com.greentracer.app.responses.GreenTracerResponse;
 import com.greentracer.app.responses.HistoriqueResponse;
 import com.greentracer.app.responses.JourneeResponse;
+import com.greentracer.app.responses.JourneesResponse;
 import com.greentracer.app.utils.CarbonCalculator;
 import com.greentracer.app.utils.JSONUtils;
 
@@ -95,9 +98,9 @@ public class DefaultCarbon {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             java.util.Date utilDate = dateFormat.parse(date);
             Date sqlDate = new Date(utilDate.getTime());
-            Journee j = journeeDao.getByDate(userId, sqlDate);
-            JourneeResponse resp = new JourneeResponse("journee resp", 200, j);
-            res.put(true, resp);
+            List<Journee> journees = journeeDao.getByDate(userId, sqlDate);
+            JourneesResponse responses = new JourneesResponse("journee resp", 200, journees);
+            res.put(true, responses);
             return res;
         } catch (IllegalArgumentException e) {
             logger.error("erreur defaultGetDetailledHistory: ", e);

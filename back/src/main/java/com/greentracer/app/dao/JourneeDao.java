@@ -40,8 +40,8 @@ public class JourneeDao implements Dao<String, Journee> {
     @Override
     public Journee getById(String id) {
         try {
-            Journee journee = jdbcTemplate.queryForObject(findRequest, new JourneeMapper(), id);
-            return journee;
+            List<Journee> journee = jdbcTemplate.query(findRequest, new JourneeMapper(), id);
+            return journee.get(journee.size() - 1);
         } catch (IncorrectResultSizeDataAccessException e) {
             throw new IllegalArgumentException("Aucune journée trouvée avec l'utilisateur spécifié.");
         }
@@ -49,14 +49,14 @@ public class JourneeDao implements Dao<String, Journee> {
     }
 
     /**
-     * Méthode spécifique à JourneeDao permettant de trouver une date précise.
+     * Méthode spécifique à JourneeDao permettant de trouver des dates précise.
      * @param userId
      * @param date
      * @return
      */
-    public Journee getByDate(String userId, Date date) {
+    public List<Journee> getByDate(String userId, Date date) {
         try {
-            Journee journee = jdbcTemplate.queryForObject(findByDateRequest, new JourneeMapper(), userId, date);
+            List<Journee> journee = jdbcTemplate.query(findByDateRequest, new JourneeMapper(), userId, date);
             return journee;
         } catch (IncorrectResultSizeDataAccessException e) {
             throw new IllegalArgumentException("Aucune journée trouvée avec l'utilisateur et la date spécifiée.");
