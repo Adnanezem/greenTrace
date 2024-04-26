@@ -25,7 +25,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.greentracer.app.internal.DefaultCarbon;
 import com.greentracer.app.responses.GreenTracerResponse;
 import com.greentracer.app.responses.HistoriqueResponse;
-import com.greentracer.app.responses.JourneeResponse;
 import com.greentracer.app.responses.JourneesResponse;
 import com.greentracer.app.utils.JSONUtils;
 
