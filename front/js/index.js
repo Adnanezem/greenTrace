@@ -118,7 +118,8 @@ function getPreviousSevenDays(startDate) {
     const date = new Date(startDate);
 
     for (let i = 0; i < 7; i++) {
-        dates.push(new Date(date.getDate() - i));
+        dates.push(date);
+        date.setDate(date.getDate() - i);
     }
     return dates;
 }
