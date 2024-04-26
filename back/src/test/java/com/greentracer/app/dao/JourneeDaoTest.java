@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 
 import java.sql.Date;
@@ -15,6 +16,7 @@ import java.sql.Date;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@ActiveProfiles("test")
 public class JourneeDaoTest {
 
     private Journee journee;
@@ -41,7 +43,7 @@ public class JourneeDaoTest {
 
         journee.setpatientId("test");
         journee.setdate(Date.valueOf("2021-01-01"));
-        journee.setresultat(0.0f);
+        journee.setresultat(150.0f);
         journeeDao.create(journee);
     }
 
