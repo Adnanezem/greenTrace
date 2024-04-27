@@ -80,12 +80,12 @@ function loadCarbonHistory() {
                 if(res.journees.length === 0) {
                     col2.textContent = "Pas de bilan pour cette date.";
                     if(date === currentDate) {
-                        bilanCO2Result.textContent = "Vous n'avez pas réalisé de bilan carbonne aujourd'hui.";
+                        bilanQuotidienSection.textContent = "Vous n'avez pas réalisé de bilan carbonne aujourd'hui.";
                     }
                 } else {
                     col2.textContent = finalRes;
                     if(date === currentDate) {
-                        bilanCO2Result.textContent = "Votre résultat quotidien est :" + finalRes + " unitéÀDéfinir.";
+                        bilanQuotidienSection.textContent = "Votre résultat quotidien est :" + finalRes + " unitéÀDéfinir.";
                     }
                 }
     
