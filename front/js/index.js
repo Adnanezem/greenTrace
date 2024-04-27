@@ -60,11 +60,9 @@ function loadCarbonHistory() {
             const currentDate = new Date();
             console.log('currentDate: ', currentDate);
             previousDate = getPreviousSevenDays(currentDate);
-            histTab = document.createElement("table");
-            histTab.id = "userHistTab";
+            histTab = document.querySelector("#userHistTab tbody");
             console.log('previousDate: ', previousDate);
             getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, histTab);
-            bilanSection.appendChild(histTab);
         }
     }).catch(err => {
         serverError(err);
