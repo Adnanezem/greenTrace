@@ -65,6 +65,7 @@ public class CarbonAPI {
             if (!res.getKey()) {
                 return ResponseEntity.badRequest().build();
             }
+            logger.info("body received: {}",body);
             ObjectMapper mapper = new ObjectMapper();
             JsonNode json = mapper.readTree(body);
             String login = JSONUtils.getStringField(json, "login");
@@ -88,7 +89,7 @@ public class CarbonAPI {
 
     /**
      * Retourne l'historique des empreintes carbonnes journalière avec une limite de
-     * 30 jours.
+     * 7 jours.
      * 
      * @return une réponse json.
      */

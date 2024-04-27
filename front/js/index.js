@@ -51,8 +51,8 @@ function loadCarbonHistory() {
         }
     }).then(json => {
         if(json !== undefined) {
-            const bilanSection = document.querySelector('#historiqueBilans')
-            const bilanQuotidienSection = document.querySelector('#bilanCO2Result')
+            const bilanSection = document.querySelector('#historiqueBilans');
+            const bilanQuotidienDiv = document.querySelector('#bilanCO2Result');
             console.log(json);
             const avgBilan = json.historique.historique;
             const avgBilanTxt = document.createTextNode("Moyenne hebdomadaire: " + avgBilan);
@@ -79,12 +79,12 @@ function loadCarbonHistory() {
 
                 if(res.journees.length === 0) {
                     col2.textContent = "Pas de bilan pour cette date.";
-                    if(date === currentDate) {
-                        bilanQuotidienSection.textContent = "Vous n'avez pas réalisé de bilan carbonne aujourd'hui.";
+                    if(date.toISOString() === currentDate.toISOString()) {
+                        bilanQuotidienDiv.textContent = "Vous n'avez pas réalisé de bilan carbonne aujourd'hui.";
                     }
                 } else {
                     col2.textContent = finalRes;
-                    if(date === currentDate) {
+                    if(date.toISOString() === currentDate.toISOString()) {
                         bilanQuotidienSection.textContent = "Votre résultat quotidien est :" + finalRes + " unitéÀDéfinir.";
                     }
                 }
