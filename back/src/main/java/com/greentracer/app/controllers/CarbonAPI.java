@@ -65,7 +65,7 @@ public class CarbonAPI {
             if (!res.getKey()) {
                 return ResponseEntity.badRequest().build();
             }
-            logger.info("body received: {}",body);
+            logger.info("body received: {}", body);
             ObjectMapper mapper = new ObjectMapper();
             JsonNode json = mapper.readTree(body);
             String login = JSONUtils.getStringField(json, "login");
