@@ -56,7 +56,7 @@ public class HistoriqueDao implements Dao<String, Historique> {
 
     @Override
     public Boolean delete(Historique historique) {
-        return jdbcTemplate.update(deleteRequest, historique.getid()) > 0;
+        return jdbcTemplate.update(deleteRequest, historique.getidp()) > 0;
     }
 
     @Override
