@@ -85,7 +85,7 @@ function loadCarbonHistory() {
                 } else {
                     col2.textContent = finalRes;
                     if(date.toISOString() === currentDate.toISOString()) {
-                        bilanQuotidienSection.textContent = "Votre résultat quotidien est :" + finalRes + " unitéÀDéfinir.";
+                        bilanQuotidienDiv.textContent = "Votre résultat quotidien est :" + finalRes + " unitéÀDéfinir.";
                     }
                 }
     
