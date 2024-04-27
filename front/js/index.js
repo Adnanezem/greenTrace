@@ -63,36 +63,7 @@ function loadCarbonHistory() {
             histTab = document.createElement("table");
             histTab.id = "userHistTab";
             console.log('previousDate: ', previousDate);
-            previousDate.forEach(async date => {
-                const formattedDate = formatToSQLDate(date)
-                const res = await loadCarbonHistoryDetail(formattedDate);
-                const row = document.createElement("tr");
-    
-                const col1 = document.createElement("td");
-                col1.textContent = formattedDate;
-
-                let finalRes = 0;
-                res.journees.forEach(elem => {
-                    finalRes += elem.resultat;
-                });
-                const col2 = document.createElement("td");
-
-                if(res.journees.length === 0) {
-                    col2.textContent = "Pas de bilan pour cette date.";
-                    if(date.toISOString() === currentDate.toISOString()) {
-                        bilanQuotidienDiv.textContent = "Vous n'avez pas réalisé de bilan carbonne aujourd'hui.";
-                    }
-                } else {
-                    col2.textContent = finalRes;
-                    if(date.toISOString() === currentDate.toISOString()) {
-                        bilanQuotidienDiv.textContent = "Votre résultat quotidien est :" + finalRes + " unitéÀDéfinir.";
-                    }
-                }
-    
-                row.appendChild(col1);
-                row.appendChild(col2);
-                histTab.appendChild(row)
-            });
+            getHistoryDetail(previousDate, bilanQuotidienDiv, histTab);
             bilanSection.appendChild(histTab);
         }
     }).catch(err => {
@@ -123,6 +94,39 @@ function loadCarbonHistoryDetail(date) {
     }).catch(err => {
         serverError(err);
     });
+}
+
+async function getHistoryDetail(previousDate, bilanQuotidienDiv, histTab) {
+    for (const date of previousDate) {
+        const formattedDate = formatToSQLDate(date);
+        const res = await loadCarbonHistoryDetail(formattedDate);
+        const row = document.createElement("tr");
+
+        const col1 = document.createElement("td");
+        col1.textContent = formattedDate;
+
+        let finalRes = 0;
+        res.journees.forEach(elem => {
+            finalRes += elem.resultat;
+        });
+        const col2 = document.createElement("td");
+
+        if (res.journees.length === 0) {
+            col2.textContent = "Pas de bilan pour cette date.";
+            if (date.toISOString() === currentDate.toISOString()) {
+                bilanQuotidienDiv.textContent = "Vous n'avez pas réalisé de bilan carbone aujourd'hui.";
+            }
+        } else {
+            col2.textContent = finalRes;
+            if (date.toISOString() === currentDate.toISOString()) {
+                bilanQuotidienDiv.textContent = "Votre résultat quotidien est :" + finalRes + " unitéÀDéfinir.";
+            }
+        }
+
+        row.appendChild(col1);
+        row.appendChild(col2);
+        histTab.appendChild(row);
+    }
 }
 
 function getPreviousSevenDays(startDate) {
