@@ -52,7 +52,7 @@ public class DefaultCarbon {
             float resultat = 0;
             if (form.isArray()) {
                 for (JsonNode node : form) {
-                    resultat = computeCarbonEmission(node);
+                    resultat += computeCarbonEmission(node);
                 }
             }
             String login = JSONUtils.getStringField(json, "login");
@@ -72,7 +72,6 @@ public class DefaultCarbon {
             }
             res.put(true, resp);
         } catch (JsonProcessingException e) {
-            //e.printStackTrace();
             res.put(false, new ErrorResponse("Error in compute", 400));
         }
         return res;

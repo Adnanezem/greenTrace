@@ -7,6 +7,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -26,7 +27,7 @@ public class JourneeDao implements Dao<String, Journee> {
     private final JdbcTemplate jdbcTemplate;
 
     private final String findRequest = "SELECT * FROM public.journee INNER JOIN public.user  ON \"idP\" = login WHERE login = ?";
-    private final String findByDateRequest = "SELECT * FROM public.journee INNER JOIN public.user ON \"idP\" = login WHERE login = ? AND \"Date\" = ?";
+    private final String findByDateRequest = "SELECT * FROM public.journee WHERE \"idP\" = ? AND \"Date\" = ?";
     private final String deleteRequest = "DELETE FROM public.journee WHERE \"idP\" = ?";
     private final String updateRequest = "UPDATE public.journee SET \"Date\" = ?, resultat = ? WHERE \"idP\" = ?";
     private final String insertRequest = "INSERT INTO public.journee( \"idP\", \"Date\", resultat) VALUES (?, ?, ?)";
@@ -40,8 +41,11 @@ public class JourneeDao implements Dao<String, Journee> {
     @Override
     public Journee getById(String id) {
         try {
-            List<Journee> journee = jdbcTemplate.query(findRequest, new JourneeMapper(), id);
-            return journee.get(journee.size() - 1);
+            List<Journee> journees = jdbcTemplate.query(findRequest, new JourneeMapper(), id);
+            if(journees.isEmpty()) {
+                throw new IllegalArgumentException("Aucune journée trouvée avec l'utilisateur spécifié.");
+            }
+            return journees.get(journees.size() - 1);
         } catch (IncorrectResultSizeDataAccessException e) {
             throw new IllegalArgumentException("Aucune journée trouvée avec l'utilisateur spécifié.");
         }
@@ -56,9 +60,9 @@ public class JourneeDao implements Dao<String, Journee> {
      */
     public List<Journee> getByDate(String userId, Date date) {
         try {
-            List<Journee> journee = jdbcTemplate.query(findByDateRequest, new JourneeMapper(), userId, date);
-            return journee;
-        } catch (IncorrectResultSizeDataAccessException e) {
+            List<Journee> journees = jdbcTemplate.query(findByDateRequest, new JourneeMapper(), userId, date);
+            return journees;
+        } catch (DataAccessException e) {
             throw new IllegalArgumentException("Aucune journée trouvée avec l'utilisateur et la date spécifiée.");
         }
 
