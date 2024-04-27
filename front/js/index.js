@@ -63,7 +63,7 @@ function loadCarbonHistory() {
             histTab = document.createElement("table");
             histTab.id = "userHistTab";
             console.log('previousDate: ', previousDate);
-            getHistoryDetail(previousDate, bilanQuotidienDiv, histTab);
+            getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, histTab);
             bilanSection.appendChild(histTab);
         }
     }).catch(err => {
@@ -96,7 +96,7 @@ function loadCarbonHistoryDetail(date) {
     });
 }
 
-async function getHistoryDetail(previousDate, bilanQuotidienDiv, histTab) {
+async function getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, histTab) {
     for (const date of previousDate) {
         const formattedDate = formatToSQLDate(date);
         const res = await loadCarbonHistoryDetail(formattedDate);
