@@ -27,7 +27,7 @@ public final class CarbonCalculator {
     public static float computeCarEmissions(String fuel, int distance) {
         float emissions = 0;
         if (!fuel.isBlank()) {
-            if (fuel.equals("Diesel")) {
+            if (fuel.equals("diesel")) {
                 emissions += 160 * distance;
             } else if (fuel.equals("electric")) {
                 emissions += 70 * distance;
@@ -47,7 +47,7 @@ public final class CarbonCalculator {
     public static float computeBusEmissions(String fuel, int distance) {
         float emissions = 0;
         if (!fuel.isBlank()) {
-            if (fuel.equals("Diesel")) {
+            if (fuel.equals("diesel")) {
                 emissions += 200 * distance; // 1100 pour tt le bus
             } else if (fuel.equals("electric")) {
                 emissions += 80 * distance; // 200
