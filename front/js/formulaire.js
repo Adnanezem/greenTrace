@@ -323,9 +323,11 @@ async function generateFormFromJson(cardJson, modify = false) {
                 return;
             }
         
-            // check the card
+            // We create a json with the data
             let data = {};
+
             data.category = cardJson.category;
+            data.type = cardJson.name;
             cardJson.fields.forEach(field => {
                 switch (field.type) {
                     case 'number input':
