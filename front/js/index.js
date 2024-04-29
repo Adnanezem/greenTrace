@@ -63,6 +63,7 @@ function loadCarbonHistory() {
             histTab = document.querySelector("#userHistTab tbody");
             console.log('previousDate: ', previousDate);
             history = await getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, histTab);
+            console.log('history: ',history);
             drawCarbonHistoryChart(history);
         }
     }).catch(err => {
