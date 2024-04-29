@@ -30,6 +30,8 @@ public class DefaultUser {
     private final UserDao userDao;
     private final JwtTokenUtil jwt;
 
+    private static final String FORMAT_JSON_NON_RESPECTE = "Format JSON non respecté";
+
     /**
      * Constructeur par défaut.
      * 
@@ -83,8 +85,8 @@ public class DefaultUser {
                 res.put(false, err);
             }
         } catch (JsonProcessingException e) {
-            logger.error("Format JSON non respecté : {}", body);
-            ErrorResponse err = new ErrorResponse("Format JSON non respecté.", 400);
+            logger.error(FORMAT_JSON_NON_RESPECTE + " : {}", body);
+            ErrorResponse err = new ErrorResponse(FORMAT_JSON_NON_RESPECTE + ".", 400);
             res.put(false, err);
             return res;
         } catch (IllegalArgumentException e) {
@@ -142,8 +144,8 @@ public class DefaultUser {
                 return res;
             }
         } catch (JsonProcessingException e) {
-            logger.error("Format JSON non respecté : {}", body);
-            ErrorResponse err = new ErrorResponse("Format JSON non respecté.", 400);
+            logger.error(FORMAT_JSON_NON_RESPECTE + " : {}", body);
+            ErrorResponse err = new ErrorResponse(FORMAT_JSON_NON_RESPECTE + ".", 400);
             res.put(false, err);
             return res;
         }
@@ -229,8 +231,8 @@ public class DefaultUser {
             res.put(false, err);
             return res;
         } catch (JsonProcessingException e) {
-            logger.error("Format JSON non respecté : {}", body);
-            ErrorResponse err = new ErrorResponse("Format JSON non respecté.", 400);
+            logger.error(FORMAT_JSON_NON_RESPECTE + " : {}", body);
+            ErrorResponse err = new ErrorResponse(FORMAT_JSON_NON_RESPECTE + ".", 400);
             res.put(false, err);
             return res;
         }

@@ -14,6 +14,8 @@ import com.greentracer.app.responses.TestRecord;
 public class DefaultGreenTracer {
     private Gestion gs;
 
+    private static final String HELLO = "Hello ";
+
     /**
      * Constructeur par défaut.
      * @param gestion
@@ -30,13 +32,13 @@ public class DefaultGreenTracer {
     public TestRecord greeting(String login) {
         try {
             User u = gs.helloUser(login);
-            TestRecord t = new TestRecord("Hello " + u.getFname() + " !");
+            TestRecord t = new TestRecord(HELLO + u.getFname() + " !");
             System.out.println(t.content());
             return t;
         } catch (SQLException e) {
-            TestRecord t = new TestRecord("Hello " + login + " !");
+            TestRecord t = new TestRecord(HELLO + login + " !");
             System.out.println(t.content());
-            return new TestRecord("Hello " + login + " !");
+            return new TestRecord(HELLO + login + " !");
         }
     }
 }
