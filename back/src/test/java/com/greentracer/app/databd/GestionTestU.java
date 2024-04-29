@@ -26,7 +26,7 @@ public class GestionTestU {
     }
 
     @Test
-    public void testHelloUser() throws SQLException {
+    public void testHelloUserReturnsUser() throws SQLException {
         String login = "testLogin";
         User user = new User(login, "1234", "toto", "titi");
         when(userDao.getById(login)).thenReturn(user);
@@ -38,7 +38,7 @@ public class GestionTestU {
     }
 
     @Test
-    public void testHelloUserThrowsIllegalArgumentException() throws SQLException {
+    public void testHelloUserReturnsDefaultUserWhenIllegalArgumentException() throws SQLException {
         String login = "testLogin";
         when(userDao.getById(login)).thenThrow(new IllegalArgumentException());
 
@@ -47,16 +47,19 @@ public class GestionTestU {
         assertNotNull(result);
         assertEquals(login, result.getLogin());
         assertEquals("1234", result.getPassword());
-        assertEquals("toto", result.getLname());
-        assertEquals("titi", result.getFname());
+        assertEquals("toto", result.getFname());
+        assertEquals("titi", result.getLname());
         verify(userDao, times(1)).getById(login);
     }
 
     @Test
-    public void testHelloUserThrowsRuntimeException() {
+    public void testHelloUserReturnsNullWhenUserNotFound() throws SQLException {
         String login = "testLogin";
-        when(userDao.getById(login)).thenThrow(new RuntimeException());
-        assertThrows(RuntimeException.class, () -> gestion.helloUser(login));
+        when(userDao.getById(login)).thenReturn(null);
+
+        User result = gestion.helloUser(login);
+
+        assertNull(result);
         verify(userDao, times(1)).getById(login);
     }
 }

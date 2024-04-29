@@ -113,7 +113,7 @@ public class DefaultCarbon {
      * @param node la node json à traiter.
      * @return le résultat en float.
      */
-    private float computeCarbonEmission(final JsonNode node) {
+    float computeCarbonEmission(final JsonNode node) {
         float resultat = 0;
         String category = JSONUtils.getStringField(node, "category");
         String fuel = JSONUtils.getStringField(node, "fuel type");

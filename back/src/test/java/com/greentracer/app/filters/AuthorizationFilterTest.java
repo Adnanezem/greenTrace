@@ -44,8 +44,26 @@ class AuthorizationFilterTest {
         verify(request, never()).getHeader("Authorization");
     }
 
+    @Test
+    public void whenUrlIsUsersAndSecondPartEqualsUser_thenContinueChain() throws Exception {
+        when(request.getRequestURI()).thenReturn("/users/user");
+        when(request.getHeader("U-Login")).thenReturn("user");
 
+        autorizationFilter.doFilter(request, response, filterChain);
 
-    //////// a finir
+        verify(filterChain, times(1)).doFilter(request, response);
+        verify(response, never()).sendError(anyInt(), anyString());
+    }
+
+    @Test
+    public void whenUrlIsCarbonAndSecondPartEqualsUserOrCompute_thenContinueChain() throws Exception {
+        when(request.getRequestURI()).thenReturn("/carbon/user");
+        when(request.getHeader("U-Login")).thenReturn("user");
+
+        autorizationFilter.doFilter(request, response, filterChain);
+
+        verify(filterChain, times(1)).doFilter(request, response);
+        verify(response, never()).sendError(anyInt(), anyString());
+    }
 
 }
