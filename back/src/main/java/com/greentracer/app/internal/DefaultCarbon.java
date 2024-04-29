@@ -120,7 +120,7 @@ public class DefaultCarbon {
         String distance = JSONUtils.getStringField(node, "distance traveled");
         switch (category) {
             case "transport":
-                String transportType = JSONUtils.getStringField(node, "transport type");
+                String transportType = JSONUtils.getStringField(node, "type");
                 switch (transportType) {
                     case "Trajet en voiture":
                         resultat += CarbonCalculator.computeCarEmissions(fuel, Integer.parseInt(distance));
