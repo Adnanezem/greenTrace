@@ -25,11 +25,11 @@ public class UserDao implements Dao<String, User> {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private final String findRequest = "select * from public.\"user\" where login = ?";
-    private final String deleteRequest = "delete from public.\"user\" where login = ?";
-    private final String updateRequest = "UPDATE public.user SET mdps = ?, nom = ?, prenom = ? WHERE login = ?";
-    private final String findAllRequest = "select * from public.\"user\"";
-    private final String insertRequest = "insert into public.\"user\"(login, prenom, nom, mdps) values(?,?,?,?)";
+    private static final String findRequest = "select * from public.\"user\" where login = ?";
+    private static final String deleteRequest = "delete from public.\"user\" where login = ?";
+    private static final String updateRequest = "UPDATE public.user SET mdps = ?, nom = ?, prenom = ? WHERE login = ?";
+    private static final String findAllRequest = "select * from public.\"user\"";
+    private static final String insertRequest = "insert into public.\"user\"(login, prenom, nom, mdps) values(?,?,?,?)";
 
     @Autowired
     public UserDao(DataSource dataSource) {

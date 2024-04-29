@@ -25,12 +25,12 @@ public class JourneeDao implements Dao<String, Journee> {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private final String findRequest = "SELECT * FROM public.journee INNER JOIN public.user  ON \"idP\" = login WHERE login = ?";
-    private final String findByDateRequest = "SELECT * FROM public.journee WHERE \"idP\" = ? AND \"Date\" = ?";
-    private final String deleteRequest = "DELETE FROM public.journee WHERE \"idP\" = ?";
-    private final String updateRequest = "UPDATE public.journee SET \"Date\" = ?, resultat = ? WHERE \"idP\" = ?";
-    private final String insertRequest = "INSERT INTO public.journee( \"idP\", \"Date\", resultat) VALUES (?, ?, ?)";
-    private final String findAllRequest = "select * from public.journee";
+    private static final String findRequest = "SELECT * FROM public.journee INNER JOIN public.user  ON \"idP\" = login WHERE login = ?";
+    private static final String findByDateRequest = "SELECT * FROM public.journee WHERE \"idP\" = ? AND \"Date\" = ?";
+    private static final String deleteRequest = "DELETE FROM public.journee WHERE \"idP\" = ?";
+    private static final String updateRequest = "UPDATE public.journee SET \"Date\" = ?, resultat = ? WHERE \"idP\" = ?";
+    private static final String insertRequest = "INSERT INTO public.journee( \"idP\", \"Date\", resultat) VALUES (?, ?, ?)";
+    private static final String findAllRequest = "select * from public.journee";
 
     @Autowired
     public JourneeDao(DataSource dataSource) {

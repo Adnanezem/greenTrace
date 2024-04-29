@@ -21,10 +21,10 @@ public class HistoriqueDao implements Dao<String, Historique> {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private final String findRequest = "SELECT * FROM public.historique h INNER JOIN public.\"user\" u ON h.\"idP\" = u.login WHERE u.login = ?";
-    private final String deleteRequest = "DELETE FROM public.historique WHERE \"idP\" IN (SELECT \"idP\" FROM public.\"user\" WHERE login = ?)";
-    private final String updateRequest = "UPDATE public.historique SET historique = ? WHERE \"idP\" IN ( SELECT login FROM public.\"user\")";
-    private final String insertRequest = "INSERT INTO public.historique(\"idP\", historique)\n" +
+    private static final String findRequest = "SELECT * FROM public.historique h INNER JOIN public.\"user\" u ON h.\"idP\" = u.login WHERE u.login = ?";
+    private static final String deleteRequest = "DELETE FROM public.historique WHERE \"idP\" IN (SELECT \"idP\" FROM public.\"user\" WHERE login = ?)";
+    private static final String updateRequest = "UPDATE public.historique SET historique = ? WHERE \"idP\" IN ( SELECT login FROM public.\"user\")";
+    private static final String insertRequest = "INSERT INTO public.historique(\"idP\", historique)\n" +
             "SELECT \"idP\", AVG(daily_sum)\n" +
             "FROM (\n" +
             "    SELECT journee.\"idP\", journee.\"Date\", SUM(journee.resultat) AS daily_sum\n" +
@@ -35,7 +35,7 @@ public class HistoriqueDao implements Dao<String, Historique> {
             "    GROUP BY journee.\"idP\", journee.\"Date\"\n" +
             ") AS daily_results\n" +
             "GROUP BY \"idP\";\n";
-    private final String findAllRequest = "select * from public.historique";
+    private static final String findAllRequest = "select * from public.historique";
 
     @Autowired
     public HistoriqueDao(DataSource dataSource) {
