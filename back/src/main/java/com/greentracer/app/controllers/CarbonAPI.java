@@ -94,7 +94,7 @@ public class CarbonAPI {
      * @return une réponse json.
      */
     @GetMapping("/{id}/history")
-    public ResponseEntity<GreenTracerResponse > getHistory(@PathVariable String id) {
+    public ResponseEntity<GreenTracerResponse> getHistory(@PathVariable String id) {
         Map<Boolean, GreenTracerResponse> resMap = new HashMap<>();
         resMap = def.defaultGetHistory(id);
         Iterator<Map.Entry<Boolean, GreenTracerResponse>> iterator = resMap.entrySet().iterator();
@@ -118,7 +118,7 @@ public class CarbonAPI {
      * @return une réponse json.
      */
     @GetMapping("/{id}/history/{date}")
-    public ResponseEntity<GreenTracerResponse > getDetailledHistory(@PathVariable String id, @PathVariable String date) {
+    public ResponseEntity<GreenTracerResponse> getDetailledHistory(@PathVariable String id, @PathVariable String date) {
         Map<Boolean, GreenTracerResponse> resMap = new HashMap<>();
         resMap = def.defaultGetDetailledHistory(id, date);
         Iterator<Map.Entry<Boolean, GreenTracerResponse>> iterator = resMap.entrySet().iterator();
