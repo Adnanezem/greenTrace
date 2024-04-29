@@ -3,10 +3,10 @@ package com.greentracer.app.responses;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ErrorResponseTest {
+class ErrorResponseTest {
 
     @Test
-    public void testErrorResponseConstructorAndGetters() {
+    void testErrorResponseConstructorAndGetters() {
         ErrorResponse errorResponse = new ErrorResponse("Test Error", 404);
 
         assertEquals("Test Error", errorResponse.getMessage());
@@ -14,7 +14,7 @@ public class ErrorResponseTest {
     }
 
     @Test
-    public void testErrorResponseSetters() {
+    void testErrorResponseSetters() {
         ErrorResponse errorResponse = new ErrorResponse("Test Error", 404);
         errorResponse.setMessage("New Test Error");
         errorResponse.setStatus(500);

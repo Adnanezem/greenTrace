@@ -135,7 +135,8 @@ public class DefaultUser {
                 return res;
             }
             User u = new User(login, password, lname, fname);
-            if (userDao.create(u)) {
+            Boolean b = userDao.create(u);
+            if (Boolean.TRUE.equals(b)) {
                 res.put(true, null);
             } else {
                 logger.error("Problème lors de la création d'un user.");

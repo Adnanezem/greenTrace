@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 /**
  * Tests pour l'API User.
  */
-public class UserAPITest {
+class UserAPITest {
 
     @Mock
     private DefaultUser defaultUser;

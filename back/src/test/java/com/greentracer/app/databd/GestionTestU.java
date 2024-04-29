@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class GestionTestU {
+class GestionTestU {
 
     @Mock
     private UserDao userDao;

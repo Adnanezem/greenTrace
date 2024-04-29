@@ -16,7 +16,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @WebMvcTest(GreenTracer.class)
-public class GreenTracerTest {
+class GreenTracerTest {
 
     @MockBean
     private DefaultGreenTracer defaultGreenTracer;
@@ -28,7 +28,7 @@ public class GreenTracerTest {
     private MockMvc mockMvc;
 
     @Test
-    public void testGreeting() throws Exception {
+    void testGreeting() throws Exception {
         String name = "test";
         TestRecord expectedResult = new TestRecord("Hello " + name + " !");
 

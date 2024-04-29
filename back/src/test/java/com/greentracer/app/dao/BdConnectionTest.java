@@ -14,13 +14,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class BdConnectionTest {
+class BdConnectionTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @Test
-    public void testDatabaseConnection() {
+    void testDatabaseConnection() {
         assertDoesNotThrow(() -> jdbcTemplate.execute("SELECT 1"));
     }
 

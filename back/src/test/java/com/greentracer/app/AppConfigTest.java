@@ -2,7 +2,7 @@ package com.greentracer.app;
 
 
 
-public class AppConfigTest {
+class AppConfigTest {
 
 
 }

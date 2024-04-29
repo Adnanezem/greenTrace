@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class JourneeDaoTest {
+class JourneeDaoTest {
 
     private Journee journee;
 
@@ -53,7 +53,7 @@ public class JourneeDaoTest {
     }
 
     @Test
-    public void testGetById() {
+    void testGetById() {
         Journee j = journeeDao.getById("test");
         journee.setid(journeeDao.getById("test").getid());
         assertEquals(j.getid(), journee.getid());
@@ -63,7 +63,7 @@ public class JourneeDaoTest {
     }
 
     @Test
-    public void testGetAll() {
+    void testGetAll() {
 
         assertNotNull(journeeDao.getAll());
         User userTest = new User();
@@ -79,21 +79,21 @@ public class JourneeDaoTest {
         journee2.setresultat(150.0f);
         journeeDao.create(journee2);
 
-        assertEquals(journeeDao.getAll().size(), 2);
+        assertEquals(2, journeeDao.getAll().size());
         userDao.delete(userTest);
     }
 
     @Test
-    public void testUpdate() {
+    void testUpdate() {
         journee.setresultat(0.0f);
         journee.setdate(Date.valueOf("2024-04-26"));
         assertTrue(journeeDao.update(journee));
-        assertEquals(journeeDao.getById("test").getresultat(), 0.0f);
+        assertEquals(0.0f, journeeDao.getById("test").getresultat());
         assertEquals(journeeDao.getById("test").getdate(), Date.valueOf("2024-04-26"));
     }
 
     @Test
-    public void testDelete() {
+    void testDelete() {
         assertTrue(journeeDao.delete(journee));
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             journeeDao.getById("test");
@@ -106,7 +106,7 @@ public class JourneeDaoTest {
     }
 
     @Test
-    public void testCreate() {
+    void testCreate() {
         User userTest = new User();
         userTest.setLogin("test2");
         userTest.setPassword("test2");
@@ -126,7 +126,7 @@ public class JourneeDaoTest {
     }
 
     @Test
-    public void testGetByDate() {
+    void testGetByDate() {
         List<Journee> j = journeeDao.getByDate("test", Date.valueOf("2021-01-01"));
         assertEquals(j.get(0).getpatientId(), journee.getpatientId());
         assertEquals(j.get(0).getdate(), journee.getdate());
@@ -143,7 +143,7 @@ public class JourneeDaoTest {
     }
 
     @Test
-    public void getById_whenNoJourneeFound_throwsIllegalArgumentException() {
+    void getById_whenNoJourneeFound_throwsIllegalArgumentException() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             journeeDao.getById("nonexistent");
         });
@@ -155,7 +155,7 @@ public class JourneeDaoTest {
     }
 
     @Test
-    public void getByDate_whenNoJourneeFound_throwsIllegalArgumentException() {
+    void getByDate_whenNoJourneeFound_throwsIllegalArgumentException() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             journeeDao.getByDate("nonexistent", Date.valueOf("2022-02-02"));
         });
