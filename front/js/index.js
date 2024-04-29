@@ -62,7 +62,8 @@ function loadCarbonHistory() {
             previousDate = getPreviousSevenDays(currentDate);
             histTab = document.querySelector("#userHistTab tbody");
             console.log('previousDate: ', previousDate);
-            getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, histTab);
+            history = getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, histTab);
+            drawCarbonHistoryChart(history);
         }
     }).catch(err => {
         serverError(err);
@@ -95,6 +96,7 @@ function loadCarbonHistoryDetail(date) {
 }
 
 async function getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, histTab) {
+    let history = [];
     for (const date of previousDate) {
         const formattedDate = formatToSQLDate(date);
         const row = document.createElement("tr");
@@ -112,17 +114,25 @@ async function getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, hi
             if (date.toISOString() === currentDate.toISOString()) {
                 bilanQuotidienDiv.innerHTML = "Votre résultat quotidien est : " + finalRes + " g de CO<sub>2</sub>.";
             }
+            history.push({
+                date: date,
+                result: finalRes
+            });
         } catch(err) {
             col2.textContent = "Pas de bilan pour cette date.";
             if (date.toISOString() === currentDate.toISOString()) {
                 bilanQuotidienDiv.textContent = "Vous n'avez pas réalisé de bilan carbone aujourd'hui.";
             }
+            history.push({
+                date: date,
+                result: 0
+            });
         }
 
         row.appendChild(col1);
         row.appendChild(col2);
         histTab.appendChild(row);
-
+        return history;
     }
 }
 
@@ -144,6 +154,33 @@ function formatToSQLDate(date) {
     const day = date.getDate().toString().padStart(2, '0');
 
     return `${year}-${month}-${day}`;
+}
+
+function drawCarbonHistoryChart(data) {
+    const dates = data.map(item => item.date);
+    const values = data.map(item => item.result);
+
+    const trace = {
+        x: dates,
+        y: values,
+        type: 'scatter',
+        mode: 'lines+markers',
+        marker: {
+            color: 'green'
+        }
+    };
+
+    const layout = {
+        title: 'Historique des émissions carbonnes',
+        xaxis: {
+            title: 'Date'
+        },
+        yaxis: {
+            title: 'Émission (g de CO2)'
+        }
+    };
+
+    Plotly.newPlot('carbonHistoryChart', [trace], layout);
 }
 
 loadPage();
