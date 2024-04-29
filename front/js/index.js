@@ -178,10 +178,22 @@ function drawCarbonHistoryChart(data) {
         },
         yaxis: {
             title: 'Émission (g de CO2)'
+        },
+        autosize: true,
+        margin: {
+            l: 50,
+            r: 50,
+            b: 100,
+            t: 100,
+            pad: 4
         }
     };
 
-    Plotly.newPlot('carbonHistoryChart', [trace], layout);
+    const config = {
+        responsive: true
+    };
+
+    Plotly.newPlot('carbonHistoryChart', [trace], layout, config);
 }
 
 loadPage();
