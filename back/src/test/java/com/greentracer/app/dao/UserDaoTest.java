@@ -48,6 +48,11 @@ public class UserDaoTest {
     }
 
     @Test
+    public void getById_withNullId_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> userDao.getById(null));
+    }
+
+    @Test
     public void testGetAll() {
         assertNotNull(userDao.getAll());
     }

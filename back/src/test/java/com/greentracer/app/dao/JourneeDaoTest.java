@@ -132,8 +132,38 @@ public class JourneeDaoTest {
         assertEquals(j.get(0).getdate(), journee.getdate());
         assertEquals(j.get(0).getresultat(), journee.getresultat());
 
-        List<Journee> j2 = journeeDao.getByDate("nonexistent", Date.valueOf("2022-02-02"));
-        assertTrue(j2.isEmpty());
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            journeeDao.getByDate("nonexistent", Date.valueOf("2022-02-02"));
+        });
+
+        String expectedMessage = "Aucune journée trouvée avec l'utilisateur et la date spécifiée.";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    public void getById_whenNoJourneeFound_throwsIllegalArgumentException() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            journeeDao.getById("nonexistent");
+        });
+
+        String expectedMessage = "Aucune journée trouvée avec l'utilisateur spécifié.";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    public void getByDate_whenNoJourneeFound_throwsIllegalArgumentException() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            journeeDao.getByDate("nonexistent", Date.valueOf("2022-02-02"));
+        });
+
+        String expectedMessage = "Aucune journée trouvée avec l'utilisateur et la date spécifiée.";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
 }

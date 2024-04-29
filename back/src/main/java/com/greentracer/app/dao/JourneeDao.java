@@ -7,7 +7,6 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -59,13 +58,11 @@ public class JourneeDao implements Dao<String, Journee> {
      * @return
      */
     public List<Journee> getByDate(String userId, Date date) {
-        try {
-            List<Journee> journees = jdbcTemplate.query(findByDateRequest, new JourneeMapper(), userId, date);
-            return journees;
-        } catch (DataAccessException e) {
+        List<Journee> journees = jdbcTemplate.query(findByDateRequest, new JourneeMapper(), userId, date);
+        if (journees.isEmpty()) {
             throw new IllegalArgumentException("Aucune journée trouvée avec l'utilisateur et la date spécifiée.");
         }
-
+        return journees;
     }
 
     @Override

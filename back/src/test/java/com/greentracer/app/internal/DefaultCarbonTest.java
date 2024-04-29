@@ -1,5 +1,9 @@
 package com.greentracer.app.internal;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.greentracer.app.utils.CarbonCalculator;
+import com.greentracer.app.utils.JSONUtils;
 import org.mockito.Mockito;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,8 +19,7 @@ import com.greentracer.app.responses.HistoriqueResponse;
 import com.greentracer.app.responses.JourneeResponse;
 import com.greentracer.app.responses.JourneesResponse;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 import java.sql.Date;
@@ -57,6 +60,21 @@ class DefaultCarbonTest {
         assertTrue(result.get(true) instanceof JourneeResponse);
     }
 
+
+    @Test
+    void defaultCompute_formArray_returnsCorrectResult() {
+        // Arrange
+        String jsonBody = "{\"login\":\"testUser\", \"form\":[{\"category\":\"transport\", \"transport type\":\"Trajet en voiture\", \"fuel type\":\"diesel\", \"distance traveled\":\"100\"}]}";
+        when(journeeDaoMock.create(Mockito.any(Journee.class))).thenReturn(true);
+
+        // Act
+        Map<Boolean, GreenTracerResponse> result = defaultCarbon.defaultCompute(jsonBody);
+
+        // Assert
+        assertTrue(result.containsKey(true));
+        assertTrue(result.get(true) instanceof JourneeResponse);
+    }
+
     @Test
     void defaultCompute_invalidJson_returnsFalse() {
         // Arrange
@@ -69,6 +87,25 @@ class DefaultCarbonTest {
         assertTrue(result.containsKey(false));
         assertTrue(result.get(false) instanceof ErrorResponse);
     }
+
+
+    @Test
+    void defaultCompute_updateHistorique_returnsCorrectResult() {
+        // Arrange
+        String jsonBody = "{\"login\":\"testUser\", \"form\":[{\"category\":\"transport\", \"transport type\":\"Trajet en voiture\", \"fuel type\":\"diesel\", \"distance traveled\":\"100\"}]}";
+        Historique historique = new Historique(0, "testUser", 50);
+        when(histDaoMock.getById("testUser")).thenReturn(historique);
+        when(histDaoMock.create(Mockito.any(Historique.class))).thenReturn(true);
+        when(journeeDaoMock.create(Mockito.any(Journee.class))).thenReturn(true);
+
+        // Act
+        Map<Boolean, GreenTracerResponse> result = defaultCarbon.defaultCompute(jsonBody);
+
+        // Assert
+        assertTrue(result.containsKey(true));
+        assertTrue(result.get(true) instanceof JourneeResponse);
+    }
+
 
     @Test
     void defaultGetHistory_existingUser_returnsTrue() {
@@ -127,5 +164,32 @@ class DefaultCarbonTest {
         // Assert
         assertTrue(result.containsKey(false));
         assertTrue(result.get(false) instanceof ErrorResponse);
+    }
+
+
+    @Test
+    void computeCarbonEmission_transportEnVoiture_validInput_returnsCorrectResult() throws Exception {
+        // Arrange
+        JsonNode node = new ObjectMapper().readTree("{\"category\":\"transport\", \"transport type\":\"Trajet en voiture\", \"fuel type\":\"diesel\", \"distance traveled\":\"100\"}");
+
+        // Act
+        float result = defaultCarbon.computeCarbonEmission(node);
+
+        // Assert
+        assertEquals(CarbonCalculator.computeCarEmissions("diesel", 100), result);
+    }
+
+    @Test
+    void computeCarbonEmission_busTransport_returnsCorrectResult() {
+        // Arrange
+        String jsonBody = "{\"login\":\"testUser\", \"form\":[{\"category\":\"transport\", \"transport type\":\"Trajet en bus\", \"fuel type\":\"diesel\", \"distance traveled\":\"100\"}]}";
+        when(journeeDaoMock.create(Mockito.any(Journee.class))).thenReturn(true);
+
+        // Act
+        Map<Boolean, GreenTracerResponse> result = defaultCarbon.defaultCompute(jsonBody);
+
+        // Assert
+        assertTrue(result.containsKey(true));
+        assertTrue(result.get(true) instanceof JourneeResponse);
     }
 }

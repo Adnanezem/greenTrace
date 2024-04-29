@@ -3,19 +3,22 @@ package com.greentracer.app.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.greentracer.app.internal.DefaultCarbon;
-import com.greentracer.app.responses.ErrorResponse;
-import com.greentracer.app.responses.GreenTracerResponse;
-import com.greentracer.app.responses.HistoriqueResponse;
-import com.greentracer.app.responses.JourneeResponse;
+import com.greentracer.app.responses.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +48,9 @@ public class CarbonAPITest {
         String requestBody = "{\"login\":\"testUser\", \"form\":[]}";
         GreenTracerResponse successResponse = new GreenTracerResponse("Success", 201);
         Map<Boolean, GreenTracerResponse> result = Collections.singletonMap(true, successResponse);
-        URI uri = new URI("/testUser/history/26-04-2024");
+
+        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        URI uri = new URI("/testUser/history/" + today);
 
         when(defaultCarbon.defaultCompute(requestBody)).thenReturn(result);
 
@@ -53,7 +58,7 @@ public class CarbonAPITest {
 
         assertEquals(201, response.getStatusCode().value());
         assertEquals(successResponse, response.getBody());
-        //assertEquals(uri, response.getHeaders().getLocation());
+        assertEquals(uri, response.getHeaders().getLocation());
     }
 
     @Test
@@ -69,6 +74,22 @@ public class CarbonAPITest {
 
         assertEquals(400, response.getStatusCode().value());
     }
+
+    @Test
+    public void computeURISyntaxExceptionTest() {
+        String requestBody = "{\"login\":\"testUser\", \"form\":[]}";
+        Mockito.when(defaultCarbon.defaultCompute(requestBody)).thenAnswer(new Answer<Map<Boolean, GreenTracerResponse>>() {
+            @Override
+            public Map<Boolean, GreenTracerResponse> answer(InvocationOnMock invocation) throws Throwable {
+                throw new URISyntaxException("Invalid URI", "Invalid syntax");
+            }
+        });
+
+        ResponseEntity<?> response = carbonAPI.compute(requestBody);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
 
     @Test
     @DisplayName("Should return history data when successful")
@@ -102,18 +123,18 @@ public class CarbonAPITest {
 
     @Test
     @DisplayName("Should return detailed history when successful")
-    public void getDetailledHistorySuccessful() {
+    public void getDetailledHistoryNotNullTest() {
         String id = "user1";
         String date = "2024-04-26";
-        JourneeResponse expectedResponse = new JourneeResponse(date, null, null);
+        JourneesResponse expectedResponse = new JourneesResponse(date, null, null);
         Map<Boolean, GreenTracerResponse> result = Collections.singletonMap(true, expectedResponse);
 
-        when(defaultCarbon.defaultGetDetailledHistory(id, date)).thenReturn(result);
+        Mockito.when(defaultCarbon.defaultGetDetailledHistory(id, date)).thenReturn(result);
 
-        // ResponseEntity<?> response = carbonAPI.getDetailledHistory(id, date);
+        ResponseEntity<?> response = carbonAPI.getDetailledHistory(id, date);
 
-        // assertEquals(200, response.getStatusCode().value());
-        // assertEquals(expectedResponse, response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(expectedResponse, response.getBody());
     }
 
     @Test
@@ -133,42 +154,35 @@ public class CarbonAPITest {
     }
 
     @Test
-    @DisplayName("Should return bad request when URISyntaxException is thrown in compute")
-    public void computeURISyntaxException() {
+    public void computeJsonMappingExceptionTest() {
         String requestBody = "{\"login\":\"testUser\", \"form\":[]}";
-        //when(defaultCarbon.defaultCompute(requestBody)).thenThrow(new RuntimeException(new URISyntaxException("Invalid URI", "Invalid syntax")));
-
-        Exception exception = assertThrows(RuntimeException.class, () -> {
-            carbonAPI.compute(requestBody);
+        Mockito.when(defaultCarbon.defaultCompute(requestBody)).thenAnswer(new Answer<Map<Boolean, GreenTracerResponse>>() {
+            @Override
+            public Map<Boolean, GreenTracerResponse> answer(InvocationOnMock invocation) throws Throwable {
+                throw new JsonMappingException(null, "Error in mapping");
+            }
         });
 
-        //assertTrue(exception.getCause() instanceof URISyntaxException);
+        ResponseEntity<?> response = carbonAPI.compute(requestBody);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Malformed JSON.", response.getBody());
     }
 
     @Test
-    @DisplayName("Should return bad request when JsonMappingException is thrown in compute")
-    public void computeJsonMappingException() {
+    public void computeJsonProcessingExceptionTest() {
         String requestBody = "{\"login\":\"testUser\", \"form\":[]}";
-        when(defaultCarbon.defaultCompute(requestBody)).thenThrow(new RuntimeException(new JsonMappingException(null, "Error in mapping")));
-
-        Exception exception = assertThrows(RuntimeException.class, () -> {
-            carbonAPI.compute(requestBody);
+        Mockito.when(defaultCarbon.defaultCompute(requestBody)).thenAnswer(new Answer<Map<Boolean, GreenTracerResponse>>() {
+            @Override
+            public Map<Boolean, GreenTracerResponse> answer(InvocationOnMock invocation) throws Throwable {
+                throw new JsonProcessingException("Error in processing") {};
+            }
         });
 
-        assertTrue(exception.getCause() instanceof JsonMappingException);
-    }
+        ResponseEntity<?> response = carbonAPI.compute(requestBody);
 
-    @Test
-    @DisplayName("Should return bad request when JsonProcessingException is thrown in compute")
-    public void computeJsonProcessingException() {
-        String requestBody = "{\"login\":\"testUser\", \"form\":[]}";
-        when(defaultCarbon.defaultCompute(requestBody)).thenThrow(new RuntimeException(new JsonProcessingException("Error in processing") {}));
-
-        Exception exception = assertThrows(RuntimeException.class, () -> {
-            carbonAPI.compute(requestBody);
-        });
-
-        assertTrue(exception.getCause() instanceof JsonProcessingException);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("JSON Process failed in CarbonAPI.compute.", response.getBody());
     }
 
     @Test
@@ -185,5 +199,16 @@ public class CarbonAPITest {
     }
 
 
+    @Test
+    public void getHistoryNotFound() {
+        String id = "user1";
+        Map<Boolean, GreenTracerResponse> result = Collections.singletonMap(false, null);
+
+        Mockito.when(defaultCarbon.defaultGetHistory(id)).thenReturn(result);
+
+        ResponseEntity<?> response = carbonAPI.getHistory(id);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
 }
 
