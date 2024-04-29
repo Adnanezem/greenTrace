@@ -86,7 +86,9 @@ function loadCarbonHistoryDetail(date) {
         } else {
             console.log('Response: ', response);
             toggleProcessingMessage(false);
-            throw new Error("Erreur lors de la récupération des détail de l'historique de l'utilisateur.")
+            if(response.status !== 404) {
+                throw new Error("Erreur lors de la récupération des détails de l'historique de l'utilisateur.");
+            }
         }
     }).then(json => {
         console.log(json);
@@ -116,7 +118,7 @@ async function getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, hi
                 bilanQuotidienDiv.innerHTML = "Votre résultat quotidien est : " + finalRes + " g de CO<sub>2</sub>.";
             }
             carbon_hist.push({
-                date: date,
+                date: formattedDate,
                 result: finalRes
             });
         } catch(err) {
@@ -125,7 +127,7 @@ async function getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, hi
                 bilanQuotidienDiv.textContent = "Vous n'avez pas réalisé de bilan carbone aujourd'hui.";
             }
             carbon_hist.push({
-                date: date,
+                date: formattedDate,
                 result: 0
             });
         }
