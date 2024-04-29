@@ -134,7 +134,7 @@ async function getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, hi
         row.appendChild(col2);
         histTab.appendChild(row);
     }
-    return history;
+    return carbon_hist;
 }
 
 function getPreviousSevenDays(startDate) {
