@@ -67,6 +67,12 @@ public class HistoriqueDaoTest {
     }
 
     @Test
+    public void getById_whenNoHistoriqueFound_returnsNull() {
+        Historique h = historiqueDao.getById("nonexistent");
+        assertNull(h);
+    }
+
+    @Test
     public void testUpdate() {
         historique.sethistorique(0.0f);
         assertTrue(historiqueDao.update(historique));

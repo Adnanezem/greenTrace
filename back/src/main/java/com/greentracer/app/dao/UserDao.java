@@ -71,12 +71,5 @@ public class UserDao implements Dao<String, User> {
                 obj.getPassword()) > 0;
     }
 
-    public int countUsers() {
-        String sql = "select COUNT(*) from \"user\"";
-        Integer result = jdbcTemplate.queryForObject(sql, Integer.class);
-        return result != null ? result : -1;
-            
-        
-    }
 
 }

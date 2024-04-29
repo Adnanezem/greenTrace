@@ -59,13 +59,11 @@ public class JourneeDao implements Dao<String, Journee> {
      * @return
      */
     public List<Journee> getByDate(String userId, Date date) {
-        try {
-            List<Journee> journees = jdbcTemplate.query(findByDateRequest, new JourneeMapper(), userId, date);
-            return journees;
-        } catch (DataAccessException e) {
+        List<Journee> journees = jdbcTemplate.query(findByDateRequest, new JourneeMapper(), userId, date);
+        if (journees.isEmpty()) {
             throw new IllegalArgumentException("Aucune journée trouvée avec l'utilisateur et la date spécifiée.");
         }
-
+        return journees;
     }
 
     @Override
