@@ -45,8 +45,7 @@ public class HistoriqueDao implements Dao<String, Historique> {
     @Override
     public Historique getById(String id) {
         try {
-            Historique historique = jdbcTemplate.queryForObject(findRequest, new HistoriqueMapper(), id);
-            return historique;
+            return jdbcTemplate.queryForObject(findRequest, new HistoriqueMapper(), id);
         } catch (IncorrectResultSizeDataAccessException e) {
             return null;
         }

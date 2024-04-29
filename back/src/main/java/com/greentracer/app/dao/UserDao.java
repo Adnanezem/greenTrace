@@ -42,8 +42,7 @@ public class UserDao implements Dao<String, User> {
             throw new IllegalArgumentException("L'id utilisateur fourni est null.");
         }
         try {
-            User u = jdbcTemplate.queryForObject(findRequest, new UserMapper(), id);
-            return u;
+            return jdbcTemplate.queryForObject(findRequest, new UserMapper(), id);
         } catch (IncorrectResultSizeDataAccessException e) {
             throw new IllegalArgumentException("L'id utilisateur fourni est null.");
         }
