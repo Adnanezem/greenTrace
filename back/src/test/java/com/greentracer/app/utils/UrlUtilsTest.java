@@ -1,6 +1,5 @@
 package com.greentracer.app.utils;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
@@ -9,12 +8,12 @@ import java.lang.reflect.InvocationTargetException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UrlUtilsTest {
+class UrlUtilsTest {
 
 
 
     @Test
-    public void testPrivateConstructor() {
+    void testPrivateConstructor() {
         assertThrows(UnsupportedOperationException.class, () -> {
             try {
                 Constructor<UrlUtils> constructor = UrlUtils.class.getDeclaredConstructor();
@@ -27,7 +26,7 @@ public class UrlUtilsTest {
     }
 
     @Test
-    public void testGetUrlParts() {
+    void testGetUrlParts() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setRequestURI("/contextPath/part1/part2");
         request.setContextPath("/contextPath");
@@ -38,7 +37,7 @@ public class UrlUtilsTest {
     }
 
     @Test
-    public void testGetUrlInfo() {
+    void testGetUrlInfo() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setRequestURI("/contextPath/part1/part2");
         request.setContextPath("/contextPath");
@@ -50,7 +49,7 @@ public class UrlUtilsTest {
     }
 
     @Test
-    public void testGetUrlEnd() {
+    void testGetUrlEnd() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setRequestURI("/contextPath/part1/part2");
         request.setContextPath("/contextPath");
@@ -61,7 +60,7 @@ public class UrlUtilsTest {
     }
 
     @Test
-    public void testMatchRequest() {
+    void testMatchRequest() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setRequestURI("/contextPath/part1/part2");
         request.setContextPath("/contextPath");

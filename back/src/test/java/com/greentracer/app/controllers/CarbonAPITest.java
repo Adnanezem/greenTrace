@@ -29,7 +29,7 @@ import static org.mockito.Mockito.*;
 /**
  * Tests pour l'API Carbon.
  */
-public class CarbonAPITest {
+class CarbonAPITest {
 
     @Mock
     private DefaultCarbon defaultCarbon;
@@ -44,7 +44,7 @@ public class CarbonAPITest {
 
     @Test
     @DisplayName("Should create resource when compute is successful")
-    public void computeSuccessful() throws URISyntaxException {
+    void computeSuccessful() throws URISyntaxException {
         String requestBody = "{\"login\":\"testUser\", \"form\":[]}";
         GreenTracerResponse successResponse = new GreenTracerResponse("Success", 201);
         Map<Boolean, GreenTracerResponse> result = Collections.singletonMap(true, successResponse);
@@ -63,7 +63,7 @@ public class CarbonAPITest {
 
     @Test
     @DisplayName("Should return bad request when compute fails")
-    public void computeUnsuccessful() {
+    void computeUnsuccessful() {
         String requestBody = "bad request";
         Map<Boolean, GreenTracerResponse> errorResponseMap = new HashMap<>();
         GreenTracerResponse errorResponse = new ErrorResponse("Error in compute", 400);
@@ -76,7 +76,7 @@ public class CarbonAPITest {
     }
 
     @Test
-    public void computeURISyntaxExceptionTest() {
+    void computeURISyntaxExceptionTest() {
         String requestBody = "{\"login\":\"testUser\", \"form\":[]}";
         Mockito.when(defaultCarbon.defaultCompute(requestBody)).thenAnswer(new Answer<Map<Boolean, GreenTracerResponse>>() {
             @Override
@@ -93,7 +93,7 @@ public class CarbonAPITest {
 
     @Test
     @DisplayName("Should return history data when successful")
-    public void getHistorySuccessful() {
+    void getHistorySuccessful() {
         String id = "user1";
         HistoriqueResponse expectedResponse = new HistoriqueResponse(id, null, null);
         Map<Boolean, GreenTracerResponse> result = Collections.singletonMap(true, expectedResponse);
@@ -108,7 +108,7 @@ public class CarbonAPITest {
 
     @Test
     @DisplayName("Should handle errors in getting history")
-    public void getHistoryUnsuccessful() {
+    void getHistoryUnsuccessful() {
         String id = "user1";
         GreenTracerResponse errorResponse = new GreenTracerResponse("Error", 404);
         Map<Boolean, GreenTracerResponse> result = Collections.singletonMap(false, errorResponse);
@@ -123,7 +123,7 @@ public class CarbonAPITest {
 
     @Test
     @DisplayName("Should return detailed history when successful")
-    public void getDetailledHistoryNotNullTest() {
+    void getDetailledHistoryNotNullTest() {
         String id = "user1";
         String date = "2024-04-26";
         JourneesResponse expectedResponse = new JourneesResponse(date, null, null);
@@ -139,7 +139,7 @@ public class CarbonAPITest {
 
     @Test
     @DisplayName("Should handle errors in detailed history retrieval")
-    public void getDetailledHistoryUnsuccessful() {
+    void getDetailledHistoryUnsuccessful() {
         String id = "user1";
         String date = "2024-04-26";
         GreenTracerResponse errorResponse = new GreenTracerResponse("Error", 404);
@@ -154,7 +154,7 @@ public class CarbonAPITest {
     }
 
     @Test
-    public void computeJsonMappingExceptionTest() {
+    void computeJsonMappingExceptionTest() {
         String requestBody = "{\"login\":\"testUser\", \"form\":[]}";
         Mockito.when(defaultCarbon.defaultCompute(requestBody)).thenAnswer(new Answer<Map<Boolean, GreenTracerResponse>>() {
             @Override
@@ -170,7 +170,7 @@ public class CarbonAPITest {
     }
 
     @Test
-    public void computeJsonProcessingExceptionTest() {
+    void computeJsonProcessingExceptionTest() {
         String requestBody = "{\"login\":\"testUser\", \"form\":[]}";
         Mockito.when(defaultCarbon.defaultCompute(requestBody)).thenAnswer(new Answer<Map<Boolean, GreenTracerResponse>>() {
             @Override
@@ -187,7 +187,7 @@ public class CarbonAPITest {
 
     @Test
     @DisplayName("Should return not found when getHistory returns null")
-    public void getHistoryNull() {
+    void getHistoryNull() {
         String id = "user1";
         Map<Boolean, GreenTracerResponse> result = Collections.singletonMap(false, null);
 
@@ -200,7 +200,7 @@ public class CarbonAPITest {
 
 
     @Test
-    public void getHistoryNotFound() {
+    void getHistoryNotFound() {
         String id = "user1";
         Map<Boolean, GreenTracerResponse> result = Collections.singletonMap(false, null);
 

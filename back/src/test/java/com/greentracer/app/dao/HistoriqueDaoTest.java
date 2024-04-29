@@ -18,7 +18,7 @@ import java.sql.Date;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class HistoriqueDaoTest {
+class HistoriqueDaoTest {
 
 
 
@@ -53,35 +53,35 @@ public class HistoriqueDaoTest {
     }
 
     @AfterEach
-    public void tearDown() {
+    void tearDown() {
         historiqueDao.delete(historique);
         userDao.delete(user); // delete aussi les journee crée avec l'ID utilisateur correspondant (ON CASCADE).
     }
 
 
     @Test
-    public void testGetById() {
+    void testGetById() {
         Historique h = historiqueDao.getById("testHist");
         assertEquals(h.getidp(), historique.getidp());
-        assertEquals(h.gethistorique(), 46); // => hist == aux 7 dernieres journee (calc auto à la création). Ici 46 avec l'init
+        assertEquals(46, h.gethistorique()); // => hist == aux 7 dernieres journee (calc auto à la création). Ici 46 avec l'init
     }
 
     @Test
-    public void getById_whenNoHistoriqueFound_returnsNull() {
+    void getById_whenNoHistoriqueFound_returnsNull() {
         Historique h = historiqueDao.getById("nonexistent");
         assertNull(h);
     }
 
     @Test
-    public void testUpdate() {
+    void testUpdate() {
         historique.sethistorique(0.0f);
         assertTrue(historiqueDao.update(historique));
         assertEquals(historiqueDao.getById("testHist").gethistorique(), 0.0f);
-        assertEquals(historiqueDao.getById("testHist").getidp(), "testHist");
+        assertEquals("testHist", historiqueDao.getById("testHist").getidp());
     }
 
     @Test
-    public void testGetAll() {
+    void testGetAll() {
         assertNotNull(historiqueDao.getAll());
     }
 

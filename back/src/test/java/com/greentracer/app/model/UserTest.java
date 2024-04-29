@@ -6,24 +6,24 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class UserTest {
+class UserTest {
 
     private User user;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         user = new User();
     }
 
     @Test
-    public void setAndGetLogin() {
+    void setAndGetLogin() {
         String login = "testLogin";
         user.setLogin(login);
         assertEquals(login, user.getLogin());
     }
 
     @Test
-    public void setAndGetPassword() {
+    void setAndGetPassword() {
         String password = "testPassword";
         user.setPassword(password);
         assertEquals(password, user.getPassword());

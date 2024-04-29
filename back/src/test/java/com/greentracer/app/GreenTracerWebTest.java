@@ -20,7 +20,7 @@ import com.greentracer.app.responses.TestRecord;
 
 @WebMvcTest(GreenTracer.class)
 @ActiveProfiles("test")
-public class GreenTracerWebTest {
+class GreenTracerWebTest {
 
     private static Logger logger = LoggerFactory.getLogger(GreenTracerWebTest.class);
 
@@ -31,7 +31,7 @@ public class GreenTracerWebTest {
     private DefaultGreenTracer defaultGreenTracer; // Mocked dependency
 
     @Test
-    public void testGreeting() throws Exception {
+    void testGreeting() throws Exception {
         // Arrange
         String name = "Alice";
         String expectedMessage = name;

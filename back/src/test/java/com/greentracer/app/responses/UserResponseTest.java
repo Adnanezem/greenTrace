@@ -4,10 +4,10 @@ import com.greentracer.app.models.User;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class UserResponseTest {
+class UserResponseTest {
 
     @Test
-    public void testUserResponseConstructorAndGetters() {
+    void testUserResponseConstructorAndGetters() {
         User user = new User(); // Assuming User has a default constructor
         UserResponse userResponse = new UserResponse("Test Message", 200, user);
 
@@ -17,7 +17,7 @@ public class UserResponseTest {
     }
 
     @Test
-    public void testUserResponseSetters() {
+    void testUserResponseSetters() {
         User user = new User();
         UserResponse userResponse = new UserResponse("Test Message", 200, user);
         User newUser = new User();

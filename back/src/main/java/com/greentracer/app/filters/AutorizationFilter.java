@@ -25,11 +25,13 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 @Order(2)
 public class AutorizationFilter implements Filter {
+    private static final String USERS = "users";
+    private static final String CARBON = "carbon";
     private static final String[][] RESOURCES_WITH_LIMITATIONS = {
-        {"GET", "users", "*"},
-        {"PUT", "users", "*"},
-        {"POST", "carbon", "compute"},
-        {"GET", "carbon", "*"},
+        {"GET", USERS, "*"},
+        {"PUT", USERS, "*"},
+        {"POST", CARBON, "compute"},
+        {"GET", CARBON, "*"},
 };
 
     private final JwtTokenUtil jwtHelper;
@@ -61,7 +63,7 @@ public class AutorizationFilter implements Filter {
         //Dans les faits, on doit tester la même chose, en théorie, c'est peu probable
         if (Stream.of(RESOURCES_WITH_LIMITATIONS).anyMatch(pattern -> UrlUtils.matchRequest(request, pattern))) {
             switch (url[0]) {
-                case "users" -> {
+                case USERS -> {
                     if(url[1].equals(user)) {
                         chain.doFilter(request, response);
                         return;
@@ -72,7 +74,7 @@ public class AutorizationFilter implements Filter {
                     }
                 }
 
-                case "carbon" -> {
+                case CARBON -> {
                     if(url[1].equals(user) || url[1].equals("compute")) {
                         System.out.println("Ça passe");
                         chain.doFilter(request, response);

@@ -3,10 +3,10 @@ package com.greentracer.app.responses;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GreenTracerResponseTest {
+class GreenTracerResponseTest {
 
     @Test
-    public void testGreenTracerResponseConstructorAndGetters() {
+    void testGreenTracerResponseConstructorAndGetters() {
         GreenTracerResponse greenTracerResponse = new GreenTracerResponse("Test Message", 200);
 
         assertEquals("Test Message", greenTracerResponse.getMessage());
@@ -14,7 +14,7 @@ public class GreenTracerResponseTest {
     }
 
     @Test
-    public void testGreenTracerResponseSetters() {
+    void testGreenTracerResponseSetters() {
         GreenTracerResponse greenTracerResponse = new GreenTracerResponse("Test Message", 200);
         greenTracerResponse.setMessage("New Test Message");
         greenTracerResponse.setStatus(404);

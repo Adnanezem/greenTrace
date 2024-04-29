@@ -21,12 +21,21 @@ public class HistoriqueDao implements Dao<String, Historique> {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private final String findRequest = "SELECT * FROM public.historique h INNER JOIN public.\"user\" u ON h.\"idP\" = u.login WHERE u.login = ?";
-    private final String deleteRequest = "DELETE FROM public.historique WHERE \"idP\" IN (SELECT \"idP\" FROM public.\"user\" WHERE login = ?)";
-    private final String updateRequest = "UPDATE public.historique SET historique = ? WHERE \"idP\" IN ( SELECT login FROM public.\"user\")";
-    private final String insertRequest = "INSERT INTO public.historique(\"idP\", historique) SELECT ?, AVG(resultat) " +  
-                                           "FROM journee WHERE journee.\"Date\" >= CURRENT_DATE - INTERVAL '7 days' AND journee.\"Date\" <= CURRENT_DATE;";
-    private final String findAllRequest = "select * from public.historique";
+    private static final String FIND_REQUEST = "SELECT * FROM public.historique h INNER JOIN public.\"user\" u ON h.\"idP\" = u.login WHERE u.login = ?";
+    private static final String DELETE_REQUEST = "DELETE FROM public.historique WHERE \"idP\" IN (SELECT \"idP\" FROM public.\"user\" WHERE login = ?)";
+    private static final String UPDATE_REQUEST = "UPDATE public.historique SET historique = ? WHERE \"idP\" IN ( SELECT login FROM public.\"user\")";
+    private static final String INSERT_REQUEST = "INSERT INTO public.historique(\"idP\", historique)\n" +
+            "SELECT \"idP\", AVG(daily_sum)\n" +
+            "FROM (\n" +
+            "    SELECT journee.\"idP\", journee.\"Date\", SUM(journee.resultat) AS daily_sum\n" +
+            "    FROM journee\n" +
+            "    WHERE journee.\"Date\" >= CURRENT_DATE - INTERVAL '7 days'\n" +
+            "      AND journee.\"Date\" <= CURRENT_DATE\n" +
+            "      AND journee.\"idP\" = ?\n" +
+            "    GROUP BY journee.\"idP\", journee.\"Date\"\n" +
+            ") AS daily_results\n" +
+            "GROUP BY \"idP\";\n";
+    private static final String FIND_ALL_REQUEST = "select * from public.historique";
 
     @Autowired
     public HistoriqueDao(DataSource dataSource) {
@@ -36,8 +45,7 @@ public class HistoriqueDao implements Dao<String, Historique> {
     @Override
     public Historique getById(String id) {
         try {
-            Historique historique = jdbcTemplate.queryForObject(findRequest, new HistoriqueMapper(), id);
-            return historique;
+            return jdbcTemplate.queryForObject(FIND_REQUEST, new HistoriqueMapper(), id);
         } catch (IncorrectResultSizeDataAccessException e) {
             return null;
         }
@@ -46,22 +54,22 @@ public class HistoriqueDao implements Dao<String, Historique> {
 
     @Override
     public Boolean create(Historique historique) {
-        return jdbcTemplate.update(insertRequest, historique.getidp()) > 0;
+        return jdbcTemplate.update(INSERT_REQUEST, historique.getidp()) > 0;
     }
 
     @Override
     public Boolean update(Historique historique) {
-        return jdbcTemplate.update(updateRequest, historique.gethistorique()) > 0;
+        return jdbcTemplate.update(UPDATE_REQUEST, historique.gethistorique()) > 0;
     }
 
     @Override
     public Boolean delete(Historique historique) {
-        return jdbcTemplate.update(deleteRequest, historique.getidp()) > 0;
+        return jdbcTemplate.update(DELETE_REQUEST, historique.getidp()) > 0;
     }
 
     @Override
     public List<Historique> getAll() {
-        return jdbcTemplate.query(findAllRequest, new HistoriqueMapper());
+        return jdbcTemplate.query(FIND_ALL_REQUEST, new HistoriqueMapper());
     }
 
 }

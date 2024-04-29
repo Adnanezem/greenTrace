@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.anyString;
 
-public class DefaultUserTest {
+class DefaultUserTest {
 
     private UserDao userDaoMock;
     private JwtTokenUtil jwtMock;

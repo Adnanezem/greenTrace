@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-public class DefaultGreenTracerTest {
+class DefaultGreenTracerTest {
 
     private Gestion gestionMock;
     private DefaultGreenTracer defaultGreenTracer;

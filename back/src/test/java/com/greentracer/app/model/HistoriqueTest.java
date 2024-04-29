@@ -4,10 +4,10 @@ import com.greentracer.app.models.Historique;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class HistoriqueTest {
+class HistoriqueTest {
 
     @Test
-    public void testHistoriqueConstructorAndGetters() {
+    void testHistoriqueConstructorAndGetters() {
         Historique historique = new Historique(1, "testId", 1.0f);
 
         assertEquals(1, historique.getid());
@@ -16,7 +16,7 @@ public class HistoriqueTest {
     }
 
     @Test
-    public void testHistoriqueSetters() {
+    void testHistoriqueSetters() {
         Historique historique = new Historique();
         historique.setid(2);
         historique.setidp("newTestId");
@@ -28,7 +28,7 @@ public class HistoriqueTest {
     }
 
     @Test
-    public void testToString() {
+    void testToString() {
         Historique historique = new Historique(1, "testId", 1.0f);
         String expectedString = "User [id=1, IDpatient=testId, historique=1.0]";
 

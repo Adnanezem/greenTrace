@@ -100,7 +100,11 @@ public class DefaultCarbon {
             JourneesResponse responses = new JourneesResponse("journee resp", 200, journees);
             res.put(true, responses);
             return res;
-        } catch (IllegalArgumentException | ParseException e) {
+        } catch (IllegalArgumentException e) {
+            logger.error("erreur defaultGetDetailledHistory: ", e);
+            res.put(false, new ErrorResponse("Aucun historique pour ce jour.", 404));
+            return res;
+        } catch (ParseException e) {
             logger.error("erreur defaultGetDetailledHistory: ", e);
             res.put(false, new ErrorResponse("error", 400));
             return res;
@@ -120,7 +124,7 @@ public class DefaultCarbon {
         String distance = JSONUtils.getStringField(node, "distance traveled");
         switch (category) {
             case "transport":
-                String transportType = JSONUtils.getStringField(node, "transport type");
+                String transportType = JSONUtils.getStringField(node, "type");
                 switch (transportType) {
                     case "Trajet en voiture":
                         resultat += CarbonCalculator.computeCarEmissions(fuel, Integer.parseInt(distance));

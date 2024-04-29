@@ -49,20 +49,18 @@ function loadCarbonHistory() {
                 throw new Error("Erreur lors de la récupération de l'historique de l'utilisateur.")
             }
         }
-    }).then(json => {
-        if(json !== undefined) {
-            const bilanSection = document.querySelector('#historiqueBilans');
+    }).then(async json => {
+        if (json !== undefined) {
+            const avgHist = document.querySelector('#histAvg');
             const bilanQuotidienDiv = document.querySelector('#bilanCO2Result');
-            console.log(json);
             const avgBilan = json.historique.historique;
             const avgBilanTxt = document.createTextNode("Moyenne hebdomadaire: " + avgBilan);
-            bilanSection.appendChild(avgBilanTxt);
+            avgHist.appendChild(avgBilanTxt);
             const currentDate = new Date();
-            console.log('currentDate: ', currentDate);
             previousDate = getPreviousSevenDays(currentDate);
             histTab = document.querySelector("#userHistTab tbody");
-            console.log('previousDate: ', previousDate);
-            getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, histTab);
+            carbon_history = await getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, histTab);
+            drawCarbonHistoryChart(carbon_history);
         }
     }).catch(err => {
         serverError(err);
@@ -84,10 +82,11 @@ function loadCarbonHistoryDetail(date) {
         } else {
             console.log('Response: ', response);
             toggleProcessingMessage(false);
-            throw new Error("Erreur lors de la récupération des détail de l'historique de l'utilisateur.")
+            if(response.status !== 404) {
+                throw new Error("Erreur lors de la récupération des détails de l'historique de l'utilisateur.");
+            }
         }
     }).then(json => {
-        console.log(json);
         return json;
     }).catch(err => {
         serverError(err);
@@ -95,36 +94,44 @@ function loadCarbonHistoryDetail(date) {
 }
 
 async function getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, histTab) {
+    let carbon_hist = [];
     for (const date of previousDate) {
         const formattedDate = formatToSQLDate(date);
-        const res = await loadCarbonHistoryDetail(formattedDate);
         const row = document.createElement("tr");
-
         const col1 = document.createElement("td");
         col1.textContent = formattedDate;
-
-        let finalRes = 0;
-        res.journees.forEach(elem => {
-            finalRes += elem.resultat;
-        });
         const col2 = document.createElement("td");
 
-        if (res.journees.length === 0) {
+        try {
+            const res = await loadCarbonHistoryDetail(formattedDate);
+            let finalRes = 0;
+            res.journees.forEach(elem => {
+                finalRes += elem.resultat;
+            });
+            col2.textContent = finalRes;
+            if (date.toISOString() === currentDate.toISOString()) {
+                bilanQuotidienDiv.innerHTML = "Votre résultat quotidien est : " + finalRes + " g de CO<sub>2</sub>.";
+            }
+            carbon_hist.push({
+                date: formattedDate,
+                result: finalRes
+            });
+        } catch(err) {
             col2.textContent = "Pas de bilan pour cette date.";
             if (date.toISOString() === currentDate.toISOString()) {
                 bilanQuotidienDiv.textContent = "Vous n'avez pas réalisé de bilan carbone aujourd'hui.";
             }
-        } else {
-            col2.textContent = finalRes;
-            if (date.toISOString() === currentDate.toISOString()) {
-                bilanQuotidienDiv.textContent = "Votre résultat quotidien est :" + finalRes + " unitéÀDéfinir.";
-            }
+            carbon_hist.push({
+                date: formattedDate,
+                result: 0
+            });
         }
 
         row.appendChild(col1);
         row.appendChild(col2);
         histTab.appendChild(row);
     }
+    return carbon_hist;
 }
 
 function getPreviousSevenDays(startDate) {
@@ -145,6 +152,45 @@ function formatToSQLDate(date) {
     const day = date.getDate().toString().padStart(2, '0');
 
     return `${year}-${month}-${day}`;
+}
+
+function drawCarbonHistoryChart(data) {
+    const dates = data.map(item => item.date);
+    const values = data.map(item => item.result);
+
+    const trace = {
+        x: dates,
+        y: values,
+        type: 'scatter',
+        mode: 'lines+markers',
+        marker: {
+            color: 'green'
+        }
+    };
+
+    const layout = {
+        title: 'Historique des émissions carbonnes',
+        xaxis: {
+            title: 'Date'
+        },
+        yaxis: {
+            title: 'Émission (g de CO2)'
+        },
+        autosize: true,
+        margin: {
+            l: 50,
+            r: 50,
+            b: 100,
+            t: 100,
+            pad: 4
+        }
+    };
+
+    const config = {
+        responsive: true
+    };
+
+    Plotly.newPlot('carbonHistoryChart', [trace], layout, config);
 }
 
 loadPage();

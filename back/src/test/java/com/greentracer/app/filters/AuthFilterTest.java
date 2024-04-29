@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import com.greentracer.app.utils.JwtTokenUtil;
 
 @ExtendWith(MockitoExtension.class)
-public class AuthFilterTest {
+class AuthFilterTest {
     @Mock
     private HttpServletRequest request;
     @Mock
