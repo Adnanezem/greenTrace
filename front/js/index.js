@@ -132,8 +132,8 @@ async function getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, hi
         row.appendChild(col1);
         row.appendChild(col2);
         histTab.appendChild(row);
-        return history;
     }
+    return history;
 }
 
 function getPreviousSevenDays(startDate) {
