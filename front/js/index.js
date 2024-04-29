@@ -110,7 +110,7 @@ async function getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, hi
             });
             col2.textContent = finalRes;
             if (date.toISOString() === currentDate.toISOString()) {
-                bilanQuotidienDiv.textContent = "Votre résultat quotidien est :" + finalRes + " unitéÀDéfinir.";
+                bilanQuotidienDiv.innerHTML = "Votre résultat quotidien est : " + finalRes + " g de CO<sub>2</sub>.";
             }
         } catch(err) {
             col2.textContent = "Pas de bilan pour cette date.";
