@@ -22,6 +22,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -163,10 +164,10 @@ class CarbonAPITest {
             }
         });
 
-        ResponseEntity<?> response = carbonAPI.compute(requestBody);
+        ResponseEntity<GreenTracerResponse> response = carbonAPI.compute(requestBody);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Malformed JSON.", response.getBody());
+        assertEquals("Malformed JSON.", Objects.requireNonNull(response.getBody()).getMessage());
     }
 
     @Test
@@ -179,10 +180,10 @@ class CarbonAPITest {
             }
         });
 
-        ResponseEntity<?> response = carbonAPI.compute(requestBody);
+        ResponseEntity<GreenTracerResponse> response = carbonAPI.compute(requestBody);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("JSON Process failed in CarbonAPI.compute.", response.getBody());
+        assertEquals("JSON Process failed in CarbonAPI.compute.", Objects.requireNonNull(response.getBody()).getMessage());
     }
 
     @Test
