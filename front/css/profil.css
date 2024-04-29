@@ -110,6 +110,7 @@ section {
 h2 {
     color: #3CB371;
     text-align: center;
+    font-size: 1.5em;
 }
 
 .card {
@@ -243,6 +244,11 @@ h2 {
 
 #userHistTab tbody tr:hover {
     background-color: #ddd;
+}
+
+#histAvg {
+  font-weight: bold;
+  font-size: 1.1em;
 }
   
   

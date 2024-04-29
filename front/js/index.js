@@ -51,19 +51,15 @@ function loadCarbonHistory() {
         }
     }).then(async json => {
         if (json !== undefined) {
-            const bilanSection = document.querySelector('#historiqueBilans');
+            const avgHist = document.querySelector('#histAvg');
             const bilanQuotidienDiv = document.querySelector('#bilanCO2Result');
-            console.log(json);
             const avgBilan = json.historique.historique;
             const avgBilanTxt = document.createTextNode("Moyenne hebdomadaire: " + avgBilan);
-            bilanSection.appendChild(avgBilanTxt);
+            avgHist.appendChild(avgBilanTxt);
             const currentDate = new Date();
-            console.log('currentDate: ', currentDate);
             previousDate = getPreviousSevenDays(currentDate);
             histTab = document.querySelector("#userHistTab tbody");
-            console.log('previousDate: ', previousDate);
             carbon_history = await getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, histTab);
-            console.log('history: ',carbon_history);
             drawCarbonHistoryChart(carbon_history);
         }
     }).catch(err => {
@@ -91,7 +87,6 @@ function loadCarbonHistoryDetail(date) {
             }
         }
     }).then(json => {
-        console.log(json);
         return json;
     }).catch(err => {
         serverError(err);
