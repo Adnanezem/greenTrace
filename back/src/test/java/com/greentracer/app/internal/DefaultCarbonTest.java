@@ -170,7 +170,7 @@ class DefaultCarbonTest {
     @Test
     void computeCarbonEmission_transportEnVoiture_validInput_returnsCorrectResult() throws Exception {
         // Arrange
-        JsonNode node = new ObjectMapper().readTree("{\"category\":\"transport\", \"transport type\":\"Trajet en voiture\", \"fuel type\":\"diesel\", \"distance traveled\":\"100\"}");
+        JsonNode node = new ObjectMapper().readTree("{\"category\":\"transport\", \"type\":\"Trajet en voiture\", \"fuel type\":\"diesel\", \"distance traveled\":\"100\"}");
 
         // Act
         float result = defaultCarbon.computeCarbonEmission(node);
@@ -182,7 +182,7 @@ class DefaultCarbonTest {
     @Test
     void computeCarbonEmission_busTransport_returnsCorrectResult() {
         // Arrange
-        String jsonBody = "{\"login\":\"testUser\", \"form\":[{\"category\":\"transport\", \"transport type\":\"Trajet en bus\", \"fuel type\":\"diesel\", \"distance traveled\":\"100\"}]}";
+        String jsonBody = "{\"login\":\"testUser\", \"form\":[{\"category\":\"transport\", \"type\":\"Trajet en bus\", \"fuel type\":\"diesel\", \"distance traveled\":\"100\"}]}";
         when(journeeDaoMock.create(Mockito.any(Journee.class))).thenReturn(true);
 
         // Act
