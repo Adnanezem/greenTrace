@@ -116,7 +116,7 @@ async function getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, hi
                 bilanQuotidienDiv.innerHTML = "Votre résultat quotidien est : " + finalRes + " g de CO<sub>2</sub>.";
             }
             carbon_hist.push({
-                date: date,
+                date: formattedDate,
                 result: finalRes
             });
         } catch(err) {
@@ -125,7 +125,7 @@ async function getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, hi
                 bilanQuotidienDiv.textContent = "Vous n'avez pas réalisé de bilan carbone aujourd'hui.";
             }
             carbon_hist.push({
-                date: date,
+                date: formattedDate,
                 result: 0
             });
         }
