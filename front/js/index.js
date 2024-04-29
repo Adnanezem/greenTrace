@@ -62,9 +62,9 @@ function loadCarbonHistory() {
             previousDate = getPreviousSevenDays(currentDate);
             histTab = document.querySelector("#userHistTab tbody");
             console.log('previousDate: ', previousDate);
-            history = await getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, histTab);
-            console.log('history: ',history);
-            drawCarbonHistoryChart(history);
+            carbon_history = await getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, histTab);
+            console.log('history: ',carbon_history);
+            drawCarbonHistoryChart(carbon_history);
         }
     }).catch(err => {
         serverError(err);
@@ -97,7 +97,7 @@ function loadCarbonHistoryDetail(date) {
 }
 
 async function getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, histTab) {
-    let history = [];
+    let carbon_hist = [];
     for (const date of previousDate) {
         const formattedDate = formatToSQLDate(date);
         const row = document.createElement("tr");
@@ -115,7 +115,7 @@ async function getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, hi
             if (date.toISOString() === currentDate.toISOString()) {
                 bilanQuotidienDiv.innerHTML = "Votre résultat quotidien est : " + finalRes + " g de CO<sub>2</sub>.";
             }
-            history.push({
+            carbon_hist.push({
                 date: date,
                 result: finalRes
             });
@@ -124,7 +124,7 @@ async function getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, hi
             if (date.toISOString() === currentDate.toISOString()) {
                 bilanQuotidienDiv.textContent = "Vous n'avez pas réalisé de bilan carbone aujourd'hui.";
             }
-            history.push({
+            carbon_hist.push({
                 date: date,
                 result: 0
             });
