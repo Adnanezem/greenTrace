@@ -49,7 +49,7 @@ function loadCarbonHistory() {
                 throw new Error("Erreur lors de la récupération de l'historique de l'utilisateur.")
             }
         }
-    }).then(json => {
+    }).then(async json => {
         if (json !== undefined) {
             const bilanSection = document.querySelector('#historiqueBilans');
             const bilanQuotidienDiv = document.querySelector('#bilanCO2Result');
@@ -62,7 +62,7 @@ function loadCarbonHistory() {
             previousDate = getPreviousSevenDays(currentDate);
             histTab = document.querySelector("#userHistTab tbody");
             console.log('previousDate: ', previousDate);
-            history = getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, histTab);
+            history = await getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, histTab);
             drawCarbonHistoryChart(history);
         }
     }).catch(err => {
