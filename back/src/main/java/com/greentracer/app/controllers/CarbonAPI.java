@@ -55,7 +55,7 @@ public class CarbonAPI {
      * @return un résultat sous forme de json.
      */
     @PostMapping("/compute")
-    public ResponseEntity<?> compute(@RequestBody String body) {
+    public ResponseEntity<GreenTracerResponse> compute(@RequestBody String body) {
         URI uri;
         Map<Boolean, GreenTracerResponse> resMap = new HashMap<>();
         try {
@@ -80,10 +80,10 @@ public class CarbonAPI {
             return ResponseEntity.badRequest().build();
         } catch (JsonMappingException e) {
             logger.error("request body malformed: {}", body);
-            return ResponseEntity.badRequest().body("Malformed JSON.");
+            return ResponseEntity.badRequest().body(new GreenTracerResponse("Malformed JSON.", 400));
         } catch (JsonProcessingException e) {
             logger.error("request body process failed: {}", body);
-            return ResponseEntity.badRequest().body("JSON Process failed in CarbonAPI.compute.");
+            return ResponseEntity.badRequest().body(new GreenTracerResponse("JSON Process failed in CarbonAPI.compute.", 400));
         }
     }
 
@@ -94,7 +94,7 @@ public class CarbonAPI {
      * @return une réponse json.
      */
     @GetMapping("/{id}/history")
-    public ResponseEntity<?> getHistory(@PathVariable String id) {
+    public ResponseEntity<GreenTracerResponse > getHistory(@PathVariable String id) {
         Map<Boolean, GreenTracerResponse> resMap = new HashMap<>();
         resMap = def.defaultGetHistory(id);
         Iterator<Map.Entry<Boolean, GreenTracerResponse>> iterator = resMap.entrySet().iterator();
@@ -118,7 +118,7 @@ public class CarbonAPI {
      * @return une réponse json.
      */
     @GetMapping("/{id}/history/{date}")
-    public ResponseEntity<?> getDetailledHistory(@PathVariable String id, @PathVariable String date) {
+    public ResponseEntity<GreenTracerResponse > getDetailledHistory(@PathVariable String id, @PathVariable String date) {
         Map<Boolean, GreenTracerResponse> resMap = new HashMap<>();
         resMap = def.defaultGetDetailledHistory(id, date);
         Iterator<Map.Entry<Boolean, GreenTracerResponse>> iterator = resMap.entrySet().iterator();
