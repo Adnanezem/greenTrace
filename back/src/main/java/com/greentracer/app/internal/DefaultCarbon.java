@@ -100,7 +100,11 @@ public class DefaultCarbon {
             JourneesResponse responses = new JourneesResponse("journee resp", 200, journees);
             res.put(true, responses);
             return res;
-        } catch (IllegalArgumentException | ParseException e) {
+        } catch (IllegalArgumentException e) {
+            logger.error("erreur defaultGetDetailledHistory: ", e);
+            res.put(false, new ErrorResponse("Aucun historique pour ce jour.", 404));
+            return res;
+        } catch (ParseException e) {
             logger.error("erreur defaultGetDetailledHistory: ", e);
             res.put(false, new ErrorResponse("error", 400));
             return res;
