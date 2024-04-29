@@ -50,7 +50,7 @@ function loadCarbonHistory() {
             }
         }
     }).then(json => {
-        if(json !== undefined) {
+        if (json !== undefined) {
             const bilanSection = document.querySelector('#historiqueBilans');
             const bilanQuotidienDiv = document.querySelector('#bilanCO2Result');
             console.log(json);
@@ -97,33 +97,32 @@ function loadCarbonHistoryDetail(date) {
 async function getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, histTab) {
     for (const date of previousDate) {
         const formattedDate = formatToSQLDate(date);
-        const res = await loadCarbonHistoryDetail(formattedDate);
         const row = document.createElement("tr");
-
         const col1 = document.createElement("td");
         col1.textContent = formattedDate;
-
-        let finalRes = 0;
-        res.journees.forEach(elem => {
-            finalRes += elem.resultat;
-        });
         const col2 = document.createElement("td");
 
-        if (res.journees.length === 0) {
-            col2.textContent = "Pas de bilan pour cette date.";
-            if (date.toISOString() === currentDate.toISOString()) {
-                bilanQuotidienDiv.textContent = "Vous n'avez pas réalisé de bilan carbone aujourd'hui.";
-            }
-        } else {
+        try {
+            const res = await loadCarbonHistoryDetail(formattedDate);
+            let finalRes = 0;
+            res.journees.forEach(elem => {
+                finalRes += elem.resultat;
+            });
             col2.textContent = finalRes;
             if (date.toISOString() === currentDate.toISOString()) {
                 bilanQuotidienDiv.textContent = "Votre résultat quotidien est :" + finalRes + " unitéÀDéfinir.";
+            }
+        } catch(err) {
+            col2.textContent = "Pas de bilan pour cette date.";
+            if (date.toISOString() === currentDate.toISOString()) {
+                bilanQuotidienDiv.textContent = "Vous n'avez pas réalisé de bilan carbone aujourd'hui.";
             }
         }
 
         row.appendChild(col1);
         row.appendChild(col2);
         histTab.appendChild(row);
+
     }
 }
 
