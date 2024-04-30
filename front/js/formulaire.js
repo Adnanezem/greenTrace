@@ -1,5 +1,7 @@
 var COMPUTE_FORM_BACKEND_ENDPOINT = 'https://192.168.75.79/back_test/carbon/compute';
 
+import { toFrench, toEnglish } from './dictionnary.js';
+
 function toggleProcessingMessage(show) {
     let processingDiv = document.getElementById('processingMessage');
     if (!processingDiv) {
@@ -18,7 +20,7 @@ function toggleProcessingMessage(show) {
         processingDiv.style.alignItems = 'center';
         processingDiv.style.fontSize = '20px';
         processingDiv.style.transition = 'opacity 0.5s';
-        processingDiv.textContent = 'Processing your request...';
+        processingDiv.textContent = 'Requête en cours de traitement...';
         document.body.appendChild(processingDiv);
     }
     processingDiv.style.opacity = show ? '1' : '0';
@@ -88,15 +90,14 @@ function closeForm(form) {
 }
 
 // function to generate the field form from a json file
-//Return a tuple with what the user entered, and a bool to cancel the form
 async function generateFormFromJson(cardJson, modify = false) {
 
     // make the promise
     return new Promise((resolve, reject) => {
 
-        console.log('generateFormFromJson:');
-        console.log(cardJson);
-        console.log('----');
+        //console.log('generateFormFromJson:');
+        //console.log(cardJson);
+        //console.log('----');
 
         // We create a floating div to contain the form
         let form = document.createElement('div');
@@ -194,10 +195,10 @@ async function generateFormFromJson(cardJson, modify = false) {
 
             // We create a label element
             let label = document.createElement('label');
-            label.textContent = field.name;
+            label.textContent = toFrench(field.name);
             fieldDiv.appendChild(label);
 
-            console.log(field);
+            //console.log(field);
 
             // We switch on the field type
             switch (field.type) {
@@ -207,6 +208,8 @@ async function generateFormFromJson(cardJson, modify = false) {
                     number_input.type = 'number';
                     number_input.name = field.name;
                     number_input.placeholder = field.unit;
+                    // Do not go under 1
+                    number_input.min = 1;
                     if (modify && data) {
                         number_input.value = data[field.name];
                     }
@@ -219,7 +222,7 @@ async function generateFormFromJson(cardJson, modify = false) {
                     field.options.forEach(option => {
                         let optionElement = document.createElement('option');
                         optionElement.value = option;
-                        optionElement.textContent = option;
+                        optionElement.textContent = toFrench(option);
                         select.appendChild(optionElement);
                     });
 
@@ -377,21 +380,24 @@ function check_form_filled(form) {
     fields.forEach(field => {
         if (field.value === '') {
             pass = false;
-            alert('Please fill in all the fields');
         }
     });
+
+    if (!pass) {
+        alert('Veuillez remplir tous les champs');
+    }
 
     //check if the distances are rational in the case of "distance traveled"
     let distance = form.querySelector('[name="distance traveled"]');
     if (distance) {
         if (distance.value < 1) {
             pass = false;
-            alert('Please enter a positive distance');
+            alert('Entrez une distance supérieure à 0 km');
         }
         //limit to 100000 km
         if (distance.value > 100000) {
             pass = false;
-            alert('Please enter a distance less than 100000 km');
+            alert('Entrez une distance inférieure à 100000 km');
         }
     }
 
@@ -401,7 +407,7 @@ function check_form_filled(form) {
 function addNewCard(cardJson) {
     // Create a random ID
     let cardID = Math.random().toString(36).substring(7);
-    console.log('cardID: ' + cardID);
+    //console.log('cardID: ' + cardID);
 
     // Replace the "Ajouter" of the cardJson description with "Modifier"
     cardJson.description = cardJson.description.replace('Ajouter', 'Modifier');
@@ -410,16 +416,16 @@ function addNewCard(cardJson) {
     cardJson.id = cardID;
 
 
-    console.log('cardJson:');
-    console.log(cardJson);
-    console.log('----');
+    //console.log('cardJson:');
+    //console.log(cardJson);
+    //console.log('----');
 
     // Create a form from the cardJson
     generateFormFromJson(cardJson).then(form => {
 
-        console.log('form:');
-        console.log(form);
-        console.log('----');
+        //console.log('form:');
+        //console.log(form);
+        //console.log('----');
 
         // If the form is complete, we add the card to the user's card list
         if (form.complete) {
@@ -504,9 +510,9 @@ function generateCardDiv(cardJson, isPlaceholder = true) {
         // call generateFormFromJson function
         cardButton.addEventListener('click', function() {
             generateFormFromJson(cardJson, true).then(form => {
-                console.log('Modify button, opening form:');
-                console.log(form);
-                console.log('----');
+                //console.log('Modify button, opening form:');
+                //console.log(form);
+                //console.log('----');
                 if (form.complete) {
                     // Create a json with infos: the data, the cardJSON, and the ID
                     let savedCard = {
@@ -552,23 +558,23 @@ function generateCardsFromJson() {
 
 // Function to load the saved cards from localStorage
 function loadSavedCards() {
-    console.log('loadSavedCards:');
+    //console.log('loadSavedCards:');
     let cardSelection = JSON.parse(localStorage.getItem('cardSelection')) || [];
     let cardListUser = document.getElementById('cardListUser');
     cardSelection.forEach(savedCard => {
         let card = generateCardDiv(savedCard.cardJson, false);
         cardListUser.appendChild(card);
     });
-    console.log('----');
+    //console.log('----');
 }
 
 function sendFormData(formData) {
-    console.log('sendFormData:');
+    //console.log('sendFormData:');
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", sessionStorage.getItem("jwt"));
     headers.append("U-Login", sessionStorage.getItem("U-Login"));
-    console.log('data', formData);
+    //console.log('data', formData);
     fetch(COMPUTE_FORM_BACKEND_ENDPOINT, {
         method: 'POST',
         headers: headers,
@@ -576,17 +582,17 @@ function sendFormData(formData) {
     })
     .then(response => {
         if (response.ok) {
-            console.log('Response: ', response);
+            //console.log('Response: ', response);
             //success message
-            SuccessMessage('Carbon footprint calculated successfully');
+            SuccessMessage('Emmission de CO2 calculée avec succès!');
             return response.json();
         } else {
-            console.log('Response: ', response);
+            //console.log('Response: ', response);
             //stay on the same page
             throw new Error("Erreur lors de l\'envoie du formulaire.")
         }
     }).then(json =>  {
-        console.log(json);
+        //console.log(json);
         return json;
     }).catch(err => {
 
@@ -608,7 +614,7 @@ function sendForm() {
             return;
         }
         //display the card list
-        console.log("cardSelection: ",cardSelection);
+        //console.log("cardSelection: ",cardSelection);
 
         // Show processing message
         toggleProcessingMessage(true);
