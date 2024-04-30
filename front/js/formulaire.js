@@ -655,9 +655,10 @@ function sendFormData(formData) {
         }
     }).then(json =>  {
         //console.log(json);
-        return json;
+        const resDiv = document.querySelector('#carbonPrintRes');
+        const textRes = document.createTextNode('Votre empreinte carbone est de ' + json.resultat);
+        resDiv.appendChild(textRes);
     }).catch(err => {
-
         ErrorMessage(err);
     });
 }
