@@ -649,12 +649,53 @@ function sendFormData(formData) {
             throw new Error("Erreur lors de l\'envoie du formulaire.")
         }
     }).then(json =>  {
-        // console.log(json);
-        const resDiv = document.querySelector('#carbonPrintRes');
-        const textRes = document.createTextNode('Votre empreinte carbone est de ' + json.journee.resultat + ' g de CO2.');
-        resDiv.appendChild(textRes);
+        //console.log('Response: ', json);
+        //console.log('----');
+        displayReport(json.journee.resultat);
     }).catch(err => {
         ErrorMessage(err);
+    });
+}
+
+// function to create the report
+function displayReport(result) {
+    //console.log('displayReport:');
+    //console.log(result);
+    //console.log('----');
+    let report = document.createElement('div');
+    report.className = 'report';
+    let title = document.createElement('h2');
+    title.textContent = 'Rapport';
+    report.appendChild(title);
+    let reportContent = document.createElement('div');
+    reportContent.className = 'report-content';
+    report.appendChild(reportContent);
+    let reportText = document.createElement('p');
+    reportText.textContent = 'Votre empreinte carbone est de ' + result + ' g de CO2.';
+    reportContent.appendChild(reportText);
+    let reportButton = document.createElement('button');
+    reportButton.textContent = 'Fermer';
+    reportButton.addEventListener('click', function() {
+        report.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
+        report.style.transform = 'translateY(-100%)';
+        report.style.opacity = '0';
+        setTimeout(() => {
+            report.remove();
+        }, 1000);
+    });
+    reportContent.appendChild(reportButton);
+    document.body.appendChild(report);
+
+    // If escape key is pressed, we close the report
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            report.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
+            report.style.transform = 'translateY(-100%)';
+            report.style.opacity = '0';
+            setTimeout(() => {
+                report.remove();
+            }, 1000);
+        }
     });
 }
 
