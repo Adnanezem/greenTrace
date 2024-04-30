@@ -116,12 +116,16 @@ public class DefaultCarbon {
      * 
      * @param node la node json à traiter.
      * @return le résultat en float.
-     */
+     */ 
     float computeCarbonEmission(final JsonNode node) {
         float resultat = 0;
         String category = JSONUtils.getStringField(node, "category");
         String fuel = JSONUtils.getStringField(node, "fuel type");
         String distance = JSONUtils.getStringField(node, "distance traveled");
+        String vehicule = JSONUtils.getStringField(node, "vehicle type");
+        String meal = JSONUtils.getStringField(node, "meal type");
+        String restaurant  = JSONUtils.getStringField(node, "restaurant type");
+
         switch (category) {
             case "transport":
                 String transportType = JSONUtils.getStringField(node, "type");
@@ -130,19 +134,25 @@ public class DefaultCarbon {
                         resultat += CarbonCalculator.computeCarEmissions(fuel, Integer.parseInt(distance));
                         break;
                     case "Trajet en vélo":
-                        resultat += CarbonCalculator.computeVeloEmissions(fuel, Integer.parseInt(distance));
+                        resultat += CarbonCalculator.computeVeloEmissions(vehicule, Integer.parseInt(distance));
                         break;
                     case "Trajet en bus":
                         resultat += CarbonCalculator.computeBusEmissions(fuel, Integer.parseInt(distance));
                         break;
                     case "Trajet en avion":
-                        resultat += CarbonCalculator.computeAvionEmissions(fuel, Integer.parseInt(distance));
+                        resultat += CarbonCalculator.computeAvionEmissions(vehicule, Integer.parseInt(distance));
                         break;
                     default:
                         break;
                 }
-                
+
                 break;
+            case "repas":
+            String repasType = JSONUtils.getStringField(node, "type");
+            switch (repasType) {
+                case "Repas au restaurant":
+                resultat += CarbonCalculator.computeRepasResto(meal, restaurant );
+            }
             default:
                 break;
         }
