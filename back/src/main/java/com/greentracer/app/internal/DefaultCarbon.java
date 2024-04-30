@@ -43,7 +43,7 @@ public class DefaultCarbon {
         this.journeeDao = journeeDao;
     }
 
-    public Map<Boolean, GreenTracerResponse> defaultCompute(String body)  {
+    public Map<Boolean, GreenTracerResponse> defaultCompute(String body, boolean hasConnection)  {
         Map<Boolean, GreenTracerResponse> res = new HashMap<>();
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -55,22 +55,28 @@ public class DefaultCarbon {
                     resultat += computeCarbonEmission(node);
                 }
             }
-            String login = JSONUtils.getStringField(json, "login");
-            Date currentDate = new Date(System.currentTimeMillis());
-            Journee newJ = new Journee(0, login, currentDate, resultat);
-            journeeDao.create(newJ);
-            JourneeResponse resp = new JourneeResponse("journée resp", 201, newJ);
-            Historique h = histDao.getById(login);
-            if(h == null) {
-                Historique newH = new Historique(0, login, 0); // calcul auto du resultat.
-                histDao.create(newH);
+            if(hasConnection) {
+                String login = JSONUtils.getStringField(json, "login");
+                Date currentDate = new Date(System.currentTimeMillis());
+                Journee newJ = new Journee(0, login, currentDate, resultat);
+                journeeDao.create(newJ);
+                JourneeResponse resp = new JourneeResponse("journée resp", 201, newJ);
+                Historique h = histDao.getById(login);
+                if(h == null) {
+                    Historique newH = new Historique(0, login, 0); // calcul auto du resultat.
+                    histDao.create(newH);
+                } else {
+                    float newRes = h.gethistorique() + resultat;
+                    Historique newH = new Historique(0, login, newRes);
+                    histDao.delete(h);
+                    histDao.create(newH);
+                }
+                res.put(true, resp);
             } else {
-                float newRes = h.gethistorique() + resultat;
-                Historique newH = new Historique(0, login, newRes);
-                histDao.delete(h);
-                histDao.create(newH);
+                Journee newJ = new Journee(0, null, null, resultat);
+                JourneeResponse resp = new JourneeResponse("journée resp", 200, newJ);
+                res.put(true, resp);
             }
-            res.put(true, resp);
         } catch (JsonProcessingException e) {
             res.put(false, new ErrorResponse("Error in compute", 400));
         }

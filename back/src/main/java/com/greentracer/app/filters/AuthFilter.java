@@ -26,7 +26,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @Order(1)
 public class AuthFilter implements Filter {
     private static Logger logger = LoggerFactory.getLogger(AuthFilter.class);
-    private static final String[] WHITELIST = {"/", "/users/register", "/users/login" };
+    private static final String[] WHITELIST = {"/", "/users/register", "/users/login", "/carbon/compute/unconnect"};
     private static final List<String> WHITELIST_URLS = Arrays.asList(WHITELIST);
     private static final String AUTH_HEADER = "Authorization";
     private static final String LOGIN_HEADER = "U-Login";
