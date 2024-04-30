@@ -282,6 +282,46 @@ async function generateFormFromJson(cardJson, modify = false) {
 
                     fieldDiv.appendChild(color_input);
                     break;
+                case 'percentage input':
+                    //add a slider between 0 and 100
+                    let percentage_input = document.createElement('input');
+                    percentage_input.type = 'range';
+                    percentage_input.name = field.name;
+                    percentage_input.min = 0;
+                    percentage_input.max = 100;
+                    percentage_input.step = 1;
+                    if (modify && data) {
+                        percentage_input.value = data[field.name];
+                    }
+
+                    //add a number input to display the value of the slider
+                    let percentage_number = document.createElement('input');
+                    percentage_number.type = 'number';
+                    percentage_number.name = field.name;
+                    percentage_number.min = 0;
+                    percentage_number.max = 100;
+                    percentage_number.value = 50;
+                    percentage_number.step = 1;
+                    percentage_number.style.width = '50px';
+                    if (modify && data) {
+                        percentage_number.value = data[field.name];
+                    }
+
+                    //add an event listener to the slider to update the number input
+                    percentage_input.addEventListener('input', function() {
+                        percentage_number.value = percentage_input.value;
+                    }
+                    );
+
+                    //add an event listener to the number input to update the slider
+                    percentage_number.addEventListener('input', function() {
+                        percentage_input.value = percentage_number.value;
+                    }
+                    );
+
+                    fieldDiv.appendChild(percentage_input);
+                    fieldDiv.appendChild(percentage_number);
+                    break;
                 default:
                     console.error('Unknown field type: ' + field.type);
                     break;
@@ -505,6 +545,23 @@ function generateCardDiv(cardJson, isPlaceholder = true) {
         cardButton.addEventListener('click', function() {
             addNewCard(cardJson);
         });
+        //disable the card if disabled is true
+        if (cardJson.disabled) {
+            cardButton.disabled = true;
+            //add a gray filter to the card
+            card.style.filter = 'grayscale(100%)';
+
+            //add a h1 element to the card, vertically and horizontally centered
+            let disabledText = document.createElement('h1');
+            disabledText.style.position = 'absolute';
+            disabledText.style.top = '70%';
+            disabledText.style.left = '50%';
+            disabledText.style.transform = 'translate(-50%, -50%)';
+
+            //set the text of the h1 element to "Indisponible"
+            disabledText.textContent = 'Indisponible';
+            card.appendChild(disabledText);
+        }
     } else {
         cardButton.textContent = "Modifier";
         // call generateFormFromJson function

@@ -63,7 +63,8 @@ var dictionary = {
         "botanical": "Botanique",
         "national": "National",
         "regional": "Régional",
-        "urban": "Urbain"
+        "urban": "Urbain",
+        "occupancy": "Occupation",
     }
 };
 
