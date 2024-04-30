@@ -1,6 +1,5 @@
 package com.greentracer.app.utils;
 
-
 /**
  * Implémente les méthodes pour calculer l'empreinte carbonne.
  * Sources des chiffres utilisées :
@@ -21,10 +20,10 @@ public final class CarbonCalculator {
     }
 
     /**
-     * 
+     * Calcule les émissions d'un trajet en voiture.
      * @param fuel
      * @param distance
-     * @return
+     * @return un résultat en float.
      */
     public static float computeCarEmissions(String fuel, int distance) {
         float emissions = 0;
@@ -41,10 +40,10 @@ public final class CarbonCalculator {
     }
 
     /**
-     * 
+     * Calcule les émissions d'un trajet en bus.
      * @param fuel
      * @param distance
-     * @return
+     * @return un résultat en float.
      */
     public static float computeBusEmissions(String fuel, int distance) {
         float emissions = 0;
@@ -57,24 +56,38 @@ public final class CarbonCalculator {
         }
         return emissions;
     }
+
+    /**
+     * Calcule les émissions d'un trajet en vélo.
+     * @param vehicule
+     * @param distance
+     * @return un résultat en float.
+     */
     public static float computeVeloEmissions(String vehicule, int distance) {
         float emissions = 0;
         if (!vehicule.isBlank()) {
             if (vehicule.equals("electric")) {
-                emissions += 11 * distance; 
+                emissions += 11 * distance;
             } else {
                 emissions += 1 * distance;
             }
         }
         return emissions;
     }
+
+    /**
+     * Calcule les émissions d'un trajet en avion.
+     * @param vehicule
+     * @param distance
+     * @return un résultat en float.
+     */
     public static float computeAvionEmissions(String vehicule, int distance) {
         float emissions = 0;
         if (!vehicule.isBlank()) {
             if (vehicule.equals("short haul")) {
                 emissions += 387 * distance; // max 1000km
             } else if (vehicule.equals("medium haul")) {
-                emissions += 408  * distance; // entre 1000 et 3500 km
+                emissions += 408 * distance; // entre 1000 et 3500 km
             } else if (vehicule.equals("long haul")) {
                 emissions += 673 * distance; // sup a 3500 km
             }
@@ -83,6 +96,12 @@ public final class CarbonCalculator {
         return emissions;
     }
 
+    /**
+     * Calcule l'empreinte carbone d'un repas.
+     * @param meal
+     * @param restaurant
+     * @return un résultat en float.
+     */
     public static float computeRepasResto(String meal, String restaurant) {
         float resto = 0;
         if (!meal.isBlank()) {
@@ -111,11 +130,9 @@ public final class CarbonCalculator {
                 default:
                     break;
             }
-            
+
         }
         return resto;
-    }    
+    }
 
-
-    
 }

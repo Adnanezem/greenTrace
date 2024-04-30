@@ -66,7 +66,6 @@ function loadCarbonHistory() {
                 bilanSection.appendChild(noContentTxt);
             } else {
                 console.log('Response: ', response);
-                toggleProcessingMessage(false);
                 throw new Error("Erreur lors de la récupération de l'historique de l'utilisateur.")
             }
         }
@@ -103,7 +102,6 @@ function loadCarbonHistoryDetail(date) {
             return response.json();
         } else {
             console.log('Response: ', response);
-            toggleProcessingMessage(false);
             if(response.status !== 404) {
                 throw new Error("Erreur lors de la récupération des détails de l'historique de l'utilisateur.");
             }
@@ -182,7 +180,6 @@ function getAvgUsersCarbonPrint() {
             return response.json();
         } else {
             console.log('Response: ', response);
-            toggleProcessingMessage(false);
             if(response.status !== 404) {
                 throw new Error("Erreur lors de la récupération de la moyenne de consommation carbone.");
             }
