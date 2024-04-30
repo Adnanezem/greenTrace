@@ -43,7 +43,7 @@ public class DefaultCarbon {
         this.journeeDao = journeeDao;
     }
 
-    public Map<Boolean, GreenTracerResponse> defaultCompute(String body, boolean hasConnection)  {
+    public Map<Boolean, GreenTracerResponse> defaultCompute(String body, boolean hasConnection) {
         Map<Boolean, GreenTracerResponse> res = new HashMap<>();
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -55,14 +55,14 @@ public class DefaultCarbon {
                     resultat += computeCarbonEmission(node);
                 }
             }
-            if(hasConnection) {
+            if (hasConnection) {
                 String login = JSONUtils.getStringField(json, "login");
                 Date currentDate = new Date(System.currentTimeMillis());
                 Journee newJ = new Journee(0, login, currentDate, resultat);
                 journeeDao.create(newJ);
                 JourneeResponse resp = new JourneeResponse("journée resp", 201, newJ);
                 Historique h = histDao.getById(login);
-                if(h == null) {
+                if (h == null) {
                     Historique newH = new Historique(0, login, 0); // calcul auto du resultat.
                     histDao.create(newH);
                 } else {
@@ -128,6 +128,10 @@ public class DefaultCarbon {
         String category = JSONUtils.getStringField(node, "category");
         String fuel = JSONUtils.getStringField(node, "fuel type");
         String distance = JSONUtils.getStringField(node, "distance traveled");
+        String vehicule = JSONUtils.getStringField(node, "vehicle type");
+        String meal = JSONUtils.getStringField(node, "meal type");
+        String restaurant = JSONUtils.getStringField(node, "restaurant type");
+
         switch (category) {
             case "transport":
                 String transportType = JSONUtils.getStringField(node, "type");
@@ -136,19 +140,27 @@ public class DefaultCarbon {
                         resultat += CarbonCalculator.computeCarEmissions(fuel, Integer.parseInt(distance));
                         break;
                     case "Trajet en vélo":
-                        resultat += CarbonCalculator.computeVeloEmissions(fuel, Integer.parseInt(distance));
+                        resultat += CarbonCalculator.computeVeloEmissions(vehicule, Integer.parseInt(distance));
                         break;
                     case "Trajet en bus":
                         resultat += CarbonCalculator.computeBusEmissions(fuel, Integer.parseInt(distance));
                         break;
                     case "Trajet en avion":
-                        resultat += CarbonCalculator.computeAvionEmissions(fuel, Integer.parseInt(distance));
+                        resultat += CarbonCalculator.computeAvionEmissions(vehicule, Integer.parseInt(distance));
                         break;
                     default:
                         break;
                 }
-                
+
                 break;
+            case "repas":
+                String repasType = JSONUtils.getStringField(node, "type");
+                switch (repasType) {
+                    case "Repas au restaurant":
+                        resultat += CarbonCalculator.computeRepasResto(meal, restaurant);
+                    default: 
+                        break;
+                }
             default:
                 break;
         }
