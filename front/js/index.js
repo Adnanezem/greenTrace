@@ -1,4 +1,4 @@
-var CARBON_BACKEND_ENDPOINT = 'https://192.168.75.79/back_test/carbon/';
+var CARBON_BACKEND_ENDPOINT = 'https://192.168.75.79/greentracerAPI/carbon/';
 
 function loadPage() {
     $(document).ready(function () {

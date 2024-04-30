@@ -2,10 +2,10 @@ console.log('login.js loaded');
 // login.js
 var log_in = true;
 
-var CONTACT_BACKEND_ENDPOINT = 'https://192.168.75.79/back_test/contact';
-var LOGIN_BACKEND_ENDPOINT = 'https://192.168.75.79/back_test/users/login';
-var LOGOUT_BACKEND_ENDPOINT = 'https://192.168.75.79/back_test/users/logout';
-var SIGNUP_BACKEND_ENDPOINT = 'https://192.168.75.79/back_test/users/register';
+var CONTACT_BACKEND_ENDPOINT = 'https://192.168.75.79/greentracerAPI/contact';
+var LOGIN_BACKEND_ENDPOINT = 'https://192.168.75.79/greentracerAPI/users/login';
+var LOGOUT_BACKEND_ENDPOINT = 'https://192.168.75.79/greentracerAPI/users/logout';
+var SIGNUP_BACKEND_ENDPOINT = 'https://192.168.75.79/greentracerAPI/users/register';
 
 
 function serverError(comment) {
