@@ -629,17 +629,22 @@ function sendFormData(formData) {
     //console.log('sendFormData:');
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
-    headers.append("Authorization", sessionStorage.getItem("jwt"));
+    const token = sessionStorage.getItem("jwt");
+    let endpoint = COMPUTE_FORM_BACKEND_ENDPOINT;
+    if(token) {
+        headers.append("Authorization", sessionStorage.getItem("jwt"));
+        endpoint += "/connect";
+    } else {
+        endpoint += "/unconnect";
+    }
     headers.append("U-Login", sessionStorage.getItem("U-Login"));
-    //console.log('data', formData);
-    fetch(COMPUTE_FORM_BACKEND_ENDPOINT, {
+    fetch(endpoint, {
         method: 'POST',
         headers: headers,
         body: JSON.stringify(formData),
     })
     .then(response => {
         if (response.ok) {
-            //console.log('Response: ', response);
             //success message
             SuccessMessage('Emmission de CO2 calculée avec succès!');
             return response.json();
