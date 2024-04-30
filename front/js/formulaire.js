@@ -653,7 +653,7 @@ function sendFormData(formData) {
             throw new Error("Erreur lors de l\'envoie du formulaire.")
         }
     }).then(json =>  {
-        //console.log(json);
+        console.log(json);
         const resDiv = document.querySelector('#carbonPrintRes');
         const textRes = document.createTextNode('Votre empreinte carbone est de ' + json.resultat);
         resDiv.appendChild(textRes);
