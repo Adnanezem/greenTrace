@@ -113,8 +113,14 @@ public class DefaultCarbon {
                     case "Trajet en voiture":
                         resultat += CarbonCalculator.computeCarEmissions(fuel, Integer.parseInt(distance));
                         break;
+                    case "Trajet en vélo":
+                        resultat += CarbonCalculator.computeVeloEmissions(fuel, Integer.parseInt(distance));
+                        break;
                     case "Trajet en bus":
                         resultat += CarbonCalculator.computeBusEmissions(fuel, Integer.parseInt(distance));
+                        break;
+                    case "Trajet en avion":
+                        resultat += CarbonCalculator.computeAvionEmissions(fuel, Integer.parseInt(distance));
                         break;
                     default:
                         break;
