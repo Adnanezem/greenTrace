@@ -6,9 +6,11 @@ function loadPage() {
         var page = window.location.search.substring(1).split('=')[1] || 'accueil';
         $('#content').load(`../html/${page}.html`, function () {
             isConnected();
-            if (page === 'profil') {
-                loadCarbonHistory();
-            }
+            $.getScript('https://cdn.plot.ly/plotly-latest.min.js', function () {
+                if (page === 'profil') {
+                    loadCarbonHistory();
+                }
+            });
         });
     });
 }
@@ -102,7 +104,7 @@ function loadCarbonHistoryDetail(date) {
             return response.json();
         } else {
             console.log('Response: ', response);
-            if(response.status !== 404) {
+            if (response.status !== 404) {
                 throw new Error("Erreur lors de la récupération des détails de l'historique de l'utilisateur.");
             }
         }
@@ -136,7 +138,7 @@ async function getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, hi
                 date: formattedDate,
                 result: finalRes
             });
-        } catch(err) {
+        } catch (err) {
             col2.textContent = "Pas de bilan pour cette date.";
             if (date.toISOString() === currentDate.toISOString()) {
                 bilanQuotidienDiv.textContent = "Vous n'avez pas réalisé de bilan carbone aujourd'hui.";
@@ -180,7 +182,7 @@ function getAvgUsersCarbonPrint() {
             return response.json();
         } else {
             console.log('Response: ', response);
-            if(response.status !== 404) {
+            if (response.status !== 404) {
                 throw new Error("Erreur lors de la récupération de la moyenne de consommation carbone.");
             }
         }

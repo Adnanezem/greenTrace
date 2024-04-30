@@ -135,7 +135,7 @@ public final class CarbonCalculator {
      * Calcule l'empreinte carbone d'un repas chez soit.
      * 
      * @param meal
-     * @param restaurant
+     * @param foodType
      * @return un résultat en float.
      */
     public static float computeRepasMaison(String meal, String foodType) {
