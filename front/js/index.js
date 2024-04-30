@@ -55,13 +55,14 @@ function loadCarbonHistory() {
             const avgHist = document.querySelector('#histAvg');
             const bilanQuotidienDiv = document.querySelector('#bilanCO2Result');
             const avgBilan = json.historique.historique;
-            const avgBilanTxt = document.createTextNode("Moyenne hebdomadaire: " + avgBilan);
+            const avgBilanTxt = document.createTextNode("Moyenne hebdomadaire: " + avgBilan + "g de carbone.");
             avgHist.appendChild(avgBilanTxt);
             const currentDate = new Date();
             previousDate = getPreviousSevenDays(currentDate);
             histTab = document.querySelector("#userHistTab tbody");
             carbon_history = await getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, histTab);
-            drawCarbonHistoryChart(carbon_history);
+            data_avg_carbon_print = await getAvgUsersCarbonPrint();
+            drawCarbonHistoryChart(carbon_history, data_avg_carbon_print);
         }
     }).catch(err => {
         serverError(err);
@@ -147,6 +148,32 @@ function getPreviousSevenDays(startDate) {
     return dates;
 }
 
+function getAvgUsersCarbonPrint() {
+    const headers = new Headers();
+    const login = sessionStorage.getItem("U-Login");
+    headers.append("Authorization", sessionStorage.getItem("jwt"));
+    headers.append("U-Login", login);
+    return fetch(CARBON_BACKEND_ENDPOINT + 'average', {
+        method: 'GET',
+        headers: headers,
+    }).then(response => {
+        if (response.ok) {
+            console.log('Response: ', response);
+            return response.json();
+        } else {
+            console.log('Response: ', response);
+            toggleProcessingMessage(false);
+            if(response.status !== 404) {
+                throw new Error("Erreur lors de la récupération de la moyenne de consommation carbone.");
+            }
+        }
+    }).then(json => {
+        return json;
+    }).catch(err => {
+        serverError(err);
+    });
+}
+
 function formatToSQLDate(date) {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -155,9 +182,10 @@ function formatToSQLDate(date) {
     return `${year}-${month}-${day}`;
 }
 
-function drawCarbonHistoryChart(data) {
+function drawCarbonHistoryChart(data, avg_carbon_print) {
     const dates = data.map(item => item.date);
     const values = data.map(item => item.result);
+    const avg = avg_carbon_print.historique.historique;
 
     const trace = {
         x: dates,
@@ -169,8 +197,21 @@ function drawCarbonHistoryChart(data) {
         }
     };
 
+    const averageTrace = {
+        x: [dates[0], dates[dates.length - 1]],
+        y: [avg, avg],
+        type: 'scatter',
+        mode: 'lines',
+        name: 'Moyenne',
+        line: {
+            color: 'red',
+            width: 2,
+            dash: 'dot'
+        }
+    };
+
     const layout = {
-        title: 'Historique des émissions carbonnes',
+        title: 'Historique des émissions carbones',
         xaxis: {
             title: 'Date'
         },
@@ -191,7 +232,7 @@ function drawCarbonHistoryChart(data) {
         responsive: true
     };
 
-    Plotly.newPlot('carbonHistoryChart', [trace], layout, config);
+    Plotly.newPlot('carbonHistoryChart', [trace, averageTrace], layout, config);
 }
 
 loadPage();
