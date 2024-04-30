@@ -23,7 +23,7 @@ class UserMapperTest {
     }
 
     @Test
-    public void mapRow_validResultSet_returnsUser() throws SQLException {
+    void mapRow_validResultSet_returnsUser() throws SQLException {
         // Arrange
         when(resultSetMock.getString("login")).thenReturn("testLogin");
         when(resultSetMock.getString("nom")).thenReturn("testFname");
