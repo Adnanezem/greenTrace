@@ -30,21 +30,21 @@ class UserTest {
     }
 
     @Test
-    public void setAndGetLname() {
+    void setAndGetLname() {
         String lname = "testLname";
         user.setLname(lname);
         assertEquals(lname, user.getLname());
     }
 
     @Test
-    public void setAndGetFname() {
+    void setAndGetFname() {
         String fname = "testFname";
         user.setFname(fname);
         assertEquals(fname, user.getFname());
     }
 
     @Test
-    public void toString_returnsCorrectFormat() {
+    void toString_returnsCorrectFormat() {
         String login = "testLogin";
         String password = "testPassword";
         String lname = "testLname";
