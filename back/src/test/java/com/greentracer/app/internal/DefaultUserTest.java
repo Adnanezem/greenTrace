@@ -38,7 +38,7 @@ class DefaultUserTest {
     }
 
     @Test
-    public void defaultLogin_validCredentials_returnsTrue() {
+    void defaultLogin_validCredentials_returnsTrue() {
         // Arrange
         String login = "testUser";
         String password = "password";
@@ -59,7 +59,7 @@ class DefaultUserTest {
     }
 
     @Test
-    public void defaultLogin_invalidCredentials_returnsFalseWithErrorResponse() {
+    void defaultLogin_invalidCredentials_returnsFalseWithErrorResponse() {
         // Arrange
         String login = "testUser";
         String password = "wrongPassword";
@@ -78,7 +78,7 @@ class DefaultUserTest {
     }
 
     @Test
-    public void defaultLogin_emptyRequestBody_returnsFalseWithErrorResponse() {
+    void defaultLogin_emptyRequestBody_returnsFalseWithErrorResponse() {
         // Act
         Map<Boolean, GreenTracerResponse> result = defaultUser.defaultLogin("");
 
@@ -88,7 +88,7 @@ class DefaultUserTest {
     }
 
     @Test
-    public void defaultLogin_emptyLoginOrPassword_returnsFalseWithErrorResponse() {
+    void defaultLogin_emptyLoginOrPassword_returnsFalseWithErrorResponse() {
         // Arrange
         String login = "";
         String password = "password"; // Test empty login
@@ -113,7 +113,7 @@ class DefaultUserTest {
     }
 
     @Test
-    public void defaultLogin_userNotFound_returnsFalseWithErrorResponse() {
+    void defaultLogin_userNotFound_returnsFalseWithErrorResponse() {
         // Arrange
         when(userDaoMock.getById(anyString())).thenThrow(new IllegalArgumentException());
 
@@ -126,7 +126,7 @@ class DefaultUserTest {
     }
 
     @Test
-    public void defaultRegister_validData_returnsTrue() {
+    void defaultRegister_validData_returnsTrue() {
         // Arrange
         String login = "testUser";
         String password = "password";
@@ -146,7 +146,7 @@ class DefaultUserTest {
     }
 
     @Test
-    public void defaultRegister_invalidData_returnsFalseWithErrorResponse() {
+    void defaultRegister_invalidData_returnsFalseWithErrorResponse() {
         // Arrange
         String login = "testUser";
         String password = "password";
@@ -166,7 +166,7 @@ class DefaultUserTest {
     }
 
     @Test
-    public void defaultRegister_emptyRequestBody_returnsFalseWithErrorResponse() {
+    void defaultRegister_emptyRequestBody_returnsFalseWithErrorResponse() {
         // Act
         Map<Boolean, GreenTracerResponse> result = defaultUser.defaultRegister("");
 
@@ -176,7 +176,7 @@ class DefaultUserTest {
     }
 
     @Test
-    public void defaultRegister_emptyLogin_returnsFalseWithErrorResponse() {
+    void defaultRegister_emptyLogin_returnsFalseWithErrorResponse() {
         // Arrange
         String body = "{\"login\":\"\",\"password\":\"password\",\"mail\":\"email@example.com\",\"fname\":\"John\",\"lname\":\"Doe\"}";
 
@@ -193,7 +193,7 @@ class DefaultUserTest {
 
 
     @Test
-    public void defaultRegister_duplicateUser_returnsFalseWithErrorResponse() {
+    void defaultRegister_duplicateUser_returnsFalseWithErrorResponse() {
         // Arrange
         String login = "testUser";
         when(userDaoMock.create(Mockito.any(User.class))).thenReturn(false); // user duplicated
@@ -208,7 +208,7 @@ class DefaultUserTest {
 
 
     @Test
-    public void defaultRegister_malformedJson_returnsFalseWithErrorResponse() {
+    void defaultRegister_malformedJson_returnsFalseWithErrorResponse() {
         // Arrange
         String malformedJson = "{login:\"testUser\",password:\"password\",mail:\"email@example.com\",fname:\"John\",lname:\"Doe\"";  // missing closing brace
 
@@ -220,7 +220,7 @@ class DefaultUserTest {
         assertEquals("Format JSON non respecté.", ((ErrorResponse) result.get(false)).getMessage());
     }
     @Test
-    public void defaultRegister_existingUser_returnsFalseWithErrorResponse() {
+    void defaultRegister_existingUser_returnsFalseWithErrorResponse() {
         // Arrange
         String login = "existingUser";
         String password = "password";
@@ -241,7 +241,7 @@ class DefaultUserTest {
 
 
     @Test
-    public void defaultGetUser_validUser_returnsTrueWithUserResponse() {
+    void defaultGetUser_validUser_returnsTrueWithUserResponse() {
         // Arrange
         String login = "testUser";
         User user = new User();
@@ -257,7 +257,7 @@ class DefaultUserTest {
     }
 
     @Test
-    public void defaultGetUser_invalidUser_returnsFalseWithErrorResponse() {
+    void defaultGetUser_invalidUser_returnsFalseWithErrorResponse() {
         // Arrange
         String login = "invalidUser";
         when(userDaoMock.getById(login)).thenThrow(new IllegalArgumentException());
@@ -271,7 +271,7 @@ class DefaultUserTest {
     }
 
     @Test
-    public void defaultUpdateUser_validData_returnsTrueWithUserResponse() {
+    void defaultUpdateUser_validData_returnsTrueWithUserResponse() {
         // Arrange
         String login = "testUser";
         String password = "newPassword";
@@ -292,7 +292,7 @@ class DefaultUserTest {
     }
 
     @Test
-    public void defaultUpdateUser_invalidData_returnsFalseWithErrorResponse() {
+    void defaultUpdateUser_invalidData_returnsFalseWithErrorResponse() {
         // Arrange
         String login = "testUser";
         String password = "newPassword";
@@ -312,7 +312,7 @@ class DefaultUserTest {
     }
 
     @Test
-    public void defaultUpdateUser_emptyLogin_returnsFalseWithErrorResponse() {
+    void defaultUpdateUser_emptyLogin_returnsFalseWithErrorResponse() {
         // Arrange
         String login = "";
 
@@ -325,7 +325,7 @@ class DefaultUserTest {
     }
 
     @Test
-    public void defaultUpdateUser_malformedJson_returnsFalseWithErrorResponse() {
+    void defaultUpdateUser_malformedJson_returnsFalseWithErrorResponse() {
         // Arrange
         String login = "testUser";
         String malformedJson = "{password:\"newPassword\",mail:\"new@mail.com\",fname:\"New\",lname:\"User\"";  // missing closing brace
@@ -338,26 +338,8 @@ class DefaultUserTest {
         assertEquals("Format JSON non respecté.", ((ErrorResponse) result.get(false)).getMessage());
     }
 
-    /*
-    //cas A traiter => on ne peut pas recevoir l'erreur "JsonMappingException" car quand c'est mal formé le update ne passe pas (donc mise a jour echoué est retourné)
-    //autrement c'est JsonProcessingException
     @Test
-    public void defaultUpdateUser_incompatibleJson_returnsFalseWithErrorResponse() {
-        // Arrange
-        String login = "testUser";
-        String incompatibleJson = "{\"password\":\"123\",\"mail\":\"456\",\"fname\":\"789\",\"lname\":\"0\", \"AddedField\":\"TEST\"}";
-
-        // Act
-        Map<Boolean, GreenTracerResponse> result = defaultUser.defaultUpdateUser(login, incompatibleJson);
-
-        // Assert
-        assertTrue(result.containsKey(false));
-        assertEquals("Le JSON n'a pas pu être mappé correctement.", ((ErrorResponse) result.get(false)).getMessage());
-    }
-
-    */
-    @Test
-    public void defaultUpdateUser_emptyFieldsInRequestBody_returnsFalseWithErrorResponse() {
+    void defaultUpdateUser_emptyFieldsInRequestBody_returnsFalseWithErrorResponse() {
         // Arrange
         String login = "testUser";
         String body = "{\"password\":\"\",\"mail\":\"\",\"fname\":\"\",\"lname\":\"\"}";  // Empty fields
@@ -373,7 +355,7 @@ class DefaultUserTest {
     }
 
     @Test
-    public void defaultUpdateUser_nonExistingUser_returnsFalseWithErrorResponse() {
+    void defaultUpdateUser_nonExistingUser_returnsFalseWithErrorResponse() {
         // Arrange
         String login = "nonExistingUser";
         String password = "newPassword";
@@ -394,7 +376,7 @@ class DefaultUserTest {
 
 
     @Test
-    public void defaultGetUser_nonExistingUser_returnsFalseWithErrorResponse() {
+    void defaultGetUser_nonExistingUser_returnsFalseWithErrorResponse() {
         // Arrange
         String login = "nonExistingUser";
         when(userDaoMock.getById(login)).thenThrow(new IllegalArgumentException());
@@ -409,7 +391,7 @@ class DefaultUserTest {
 
 
     @Test
-    public void defaultGetUser_emptyLogin_returnsFalseWithErrorResponse() {
+    void defaultGetUser_emptyLogin_returnsFalseWithErrorResponse() {
         // Arrange
         String login = "";
 
@@ -423,7 +405,7 @@ class DefaultUserTest {
 
 
     @Test
-    public void defaultLogout_always_returnsTrueWithNullResponse() {
+    void defaultLogout_always_returnsTrueWithNullResponse() {
         // Act
         Map<Boolean, GreenTracerResponse> result = defaultUser.defaultLogout();
 
@@ -434,7 +416,7 @@ class DefaultUserTest {
 
 
     @Test
-    public void defaultLogin_malformedJson_returnsFalseWithErrorResponse() {
+    void defaultLogin_malformedJson_returnsFalseWithErrorResponse() {
         // Arrange
         String malformedJson = "{login:\"testUser\",password:\"password\"";  // accolade
 
@@ -448,7 +430,7 @@ class DefaultUserTest {
 
 
     @Test
-    public void defaultLogin_nonExistingUser_returnsFalseWithErrorResponse() {
+    void defaultLogin_nonExistingUser_returnsFalseWithErrorResponse() {
         // Arrange
         String login = "nonExistingUser";
         String password = "password";
