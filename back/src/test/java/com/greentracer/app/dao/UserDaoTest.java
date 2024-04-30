@@ -71,13 +71,13 @@ class UserDaoTest {
     }
 
    @Test
-    public void testCreate() {
+    void testCreate() {
         User u = new User("test2", "test2", "test2", "test2");
         assertTrue(userDao.create(u));
-        assertEquals(userDao.getById("test2").getFname(), "test2");
-        assertEquals(userDao.getById("test2").getLname(), "test2");
-        assertEquals(userDao.getById("test2").getPassword(), "test2");
-        assertEquals(userDao.getById("test2").getLogin(), "test2");
+        assertEquals("test2", userDao.getById("test2").getFname());
+        assertEquals("test2", userDao.getById("test2").getLname());
+        assertEquals("test2", userDao.getById("test2").getPassword());
+        assertEquals("test2", userDao.getById("test2").getLogin());
 
         userDao.delete(u);
     }
