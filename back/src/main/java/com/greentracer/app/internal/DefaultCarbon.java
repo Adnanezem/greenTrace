@@ -141,10 +141,12 @@ public class DefaultCarbon {
                     default:
                         break;
                 }
+                
                 break;
             default:
                 break;
         }
+
         return resultat;
     }
 }

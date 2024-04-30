@@ -78,6 +78,7 @@ public final class CarbonCalculator {
                 emissions += 673 * distance; // sup a 3500 km
             }
         }
+        
         return emissions;
     }
 }
