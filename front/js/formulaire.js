@@ -1,4 +1,4 @@
-var COMPUTE_FORM_BACKEND_ENDPOINT = 'https://192.168.75.79/back_test/carbon/compute';
+var COMPUTE_FORM_BACKEND_ENDPOINT = 'https://192.168.75.79/greentracerAPI/carbon/compute';
 
 import { toFrench, toEnglish } from './dictionnary.js';
 

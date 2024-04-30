@@ -1,4 +1,4 @@
-var CARBON_BACKEND_ENDPOINT = 'https://192.168.75.79/back_test/carbon/';
+var CARBON_BACKEND_ENDPOINT = 'https://192.168.75.79/greentracerAPI/carbon/';
 
 function loadPage() {
     $(document).ready(function () {
@@ -6,11 +6,33 @@ function loadPage() {
         var page = window.location.search.substring(1).split('=')[1] || 'accueil';
         $('#content').load(`../html/${page}.html`, function () {
             isConnected();
-            if (page === 'profil') {
-                loadCarbonHistory();
-            }
+            $.getScript('https://cdn.plot.ly/plotly-latest.min.js', function () {
+                if (page === 'profil') {
+                    loadCarbonHistory();
+                }
+            });
         });
     });
+}
+
+function serverError(comment) {
+    var div = document.createElement('div');
+    div.style.backgroundColor = 'red';
+    div.style.color = 'white';
+    div.style.position = 'fixed';
+    div.style.top = '0';
+    div.style.left = '0';
+    div.style.width = '100%';
+    div.style.zIndex = '1000';
+    div.style.padding = '10px';
+    div.style.textAlign = 'center';
+    div.innerHTML = 'Erreur: ' + comment;
+    document.body.appendChild(div);
+
+    setTimeout(function () {
+        div.remove();
+    }
+        , 5000);
 }
 
 function isConnected() {
@@ -46,7 +68,6 @@ function loadCarbonHistory() {
                 bilanSection.appendChild(noContentTxt);
             } else {
                 console.log('Response: ', response);
-                toggleProcessingMessage(false);
                 throw new Error("Erreur lors de la récupération de l'historique de l'utilisateur.")
             }
         }
@@ -83,8 +104,7 @@ function loadCarbonHistoryDetail(date) {
             return response.json();
         } else {
             console.log('Response: ', response);
-            toggleProcessingMessage(false);
-            if(response.status !== 404) {
+            if (response.status !== 404) {
                 throw new Error("Erreur lors de la récupération des détails de l'historique de l'utilisateur.");
             }
         }
@@ -118,7 +138,7 @@ async function getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, hi
                 date: formattedDate,
                 result: finalRes
             });
-        } catch(err) {
+        } catch (err) {
             col2.textContent = "Pas de bilan pour cette date.";
             if (date.toISOString() === currentDate.toISOString()) {
                 bilanQuotidienDiv.textContent = "Vous n'avez pas réalisé de bilan carbone aujourd'hui.";
@@ -162,8 +182,7 @@ function getAvgUsersCarbonPrint() {
             return response.json();
         } else {
             console.log('Response: ', response);
-            toggleProcessingMessage(false);
-            if(response.status !== 404) {
+            if (response.status !== 404) {
                 throw new Error("Erreur lors de la récupération de la moyenne de consommation carbone.");
             }
         }
@@ -192,6 +211,7 @@ function drawCarbonHistoryChart(data, avg_carbon_print) {
         y: values,
         type: 'scatter',
         mode: 'lines+markers',
+        name: 'Votre empreinte',
         marker: {
             color: 'green'
         }
@@ -202,7 +222,7 @@ function drawCarbonHistoryChart(data, avg_carbon_print) {
         y: [avg, avg],
         type: 'scatter',
         mode: 'lines',
-        name: 'Moyenne',
+        name: 'Moyenne du site',
         line: {
             color: 'red',
             width: 2,

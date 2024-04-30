@@ -40,6 +40,7 @@ var dictionary = {
         "dinner": "Dîner",
         "snack": "Snack",
         "restaurant type": "Type de restaurant",
+        "food type": "Type de nourriture",
         "fast food": "Restauration rapide",
         "traditional": "Traditionnel",
         "gourmet": "Gastronomique",

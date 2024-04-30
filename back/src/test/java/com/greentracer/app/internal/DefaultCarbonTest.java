@@ -247,6 +247,6 @@ class DefaultCarbonTest {
         // Act
         float result = defaultCarbon.computeCarbonEmission(node);
         // Assert
-        assertEquals(CarbonCalculator.computeRepasResto("breakfast", "fast food"), result);
+        assertEquals(CarbonCalculator.computeRepasResto("fast food"), result);
     }
 }

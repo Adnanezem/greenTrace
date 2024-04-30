@@ -126,7 +126,12 @@ public class DefaultCarbon {
             carbonSum += j.getresultat();
             nbJournees++;
         }
-        float avg = carbonSum / nbJournees;
+
+        float avg = 0;
+        if(nbJournees != 0) {
+            avg = (float) carbonSum / (float) nbJournees;
+        }
+
         Historique avgH = new Historique(0, null, avg);
         HistoriqueResponse hResp = new HistoriqueResponse("Average carbon print for registered users.", 200, avgH);
         res.put(true, hResp);
@@ -147,6 +152,7 @@ public class DefaultCarbon {
         String vehicule = JSONUtils.getStringField(node, "vehicle type");
         String meal = JSONUtils.getStringField(node, "meal type");
         String restaurant = JSONUtils.getStringField(node, "restaurant type");
+        String foodType = JSONUtils.getStringField(node, "food type");
 
         switch (category) {
             case "transport":
@@ -173,14 +179,15 @@ public class DefaultCarbon {
                 String repasType = JSONUtils.getStringField(node, "type");
                 switch (repasType) {
                     case "Repas au restaurant":
-                        resultat += CarbonCalculator.computeRepasResto(meal, restaurant);
+                        resultat += CarbonCalculator.computeRepasResto(restaurant);
+                    case "Repas à la maison":
+                        resultat += CarbonCalculator.computeRepasMaison(meal, foodType);
                     default:
                         break;
                 }
             default:
                 break;
         }
-
         return resultat;
     }
 }

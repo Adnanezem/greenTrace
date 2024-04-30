@@ -80,31 +80,53 @@ class CarbonCalculatorTest {
 
     @Test
     void testComputeRepasRestoFastFood() {
-        float resto = CarbonCalculator.computeRepasResto("breakfast", "fast food");
-        assertEquals(4.25f, resto);
+        float resto = CarbonCalculator.computeRepasResto("fast food");
+        assertEquals(4610f, resto);
     }
 
     @Test
     void testComputeRepasRestoTraditional() {
-        float resto = CarbonCalculator.computeRepasResto("breakfast", "traditional");
-        assertEquals(1.5f, resto);
-    }
-
-    @Test
-    void testComputeRepasRestoGourmet() {
-        float resto = CarbonCalculator.computeRepasResto("breakfast", "gourmet");
-        assertEquals(1.f, resto);
+        float resto = CarbonCalculator.computeRepasResto("traditional");
+        assertEquals(4489f, resto);
     }
 
     @Test
     void testComputeRepasRestoVegan() {
-        float resto = CarbonCalculator.computeRepasResto("breakfast", "vegan");
-        assertEquals(0.55f, resto);
+        float resto = CarbonCalculator.computeRepasResto("vegan");
+        assertEquals(1170f, resto);
     }
 
     @Test
     void testComputeRepasRestoVegetarian() {
-        float resto = CarbonCalculator.computeRepasResto("breakfast", "vegetarian");
-        assertEquals(0.35f, resto);
+        float resto = CarbonCalculator.computeRepasResto("vegetarian");
+        assertEquals(1530f, resto);
+    }
+
+
+    @Test
+    void testComputeRepasMaisonTraditional() {
+        float resto = CarbonCalculator.computeRepasMaison("breakfast","traditional");
+        float resto2 = CarbonCalculator.computeRepasMaison("lunch","traditional");
+
+        assertEquals(839f, resto);
+        assertEquals(2980f, resto2);
+    }
+
+    @Test
+    void testComputeRepasMaisonVegan() {
+        float resto = CarbonCalculator.computeRepasMaison("breakfast","vegan");
+        float resto2 = CarbonCalculator.computeRepasMaison("lunch","vegan");
+
+        assertEquals(649.5f, resto);
+        assertEquals(390, resto2);
+    }
+
+    @Test
+    void testComputeRepasMaisonVegetarian() {
+        float resto = CarbonCalculator.computeRepasMaison("breakfast","vegetarian");
+        float resto2 = CarbonCalculator.computeRepasMaison("lunch","vegetarian");
+
+        assertEquals(839f, resto);
+        assertEquals(510f, resto2);
     }
 }
