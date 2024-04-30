@@ -72,7 +72,7 @@ function loadCarbonHistory() {
             }
         }
     }).then(async json => {
-        if (json !== undefined) {
+        if (json !== undefined && json.historique !== null) {
             const avgHist = document.querySelector('#histAvg');
             const bilanQuotidienDiv = document.querySelector('#bilanCO2Result');
             const avgBilan = json.historique.historique;
