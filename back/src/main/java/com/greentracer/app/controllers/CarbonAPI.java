@@ -137,4 +137,16 @@ public class CarbonAPI {
         }
     }
 
+    @GetMapping("/average")
+    public ResponseEntity<GreenTracerResponse> getAvgCarbonPrint() {
+        Map<Boolean, GreenTracerResponse> resMap = new HashMap<>();
+        resMap = def.defaultGetAvgCarbonPrint();
+        Iterator<Map.Entry<Boolean, GreenTracerResponse>> iterator = resMap.entrySet().iterator();
+        Map.Entry<Boolean, GreenTracerResponse> res = iterator.next();
+        if(!res.getKey()) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().body(res.getValue());
+    }
+
 }

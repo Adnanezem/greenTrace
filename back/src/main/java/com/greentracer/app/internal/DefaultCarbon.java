@@ -117,6 +117,22 @@ public class DefaultCarbon {
         }
     }
 
+    public Map<Boolean, GreenTracerResponse> defaultGetAvgCarbonPrint() {
+        Map<Boolean, GreenTracerResponse> res = new HashMap<>();
+        List<Journee> journees = journeeDao.getAll();
+        int carbonSum = 0;
+        int nbJournees = 0;
+        for (Journee j : journees) {
+            carbonSum += j.getresultat();
+            nbJournees++;
+        }
+        float avg = carbonSum / nbJournees;
+        Historique avgH = new Historique(0, null, avg);
+        HistoriqueResponse hResp = new HistoriqueResponse("Average carbon print for registered users.", 200, avgH);
+        res.put(true, hResp);
+        return res;
+    }
+
     /**
      * Calcule les émissions carbonnes.
      * 
@@ -158,7 +174,7 @@ public class DefaultCarbon {
                 switch (repasType) {
                     case "Repas au restaurant":
                         resultat += CarbonCalculator.computeRepasResto(meal, restaurant);
-                    default: 
+                    default:
                         break;
                 }
             default:
