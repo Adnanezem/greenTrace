@@ -108,7 +108,7 @@
                 {
                     "name": "vehicle type",
                     "type": "scrolllist",
-                    "options": ["short haul", "medium haul", "long haul"]
+                    "options": ["short haul (<1000km)", "medium haul (1000km - 3500km)", "long haul (>3500km)"]
                 },
                 {
                     "name": "airplane color",

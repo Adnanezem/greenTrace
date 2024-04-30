@@ -53,9 +53,9 @@ class CarbonAPITest {
         String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         URI uri = new URI("/testUser/history/" + today);
 
-        when(defaultCarbon.defaultCompute(requestBody)).thenReturn(result);
+        when(defaultCarbon.defaultCompute(requestBody, true)).thenReturn(result);
 
-        ResponseEntity<?> response = carbonAPI.compute(requestBody);
+        ResponseEntity<?> response = carbonAPI.compute(requestBody, "connect");
 
         assertEquals(201, response.getStatusCode().value());
         assertEquals(successResponse, response.getBody());
@@ -69,9 +69,9 @@ class CarbonAPITest {
         Map<Boolean, GreenTracerResponse> errorResponseMap = new HashMap<>();
         GreenTracerResponse errorResponse = new ErrorResponse("Error in compute", 400);
         errorResponseMap.put(false, errorResponse);
-        when(defaultCarbon.defaultCompute(requestBody)).thenReturn(errorResponseMap);
+        when(defaultCarbon.defaultCompute(requestBody, true)).thenReturn(errorResponseMap);
 
-        ResponseEntity<?> response = carbonAPI.compute(requestBody);
+        ResponseEntity<?> response = carbonAPI.compute(requestBody, "connect");
 
         assertEquals(400, response.getStatusCode().value());
     }
@@ -79,14 +79,14 @@ class CarbonAPITest {
     @Test
     void computeURISyntaxExceptionTest() {
         String requestBody = "{\"login\":\"testUser\", \"form\":[]}";
-        Mockito.when(defaultCarbon.defaultCompute(requestBody)).thenAnswer(new Answer<Map<Boolean, GreenTracerResponse>>() {
+        Mockito.when(defaultCarbon.defaultCompute(requestBody, true)).thenAnswer(new Answer<Map<Boolean, GreenTracerResponse>>() {
             @Override
             public Map<Boolean, GreenTracerResponse> answer(InvocationOnMock invocation) throws Throwable {
                 throw new URISyntaxException("Invalid URI", "Invalid syntax");
             }
         });
 
-        ResponseEntity<?> response = carbonAPI.compute(requestBody);
+        ResponseEntity<?> response = carbonAPI.compute(requestBody, "connect");
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
@@ -157,14 +157,14 @@ class CarbonAPITest {
     @Test
     void computeJsonMappingExceptionTest() {
         String requestBody = "{\"login\":\"testUser\", \"form\":[]}";
-        Mockito.when(defaultCarbon.defaultCompute(requestBody)).thenAnswer(new Answer<Map<Boolean, GreenTracerResponse>>() {
+        Mockito.when(defaultCarbon.defaultCompute(requestBody, true)).thenAnswer(new Answer<Map<Boolean, GreenTracerResponse>>() {
             @Override
             public Map<Boolean, GreenTracerResponse> answer(InvocationOnMock invocation) throws Throwable {
                 throw new JsonMappingException(null, "Error in mapping");
             }
         });
 
-        ResponseEntity<GreenTracerResponse> response = carbonAPI.compute(requestBody);
+        ResponseEntity<GreenTracerResponse> response = carbonAPI.compute(requestBody, "connect");
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Malformed JSON.", Objects.requireNonNull(response.getBody()).getMessage());
@@ -173,14 +173,14 @@ class CarbonAPITest {
     @Test
     void computeJsonProcessingExceptionTest() {
         String requestBody = "{\"login\":\"testUser\", \"form\":[]}";
-        Mockito.when(defaultCarbon.defaultCompute(requestBody)).thenAnswer(new Answer<Map<Boolean, GreenTracerResponse>>() {
+        Mockito.when(defaultCarbon.defaultCompute(requestBody, true)).thenAnswer(new Answer<Map<Boolean, GreenTracerResponse>>() {
             @Override
             public Map<Boolean, GreenTracerResponse> answer(InvocationOnMock invocation) throws Throwable {
                 throw new JsonProcessingException("Error in processing") {};
             }
         });
 
-        ResponseEntity<GreenTracerResponse> response = carbonAPI.compute(requestBody);
+        ResponseEntity<GreenTracerResponse> response = carbonAPI.compute(requestBody, "connect");
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("JSON Process failed in CarbonAPI.compute.", Objects.requireNonNull(response.getBody()).getMessage());

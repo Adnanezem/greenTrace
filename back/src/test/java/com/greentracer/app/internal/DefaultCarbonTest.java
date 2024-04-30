@@ -53,7 +53,7 @@ class DefaultCarbonTest {
         when(journeeDaoMock.create(Mockito.any(Journee.class))).thenReturn(true);
 
         // Act
-        Map<Boolean, GreenTracerResponse> result = defaultCarbon.defaultCompute(jsonBody);
+        Map<Boolean, GreenTracerResponse> result = defaultCarbon.defaultCompute(jsonBody, true);
 
         // Assert
         assertTrue(result.containsKey(true));
@@ -68,7 +68,7 @@ class DefaultCarbonTest {
         when(journeeDaoMock.create(Mockito.any(Journee.class))).thenReturn(true);
 
         // Act
-        Map<Boolean, GreenTracerResponse> result = defaultCarbon.defaultCompute(jsonBody);
+        Map<Boolean, GreenTracerResponse> result = defaultCarbon.defaultCompute(jsonBody, true);
 
         // Assert
         assertTrue(result.containsKey(true));
@@ -81,7 +81,7 @@ class DefaultCarbonTest {
         String invalidJsonBody = "{invalidJson}";
 
         // Act
-        Map<Boolean, GreenTracerResponse> result = defaultCarbon.defaultCompute(invalidJsonBody);
+        Map<Boolean, GreenTracerResponse> result = defaultCarbon.defaultCompute(invalidJsonBody, true);
 
         // Assert
         assertTrue(result.containsKey(false));
@@ -99,7 +99,7 @@ class DefaultCarbonTest {
         when(journeeDaoMock.create(Mockito.any(Journee.class))).thenReturn(true);
 
         // Act
-        Map<Boolean, GreenTracerResponse> result = defaultCarbon.defaultCompute(jsonBody);
+        Map<Boolean, GreenTracerResponse> result = defaultCarbon.defaultCompute(jsonBody, true);
 
         // Assert
         assertTrue(result.containsKey(true));
@@ -186,7 +186,7 @@ class DefaultCarbonTest {
         when(journeeDaoMock.create(Mockito.any(Journee.class))).thenReturn(true);
 
         // Act
-        Map<Boolean, GreenTracerResponse> result = defaultCarbon.defaultCompute(jsonBody);
+        Map<Boolean, GreenTracerResponse> result = defaultCarbon.defaultCompute(jsonBody, true);
 
         // Assert
         assertTrue(result.containsKey(true));
