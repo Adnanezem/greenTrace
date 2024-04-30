@@ -328,8 +328,6 @@ async function generateFormFromJson(cardJson, modify = false) {
             }
         });
 
-        
-
         // We create a button element
         let button = document.createElement('button');
         formElement.appendChild(button);
@@ -384,6 +382,9 @@ async function generateFormFromJson(cardJson, modify = false) {
                         case 'color input':
                             data[field.name] = form.querySelector('[name="' + field.name + '"]').value;
                             break;
+                        case 'percentage input':
+                            data[field.name] = form.querySelector('[name="' + field.name + '"]').value;
+                            break;
                         default:
                             console.error('Unknown field type: ' + field.type);
                             break;
@@ -403,13 +404,8 @@ async function generateFormFromJson(cardJson, modify = false) {
             
                 resolve({complete: true, data: data}); // Resolve the promise here
             }
-
-            
         });
-
     });
-
-
 }
 
 // Function to check if the form is filled
