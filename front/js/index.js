@@ -13,6 +13,26 @@ function loadPage() {
     });
 }
 
+function serverError(comment) {
+    var div = document.createElement('div');
+    div.style.backgroundColor = 'red';
+    div.style.color = 'white';
+    div.style.position = 'fixed';
+    div.style.top = '0';
+    div.style.left = '0';
+    div.style.width = '100%';
+    div.style.zIndex = '1000';
+    div.style.padding = '10px';
+    div.style.textAlign = 'center';
+    div.innerHTML = 'Erreur: ' + comment;
+    document.body.appendChild(div);
+
+    setTimeout(function () {
+        div.remove();
+    }
+        , 5000);
+}
+
 function isConnected() {
     console.log(document)
     const profilNav = document.querySelector('#profilNav')
@@ -192,6 +212,7 @@ function drawCarbonHistoryChart(data, avg_carbon_print) {
         y: values,
         type: 'scatter',
         mode: 'lines+markers',
+        name: 'Votre empreinte',
         marker: {
             color: 'green'
         }
@@ -202,7 +223,7 @@ function drawCarbonHistoryChart(data, avg_carbon_print) {
         y: [avg, avg],
         type: 'scatter',
         mode: 'lines',
-        name: 'Moyenne',
+        name: 'Moyenne du site',
         line: {
             color: 'red',
             width: 2,
