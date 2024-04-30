@@ -126,7 +126,12 @@ public class DefaultCarbon {
             carbonSum += j.getresultat();
             nbJournees++;
         }
-        float avg = carbonSum / nbJournees;
+
+        float avg = 0;
+        if(nbJournees != 0) {
+            avg = (float) carbonSum / (float) nbJournees;
+        }
+
         Historique avgH = new Historique(0, null, avg);
         HistoriqueResponse hResp = new HistoriqueResponse("Average carbon print for registered users.", 200, avgH);
         res.put(true, hResp);
