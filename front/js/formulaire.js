@@ -361,51 +361,50 @@ async function generateFormFromJson(cardJson, modify = false) {
             event.preventDefault();
         
             //Check if the form is filled
-            if (!check_form_filled(form)) {
-                resolve({complete: false, data: null}); // Resolve the promise here
-                return;
-            }
-        
-            // We create a json with the data
-            let data = {};
+            if (check_form_filled(form)) {
+                // We create a json with the data
+                let data = {};
 
-            data.category = cardJson.category;
-            data.type = cardJson.name;
-            cardJson.fields.forEach(field => {
-                switch (field.type) {
-                    case 'number input':
-                        data[field.name] = form.querySelector('[name="' + field.name + '"]').value;
-                        break;
-                    case 'scrolllist':
-                        data[field.name] = form.querySelector('[name="' + field.name + '"]').value;
-                        break;
-                    case 'time input':
-                        let hours = form.querySelector('[name="' + field.name + '_hours"]').value;
-                        let minutes = form.querySelector('[name="' + field.name + '_minutes"]').value;
-                        let seconds = form.querySelector('[name="' + field.name + '_seconds"]').value;
-                        data[field.name] = hours + ':' + minutes + ':' + seconds;
-                        break;
-                    case 'color input':
-                        data[field.name] = form.querySelector('[name="' + field.name + '"]').value;
-                        break;
-                    default:
-                        console.error('Unknown field type: ' + field.type);
-                        break;
-                }
-            });
-        
-            // We close the form
-            closeForm(form);
-        
-            // We display a success message
-            let successMessage = document.createElement('div');
-            successMessage.textContent = 'Formulaire envoyé avec succès';
-            document.body.appendChild(successMessage);
-            setTimeout(() => {
-                successMessage.remove();
-            }, 3000);
-        
-            resolve({complete: true, data: data}); // Resolve the promise here
+                data.category = cardJson.category;
+                data.type = cardJson.name;
+                cardJson.fields.forEach(field => {
+                    switch (field.type) {
+                        case 'number input':
+                            data[field.name] = form.querySelector('[name="' + field.name + '"]').value;
+                            break;
+                        case 'scrolllist':
+                            data[field.name] = form.querySelector('[name="' + field.name + '"]').value;
+                            break;
+                        case 'time input':
+                            let hours = form.querySelector('[name="' + field.name + '_hours"]').value;
+                            let minutes = form.querySelector('[name="' + field.name + '_minutes"]').value;
+                            let seconds = form.querySelector('[name="' + field.name + '_seconds"]').value;
+                            data[field.name] = hours + ':' + minutes + ':' + seconds;
+                            break;
+                        case 'color input':
+                            data[field.name] = form.querySelector('[name="' + field.name + '"]').value;
+                            break;
+                        default:
+                            console.error('Unknown field type: ' + field.type);
+                            break;
+                    }
+                });
+            
+                // We close the form
+                closeForm(form);
+            
+                // We display a success message
+                let successMessage = document.createElement('div');
+                successMessage.textContent = 'Formulaire envoyé avec succès';
+                document.body.appendChild(successMessage);
+                setTimeout(() => {
+                    successMessage.remove();
+                }, 3000);
+            
+                resolve({complete: true, data: data}); // Resolve the promise here
+            }
+
+            
         });
 
     });
