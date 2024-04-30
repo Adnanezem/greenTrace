@@ -76,7 +76,7 @@ class HistoriqueDaoTest {
     void testUpdate() {
         historique.sethistorique(0.0f);
         assertTrue(historiqueDao.update(historique));
-        assertEquals(historiqueDao.getById("testHist").gethistorique(), 0.0f);
+        assertEquals(0.0f, historiqueDao.getById("testHist").gethistorique());
         assertEquals("testHist", historiqueDao.getById("testHist").getidp());
     }
 

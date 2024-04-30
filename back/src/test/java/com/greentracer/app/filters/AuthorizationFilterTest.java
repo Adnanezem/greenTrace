@@ -45,7 +45,7 @@ class AuthorizationFilterTest {
     }
 
     @Test
-    public void whenUrlIsUsersAndSecondPartEqualsUser_thenContinueChain() throws Exception {
+    void whenUrlIsUsersAndSecondPartEqualsUser_thenContinueChain() throws Exception {
         when(request.getRequestURI()).thenReturn("/users/user");
         when(request.getHeader("U-Login")).thenReturn("user");
 
@@ -56,7 +56,7 @@ class AuthorizationFilterTest {
     }
 
     @Test
-    public void whenUrlIsCarbonAndSecondPartEqualsUserOrCompute_thenContinueChain() throws Exception {
+    void whenUrlIsCarbonAndSecondPartEqualsUserOrCompute_thenContinueChain() throws Exception {
         when(request.getRequestURI()).thenReturn("/carbon/user");
         when(request.getHeader("U-Login")).thenReturn("user");
 

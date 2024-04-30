@@ -78,6 +78,10 @@
                     "name": "fuel type",
                     "type": "scrolllist",
                     "options": ["diesel", "electric"]
+                },
+                {
+                    "name": "occupancy",
+                    "type": "percentage input"
                 }
             ]
         },
@@ -104,11 +108,15 @@
                 {
                     "name": "vehicle type",
                     "type": "scrolllist",
-                    "options": ["short haul", "medium haul", "long haul"]
+                    "options": ["short haul (<1000km)", "medium haul (1000km - 3500km)", "long haul (>3500km)"]
                 },
                 {
                     "name": "airplane color",
                     "type": "color input"
+                },
+                {
+                    "name": "occupancy",
+                    "type": "percentage input"
                 }
             ]
         }
@@ -116,6 +124,7 @@
     "repas": [
         {
             "id": 5,
+            "disabled": "true",
             "category": "repas",
             "name": "Repas au restaurant",
             "description": "Ajouter un repas au restaurant",
@@ -142,6 +151,7 @@
         },
         {
             "id": 6,
+            "disabled": "true",
             "category": "repas",
             "name": "Repas à la maison",
             "description": "Ajouter un repas à la maison",
@@ -163,6 +173,7 @@
         },
         {
             "id": 7,
+            "disabled": "true",
             "category": "repas",
             "name": "Repas à emporter",
             "description": "Ajouter un repas à emporter",
@@ -200,6 +211,7 @@
     "loisirs": [
         {
             "id": 8,
+            "disabled": "true",
             "category": "loisirs",
             "name": "Visite d'un musée",
             "description": "Ajouter une visite d'un musée",
@@ -221,6 +233,7 @@
         },
         {
             "id": 9,
+            "disabled": "true",
             "category": "loisirs",
             "name": "Visite d'un parc",
             "description": "Ajouter une visite d'un parc",
@@ -242,6 +255,7 @@
         },
         {
             "id": 10,
+            "disabled": "true",
             "category": "loisirs",
             "name": "Visite d'un zoo",
             "description": "Ajouter une visite d'un zoo",
@@ -258,6 +272,7 @@
         },
         {
             "id": 11,
+            "disabled": "true",
             "category": "loisirs",
             "name": "Visite d'un aquarium",
             "description": "Ajouter une visite d'un aquarium",
@@ -274,6 +289,7 @@
         },
         {
             "id": 12,
+            "disabled": "true",
             "category": "loisirs",
             "name": "Visite d'un parc d'attraction",
             "description": "Ajouter une visite d'un parc d'attraction",

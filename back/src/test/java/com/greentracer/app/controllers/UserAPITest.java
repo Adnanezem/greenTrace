@@ -36,7 +36,7 @@ class UserAPITest {
 
     @Test
     @DisplayName("Should return no content when login is successful")
-    public void loginSuccessful() {
+    void loginSuccessful() {
         Mockito.when(defaultUser.defaultLogin(anyString())).thenReturn(Collections.singletonMap(true, new ErrorResponse("Success", 0)));
 
         ResponseEntity<?> response = userAPI.login("test");
@@ -46,7 +46,7 @@ class UserAPITest {
 
     @Test
     @DisplayName("Should return bad request when login is unsuccessful")
-    public void loginUnsuccessful() {
+    void loginUnsuccessful() {
         ErrorResponse errorResponse = new ErrorResponse("ErrorResponse message", 1);
         Mockito.when(defaultUser.defaultLogin(anyString())).thenReturn(Collections.singletonMap(false, errorResponse));
 
@@ -57,7 +57,7 @@ class UserAPITest {
 
 
     @Test
-    public void getUserTest() {
+    void getUserTest() {
         Mockito.when(defaultUser.defaultGetUser(anyString())).thenReturn(Collections.singletonMap(true, new UserResponse("Success", 200, new User())));
 
         ResponseEntity<?> response = userAPI.getUser("testUser");
@@ -67,7 +67,7 @@ class UserAPITest {
 
     @Test
     @DisplayName("Should return no content when registration is successful")
-    public void registerSuccessful() {
+    void registerSuccessful() {
         Mockito.when(defaultUser.defaultRegister(anyString())).thenReturn(Collections.singletonMap(true, new ErrorResponse("Success", 0)));
 
         ResponseEntity<?> response = userAPI.register("test");
@@ -77,7 +77,7 @@ class UserAPITest {
 
     @Test
     @DisplayName("Should return bad request when registration is unsuccessful")
-    public void registerUnsuccessful() {
+    void registerUnsuccessful() {
         ErrorResponse errorResponse = new ErrorResponse("ErrorResponse message", 1);
         Mockito.when(defaultUser.defaultRegister(anyString())).thenReturn(Collections.singletonMap(false, errorResponse));
 
@@ -88,7 +88,7 @@ class UserAPITest {
 
 
     @Test
-    public void updateUserTest() {
+    void updateUserTest() {
         Mockito.when(defaultUser.defaultUpdateUser(anyString(), anyString())).thenReturn(Collections.singletonMap(true, new UserResponse("Success", 200, new User())));
 
         ResponseEntity<?> response = userAPI.updateUser("testUser", "{\"name\":\"newName\"}");
@@ -97,7 +97,7 @@ class UserAPITest {
     }
 
     @Test
-    public void getUserHistoryTest() {
+    void getUserHistoryTest() {
         ResponseEntity<?> response = userAPI.getUserHistory("testUser");
 
         assertEquals(HttpStatus.FOUND, response.getStatusCode());
