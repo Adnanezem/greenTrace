@@ -75,7 +75,7 @@ public class AutorizationFilter implements Filter {
 
                 case CARBON -> {
                     boolean pass = url[1].equals(user) || url[1].equals("compute")
-                            || url[2].equals("average");
+                            || url[1].equals("average");
                     if (pass) {
                         chain.doFilter(request, response);
                         return;
