@@ -54,15 +54,13 @@ public class AuthFilter implements Filter {
         String authToken = request.getHeader(AUTH_HEADER);
         String login = request.getHeader(LOGIN_HEADER);
 
-        boolean isAuthenticated = (authToken == null) ? false : jwtHelper.validateToken(authToken, login);
+        boolean isAuthenticated = authToken != null && jwtHelper.validateToken(authToken, login);
 
         if (isAuthenticated) {
             chain.doFilter(request, response);
-            return;
         } else {
             response.addHeader("Error", "When bad authantification.");
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden");
-            return;
         }
     }
 

@@ -4,10 +4,10 @@ import com.greentracer.app.models.Journee;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class JourneeTest {
+class JourneeTest {
 
     @Test
-    public void testJourneeConstructorAndGetters() {
+    void testJourneeConstructorAndGetters() {
         Journee journee = new Journee(1, "testId", new java.sql.Date(System.currentTimeMillis()), 1.0f);
 
         assertEquals(1, journee.getid());
@@ -16,7 +16,7 @@ public class JourneeTest {
     }
 
     @Test
-    public void testJourneeSetters() {
+    void testJourneeSetters() {
         Journee journee = new Journee();
         journee.setid(2);
         journee.setpatientId("newTestId");
@@ -29,7 +29,7 @@ public class JourneeTest {
     }
 
     @Test
-    public void testToString() {
+    void testToString() {
         Journee journee = new Journee(1, "testId", new java.sql.Date(System.currentTimeMillis()), 1.0f);
         String expectedString = "User [id=1, ID_patient=testId, Date=" + journee.getdate() + ", Resultat=1.0]";
 

@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.greentracer.app.internal.DefaultCarbon;
 import com.greentracer.app.responses.GreenTracerResponse;
 import com.greentracer.app.responses.HistoriqueResponse;
-import com.greentracer.app.responses.JourneeResponse;
+import com.greentracer.app.responses.JourneesResponse;
 import com.greentracer.app.utils.JSONUtils;
 
 /**
@@ -55,7 +55,7 @@ public class CarbonAPI {
      * @return un résultat sous forme de json.
      */
     @PostMapping("/compute")
-    public ResponseEntity<?> compute(@RequestBody String body) {
+    public ResponseEntity<GreenTracerResponse> compute(@RequestBody String body) {
         URI uri;
         Map<Boolean, GreenTracerResponse> resMap = new HashMap<>();
         try {
@@ -65,10 +65,11 @@ public class CarbonAPI {
             if (!res.getKey()) {
                 return ResponseEntity.badRequest().build();
             }
+            logger.info("body received: {}", body);
             ObjectMapper mapper = new ObjectMapper();
             JsonNode json = mapper.readTree(body);
             String login = JSONUtils.getStringField(json, "login");
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date d = new Date(System.currentTimeMillis());
             String utilDate = dateFormat.format(d);
             logger.info("date URI : {}", utilDate);
@@ -79,21 +80,21 @@ public class CarbonAPI {
             return ResponseEntity.badRequest().build();
         } catch (JsonMappingException e) {
             logger.error("request body malformed: {}", body);
-            return ResponseEntity.badRequest().body("Malformed JSON.");
+            return ResponseEntity.badRequest().body(new GreenTracerResponse("Malformed JSON.", 400));
         } catch (JsonProcessingException e) {
             logger.error("request body process failed: {}", body);
-            return ResponseEntity.badRequest().body("JSON Process failed in CarbonAPI.compute.");
+            return ResponseEntity.badRequest().body(new GreenTracerResponse("JSON Process failed in CarbonAPI.compute.", 400));
         }
     }
 
     /**
      * Retourne l'historique des empreintes carbonnes journalière avec une limite de
-     * 30 jours.
+     * 7 jours.
      * 
      * @return une réponse json.
      */
     @GetMapping("/{id}/history")
-    public ResponseEntity<?> getHistory(@PathVariable String id) {
+    public ResponseEntity<GreenTracerResponse> getHistory(@PathVariable String id) {
         Map<Boolean, GreenTracerResponse> resMap = new HashMap<>();
         resMap = def.defaultGetHistory(id);
         Iterator<Map.Entry<Boolean, GreenTracerResponse>> iterator = resMap.entrySet().iterator();
@@ -117,7 +118,7 @@ public class CarbonAPI {
      * @return une réponse json.
      */
     @GetMapping("/{id}/history/{date}")
-    public ResponseEntity<?> getDetailledHistory(@PathVariable String id, @PathVariable String date) {
+    public ResponseEntity<GreenTracerResponse> getDetailledHistory(@PathVariable String id, @PathVariable String date) {
         Map<Boolean, GreenTracerResponse> resMap = new HashMap<>();
         resMap = def.defaultGetDetailledHistory(id, date);
         Iterator<Map.Entry<Boolean, GreenTracerResponse>> iterator = resMap.entrySet().iterator();
@@ -126,7 +127,7 @@ public class CarbonAPI {
             return ResponseEntity.status(res.getValue().getStatus()).body(res.getValue());
         }
         if (res.getValue() != null) {
-            JourneeResponse response = (JourneeResponse) res.getValue();
+            JourneesResponse response = (JourneesResponse) res.getValue();
             return ResponseEntity.ok().body(response);
         } else {
             return ResponseEntity.notFound().build();

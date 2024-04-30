@@ -15,7 +15,7 @@ import java.util.Map;
 import static com.greentracer.app.utils.JwtTokenUtil.JWT_TOKEN_VALIDITY;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class JwtTokenUtilTest {
+class JwtTokenUtilTest {
 
     private JwtTokenUtil jwtTokenUtil;
     private String secret = "testSecret";
@@ -27,13 +27,13 @@ public class JwtTokenUtilTest {
     }
 
     @Test
-    public void testGenerateToken() {
+    void testGenerateToken() {
         String token = jwtTokenUtil.generateToken("testUser");
         assertNotNull(token);
     }
 
     @Test
-    public void testGetUsernameFromToken() {
+    void testGetUsernameFromToken() {
         Map<String, Object> claims = new HashMap<>();
         String subject = "testUser";
         String token = generateToken(claims, subject);
@@ -41,7 +41,7 @@ public class JwtTokenUtilTest {
     }
 
     @Test
-    public void testValidateToken() {
+    void testValidateToken() {
         Map<String, Object> claims = new HashMap<>();
         String subject = "testUser";
         String token = generateToken(claims, subject);
@@ -49,12 +49,22 @@ public class JwtTokenUtilTest {
     }
 
     @Test
-    public void testIsTokenExpired() {
+    void testIsTokenExpired() {
         Map<String, Object> claims = new HashMap<>();
         String subject = "testUser";
         String token = generateToken(claims, subject);
         assertFalse(jwtTokenUtil.getExpirationDateFromToken(token).before(new Date()));
     }
+
+
+    @Test
+    void testGetClaimFromToken() {
+        String token = jwtTokenUtil.generateToken("testUser");
+        assertEquals("testUser", jwtTokenUtil.getClaimFromToken(token, Claims::getSubject));
+    }
+
+
+
 
 
     //redéfinition de la méthode generateToken pour les besoins des tests
@@ -64,4 +74,5 @@ public class JwtTokenUtilTest {
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
                 .signWith(SignatureAlgorithm.HS512, encodedString).compact();
     }
+
 }

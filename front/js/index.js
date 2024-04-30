@@ -14,17 +14,34 @@ function loadPage() {
 }
 
 function isConnected() {
-    console.log(document)
-    const profilNav = document.querySelector('#profilNav')
-    const loginNav = document.querySelector('#loginNav')
+    console.log(document); 
+
+    const nav = document.querySelector('.nav-links ul');
+    const profilNav = document.getElementById('profilNav');
+    const loginNav = document.getElementById('loginNav');
+
     if (sessionStorage.getItem("jwt") === null) {
-        profilNav.style.display = 'none';
-        loginNav.style.display = 'flex';
-    } else { // on est connecté
-        profilNav.style.display = 'flex';
-        loginNav.style.display = 'none';
+        if (profilNav) profilNav.remove(); 
+        if (!document.contains(loginNav)) {
+            const loginItem = document.createElement('li');
+            loginItem.className = 'nav-items';
+            loginItem.id = 'loginNav';
+            loginItem.innerHTML = '<a href="index.html?page=login">Login</a>';
+            nav.appendChild(loginItem);
+        }
+    } else {
+        // User is logged in
+        if (loginNav) loginNav.remove(); 
+        if (!document.contains(profilNav)) {
+            const profilItem = document.createElement('li');
+            profilItem.className = 'nav-items';
+            profilItem.id = 'profilNav';
+            profilItem.innerHTML = '<a href="index.html?page=profil">Profil</a>';
+            nav.appendChild(profilItem);
+        }
     }
 }
+
 
 function loadCarbonHistory() {
     const headers = new Headers();
@@ -49,37 +66,18 @@ function loadCarbonHistory() {
                 throw new Error("Erreur lors de la récupération de l'historique de l'utilisateur.")
             }
         }
-    }).then(json => {
-        if(json !== undefined) {
-            const bilanSection = document.querySelector('#historiqueBilans')
-            console.log(json);
-            const avgBilan = json.historique;
+    }).then(async json => {
+        if (json !== undefined) {
+            const avgHist = document.querySelector('#histAvg');
+            const bilanQuotidienDiv = document.querySelector('#bilanCO2Result');
+            const avgBilan = json.historique.historique;
             const avgBilanTxt = document.createTextNode("Moyenne hebdomadaire: " + avgBilan);
-            bilanSection.appendChild(avgBilanTxt);
+            avgHist.appendChild(avgBilanTxt);
             const currentDate = new Date();
             previousDate = getPreviousSevenDays(currentDate);
-            histTab = document.createElement("table");
-            histTab.id = "userHistTab";
-            previousDate.array.forEach(async date => {
-                const formattedDate = date.toLocaleDateString('fr-FR', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric'
-                });
-                const res = await loadCarbonHistoryDetail(formattedDate);
-                const row = document.createElement("tr");
-    
-                const col1 = document.createElement("td");
-                col1.textContent = formattedDate;
-    
-                const col2 = document.createElement("td");
-                col2.textContent = res.resultat;
-    
-                row.appendChild(col1);
-                row.appendChild(col2);
-                histTab.appendChild(row)
-            });
-            bilanSection.appendChild(histTab);
+            histTab = document.querySelector("#userHistTab tbody");
+            carbon_history = await getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, histTab);
+            drawCarbonHistoryChart(carbon_history);
         }
     }).catch(err => {
         serverError(err);
@@ -101,24 +99,115 @@ function loadCarbonHistoryDetail(date) {
         } else {
             console.log('Response: ', response);
             toggleProcessingMessage(false);
-            throw new Error("Erreur lors de la récupération des détail de l'historique de l'utilisateur.")
+            if(response.status !== 404) {
+                throw new Error("Erreur lors de la récupération des détails de l'historique de l'utilisateur.");
+            }
         }
     }).then(json => {
-        console.log(json);
         return json;
     }).catch(err => {
         serverError(err);
     });
 }
 
+async function getHistoryDetail(currentDate, previousDate, bilanQuotidienDiv, histTab) {
+    let carbon_hist = [];
+    for (const date of previousDate) {
+        const formattedDate = formatToSQLDate(date);
+        const row = document.createElement("tr");
+        const col1 = document.createElement("td");
+        col1.textContent = formattedDate;
+        const col2 = document.createElement("td");
+
+        try {
+            const res = await loadCarbonHistoryDetail(formattedDate);
+            let finalRes = 0;
+            res.journees.forEach(elem => {
+                finalRes += elem.resultat;
+            });
+            col2.textContent = finalRes;
+            if (date.toISOString() === currentDate.toISOString()) {
+                bilanQuotidienDiv.innerHTML = "Votre résultat quotidien est : " + finalRes + " g de CO<sub>2</sub>.";
+            }
+            carbon_hist.push({
+                date: formattedDate,
+                result: finalRes
+            });
+        } catch(err) {
+            col2.textContent = "Pas de bilan pour cette date.";
+            if (date.toISOString() === currentDate.toISOString()) {
+                bilanQuotidienDiv.textContent = "Vous n'avez pas réalisé de bilan carbone aujourd'hui.";
+            }
+            carbon_hist.push({
+                date: formattedDate,
+                result: 0
+            });
+        }
+
+        row.appendChild(col1);
+        row.appendChild(col2);
+        histTab.appendChild(row);
+    }
+    return carbon_hist;
+}
+
 function getPreviousSevenDays(startDate) {
     const dates = [];
-    const date = new Date(startDate);
+    const baseDate = new Date(startDate);
 
     for (let i = 0; i < 7; i++) {
-        dates.push(new Date(date.getDate() - i));
+        const date = new Date(baseDate);
+        date.setDate(baseDate.getDate() - i);
+        dates.push(date);
     }
     return dates;
+}
+
+function formatToSQLDate(date) {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+}
+
+function drawCarbonHistoryChart(data) {
+    const dates = data.map(item => item.date);
+    const values = data.map(item => item.result);
+
+    const trace = {
+        x: dates,
+        y: values,
+        type: 'scatter',
+        mode: 'lines+markers',
+        marker: {
+            color: 'green'
+        }
+    };
+
+    const layout = {
+        title: 'Historique des émissions carbonnes',
+        xaxis: {
+            title: 'Date'
+        },
+        yaxis: {
+            title: 'Émission (g de CO2)'
+        },
+        autosize: true,
+        margin: {
+            l: 50,
+            r: 50,
+            b: 100,
+            t: 100,
+            pad: 4
+        }
+    };
+
+    const config = {
+        responsive: true
+    };
+
+    Plotly.newPlot('carbonHistoryChart', [trace], layout, config);
 }
 
 loadPage();

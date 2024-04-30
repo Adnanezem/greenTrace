@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class UserDaoTest {
+class UserDaoTest {
 
     private User user;
 
@@ -39,7 +39,7 @@ public class UserDaoTest {
 
 
     @Test
-    public void testGetById() {
+    void testGetById() {
         User u = userDao.getById("test");
         assertEquals(u.getLogin(), user.getLogin());
         assertEquals(u.getPassword(), user.getPassword());
@@ -48,24 +48,29 @@ public class UserDaoTest {
     }
 
     @Test
-    public void testGetAll() {
+    void getById_withNullId_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> userDao.getById(null));
+    }
+
+    @Test
+    void testGetAll() {
         assertNotNull(userDao.getAll());
     }
 
     @Test
-    public void testUpdate() {
+    void testUpdate() {
         user.setFname("FnameUpdated");
         assertTrue(userDao.update(user));
-        assertEquals(userDao.getById("test").getFname(), "FnameUpdated");
+        assertEquals("FnameUpdated", userDao.getById("test").getFname());
     }
 
     @Test
-    public void testDelete() {
+    void testDelete() {
         assertTrue(userDao.delete(user));
         assertThrows(IllegalArgumentException.class, () -> userDao.getById("test"));
     }
 
-   /*@Test
+   @Test
     public void testCreate() {
         User u = new User("test2", "test2", "test2", "test2");
         assertTrue(userDao.create(u));
@@ -73,7 +78,9 @@ public class UserDaoTest {
         assertEquals(userDao.getById("test2").getLname(), "test2");
         assertEquals(userDao.getById("test2").getPassword(), "test2");
         assertEquals(userDao.getById("test2").getLogin(), "test2");
-    }*/
+
+        userDao.delete(u);
+    }
 
 
 }

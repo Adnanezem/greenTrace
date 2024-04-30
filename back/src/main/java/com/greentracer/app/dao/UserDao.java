@@ -25,11 +25,11 @@ public class UserDao implements Dao<String, User> {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private final String findRequest = "select * from public.\"user\" where login = ?";
-    private final String deleteRequest = "delete from public.\"user\" where login = ?";
-    private final String updateRequest = "UPDATE public.user SET mdps = ?, nom = ?, prenom = ? WHERE login = ?";
-    private final String findAllRequest = "select * from public.\"user\"";
-    private final String insertRequest = "insert into public.\"user\"(login, prenom, nom, mdps) values(?,?,?,?)";
+    private static final String FIND_REQUEST = "select * from public.\"user\" where login = ?";
+    private static final String DELETE_REQUEST = "delete from public.\"user\" where login = ?";
+    private static final String UPDATE_REQUEST = "UPDATE public.user SET mdps = ?, nom = ?, prenom = ? WHERE login = ?";
+    private static final String FIND_ALL_REQUEST = "select * from public.\"user\"";
+    private static final String INSERT_REQUEST = "insert into public.\"user\"(login, prenom, nom, mdps) values(?,?,?,?)";
 
     @Autowired
     public UserDao(DataSource dataSource) {
@@ -42,8 +42,7 @@ public class UserDao implements Dao<String, User> {
             throw new IllegalArgumentException("L'id utilisateur fourni est null.");
         }
         try {
-            User u = jdbcTemplate.queryForObject(findRequest, new UserMapper(), id);
-            return u;
+            return jdbcTemplate.queryForObject(FIND_REQUEST, new UserMapper(), id);
         } catch (IncorrectResultSizeDataAccessException e) {
             throw new IllegalArgumentException("L'id utilisateur fourni est null.");
         }
@@ -51,29 +50,25 @@ public class UserDao implements Dao<String, User> {
 
     @Override
     public List<User> getAll() {
-        return jdbcTemplate.query(findAllRequest, new UserMapper());
+        return jdbcTemplate.query(FIND_ALL_REQUEST, new UserMapper());
     }
 
     @Override
     public Boolean delete(User obj) {
-        return jdbcTemplate.update(deleteRequest, obj.getLogin()) > 0;
+        return jdbcTemplate.update(DELETE_REQUEST, obj.getLogin()) > 0;
     }
 
     @Override
     public Boolean update(User obj) {
-        return jdbcTemplate.update(updateRequest, obj.getPassword(), obj.getFname(),
+        return jdbcTemplate.update(UPDATE_REQUEST, obj.getPassword(), obj.getFname(),
                 obj.getLname(), obj.getLogin()) > 0;
     }
 
     @Override
     public Boolean create(User obj) {
-        return jdbcTemplate.update(insertRequest, obj.getLogin(), obj.getFname(), obj.getLname(),
+        return jdbcTemplate.update(INSERT_REQUEST, obj.getLogin(), obj.getFname(), obj.getLname(),
                 obj.getPassword()) > 0;
     }
 
-    public int countUsers() {
-        String sql = "select COUNT(*) from \"user\"";
-        return jdbcTemplate.queryForObject(sql, Integer.class);
-    }
 
 }
