@@ -49,7 +49,7 @@ public class UserAPI {
      *         nécessaire à l'accès des autresMap resMapsources.
      */
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody String body) {
+    public ResponseEntity<GreenTracerResponse> login(@RequestBody String body) {
         Map<Boolean, GreenTracerResponse> resMap = def.defaultLogin(body);
         Iterator<Map.Entry<Boolean, GreenTracerResponse>> iterator = resMap.entrySet().iterator();
         Map.Entry<Boolean, GreenTracerResponse> res = iterator.next();
@@ -67,7 +67,7 @@ public class UserAPI {
      * @return une réponse JSON.
      */
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody String body) {
+    public ResponseEntity<GreenTracerResponse> register(@RequestBody String body) {
         Map<Boolean, GreenTracerResponse> resMap = def.defaultRegister(body);
         Iterator<Map.Entry<Boolean, GreenTracerResponse>> iterator = resMap.entrySet().iterator();
         Map.Entry<Boolean, GreenTracerResponse> res = iterator.next();
@@ -83,7 +83,7 @@ public class UserAPI {
      * @return une réponse vide (204).
      */
     @PostMapping("/logout")
-    public ResponseEntity<?> logout() {
+    public ResponseEntity<GreenTracerResponse> logout() {
         Map<Boolean, GreenTracerResponse> resMap = def.defaultLogout();
         return ResponseEntity.noContent().build();
     }
@@ -95,7 +95,7 @@ public class UserAPI {
      * @return une réponse JSON.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUser(@PathVariable String id) {
+    public ResponseEntity<GreenTracerResponse> getUser(@PathVariable String id) {
         Map<Boolean, GreenTracerResponse> resMap = def.defaultGetUser(id);
         Iterator<Map.Entry<Boolean, GreenTracerResponse>> iterator = resMap.entrySet().iterator();
         Map.Entry<Boolean, GreenTracerResponse> res = iterator.next();
@@ -120,14 +120,14 @@ public class UserAPI {
      * @return redirection vers l'api carbon (302).
      */
     @GetMapping("/{id}/history")
-    public ResponseEntity<?> getUserHistory(@PathVariable String id) {
+    public ResponseEntity<GreenTracerResponse> getUserHistory(@PathVariable String id) {
         String redirect = "/carbon/" + id + "/history";
         return ResponseEntity.status(HttpStatus.FOUND)
                 .header(HttpHeaders.LOCATION, redirect).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable String id, @RequestBody String body) {
+    public ResponseEntity<GreenTracerResponse> updateUser(@PathVariable String id, @RequestBody String body) {
         Map<Boolean, GreenTracerResponse> resMap = def.defaultUpdateUser(id, body);
         Iterator<Map.Entry<Boolean, GreenTracerResponse>> iterator = resMap.entrySet().iterator();
         Map.Entry<Boolean, GreenTracerResponse> res = iterator.next();

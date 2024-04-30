@@ -30,7 +30,7 @@ class AuthFilterTest {
     private AuthFilter authFilter;
 
     @Test
-    public void whenUrlIsInWhiteList_thenContinueChain() throws Exception {
+    void whenUrlIsInWhiteList_thenContinueChain() throws Exception {
         when(request.getRequestURI()).thenReturn("/users/login");
         when(request.getContextPath()).thenReturn("");
 
@@ -41,7 +41,7 @@ class AuthFilterTest {
     }
 
     @Test
-    public void whenAuthTokenMissing_thenForbidden() throws Exception {
+    void whenAuthTokenMissing_thenForbidden() throws Exception {
         when(request.getRequestURI()).thenReturn("/api/data");
         when(request.getContextPath()).thenReturn("");
         when(request.getHeader("Authorization")).thenReturn(null);
@@ -53,7 +53,7 @@ class AuthFilterTest {
     }
 
     @Test
-    public void whenAuthTokenInvalid_thenForbidden() throws Exception {
+    void whenAuthTokenInvalid_thenForbidden() throws Exception {
         when(request.getRequestURI()).thenReturn("/api/data");
         when(request.getContextPath()).thenReturn("");
         when(request.getHeader("Authorization")).thenReturn("invalid-token");
@@ -67,7 +67,7 @@ class AuthFilterTest {
     }
 
     @Test
-    public void whenAuthTokenValid_thenContinueChain() throws Exception {
+    void whenAuthTokenValid_thenContinueChain() throws Exception {
         when(request.getRequestURI()).thenReturn("/api/data");
         when(request.getContextPath()).thenReturn("");
         when(request.getHeader("Authorization")).thenReturn("valid-token");

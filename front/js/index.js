@@ -26,6 +26,7 @@ function isConnected() {
     }
 }
 
+
 function loadCarbonHistory() {
     const headers = new Headers();
     const login = sessionStorage.getItem("U-Login");

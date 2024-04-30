@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class GestionTestU {
+class GestionTest {
 
     @Mock
     private UserDao userDao;
@@ -26,7 +26,7 @@ class GestionTestU {
     }
 
     @Test
-    public void testHelloUserReturnsUser() throws SQLException {
+    void testHelloUserReturnsUser() throws SQLException {
         String login = "testLogin";
         User user = new User(login, "1234", "toto", "titi");
         when(userDao.getById(login)).thenReturn(user);
@@ -38,7 +38,7 @@ class GestionTestU {
     }
 
     @Test
-    public void testHelloUserReturnsDefaultUserWhenIllegalArgumentException() throws SQLException {
+    void testHelloUserReturnsDefaultUserWhenIllegalArgumentException() throws SQLException {
         String login = "testLogin";
         when(userDao.getById(login)).thenThrow(new IllegalArgumentException());
 
@@ -53,7 +53,7 @@ class GestionTestU {
     }
 
     @Test
-    public void testHelloUserReturnsNullWhenUserNotFound() throws SQLException {
+    void testHelloUserReturnsNullWhenUserNotFound() throws SQLException {
         String login = "testLogin";
         when(userDao.getById(login)).thenReturn(null);
 
