@@ -124,7 +124,6 @@
     "repas": [
         {
             "id": 5,
-            "disabled": "true",
             "category": "repas",
             "name": "Repas au restaurant",
             "description": "Ajouter un repas au restaurant",
