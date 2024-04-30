@@ -126,10 +126,11 @@ public class CarbonAPI {
         resMap = def.defaultGetDetailledHistory(id, date);
         Iterator<Map.Entry<Boolean, GreenTracerResponse>> iterator = resMap.entrySet().iterator();
         Map.Entry<Boolean, GreenTracerResponse> res = iterator.next();
-        if (!res.getKey()) {
-            return ResponseEntity.status(res.getValue().getStatus()).body(res.getValue());
-        }
+
         if (res.getValue() != null) {
+            if (!res.getKey()) {
+                return ResponseEntity.status(res.getValue().getStatus()).body(res.getValue());
+            }
             JourneesResponse response = (JourneesResponse) res.getValue();
             return ResponseEntity.ok().body(response);
         } else {
@@ -148,5 +149,7 @@ public class CarbonAPI {
         }
         return ResponseEntity.ok().body(res.getValue());
     }
+
+
 
 }

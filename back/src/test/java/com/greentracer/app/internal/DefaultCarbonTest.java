@@ -60,6 +60,17 @@ class DefaultCarbonTest {
         assertTrue(result.get(true) instanceof JourneeResponse);
     }
 
+    @Test
+    void testDefaultComputeInvalidToken() {
+        // Arrange
+        String invalidToken = "invalidToken";
+        // Act
+        Map<Boolean, GreenTracerResponse> result = defaultCarbon.defaultCompute(invalidToken, true);
+        // Assert
+        assertTrue(result.containsKey(false));
+        assertTrue(result.get(false) instanceof ErrorResponse);
+    }
+
 
     @Test
     void defaultCompute_formArray_returnsCorrectResult() {
@@ -153,6 +164,7 @@ class DefaultCarbonTest {
         assertTrue(result.get(true) instanceof JourneesResponse);
     }
 
+
     @Test
     void defaultGetDetailedHistory_invalidDate_returnsFalse() {
         // Arrange
@@ -191,5 +203,50 @@ class DefaultCarbonTest {
         // Assert
         assertTrue(result.containsKey(true));
         assertTrue(result.get(true) instanceof JourneeResponse);
+    }
+
+
+    @Test
+    void testDefaultGetAvgCarbonPrint() {
+        // Arrange
+        List<Journee> journees = new ArrayList<>();
+        journees.add(new Journee(0, "testUser", new Date(System.currentTimeMillis()), 100));
+        journees.add(new Journee(0, "testUser", new Date(System.currentTimeMillis()), 200));
+        when(journeeDaoMock.getAll()).thenReturn(journees);
+        // Act
+        Map<Boolean, GreenTracerResponse> result = defaultCarbon.defaultGetAvgCarbonPrint();
+        // Assert
+        assertTrue(result.containsKey(true));
+        assertTrue(result.get(true) instanceof HistoriqueResponse);
+    }
+
+    @Test
+    void testComputeCarbonEmissionVelo() throws Exception {
+        // Arrange
+        JsonNode node = new ObjectMapper().readTree("{\"category\":\"transport\", \"type\":\"Trajet en vélo\", \"vehicle type\":\"electric\", \"distance traveled\":\"100\"}");
+        // Act
+        float result = defaultCarbon.computeCarbonEmission(node);
+        // Assert
+        assertEquals(CarbonCalculator.computeVeloEmissions("electric", 100), result);
+    }
+
+    @Test
+    void testComputeCarbonEmissionAvion() throws Exception {
+        // Arrange
+        JsonNode node = new ObjectMapper().readTree("{\"category\":\"transport\", \"type\":\"Trajet en avion\", \"vehicle type\":\"short haul\", \"distance traveled\":\"100\"}");
+        // Act
+        float result = defaultCarbon.computeCarbonEmission(node);
+        // Assert
+        assertEquals(CarbonCalculator.computeAvionEmissions("short haul", 100), result);
+    }
+
+    @Test
+    void testComputeCarbonEmissionRepas() throws Exception {
+        // Arrange
+        JsonNode node = new ObjectMapper().readTree("{\"category\":\"repas\", \"type\":\"Repas au restaurant\", \"meal type\":\"breakfast\", \"restaurant type\":\"fast food\"}");
+        // Act
+        float result = defaultCarbon.computeCarbonEmission(node);
+        // Assert
+        assertEquals(CarbonCalculator.computeRepasResto("breakfast", "fast food"), result);
     }
 }

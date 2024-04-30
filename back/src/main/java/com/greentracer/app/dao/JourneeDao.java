@@ -7,6 +7,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -67,7 +68,11 @@ public class JourneeDao implements Dao<String, Journee> {
 
     @Override
     public Boolean create(Journee journee) {
-        return jdbcTemplate.update(INSERT_REQUEST, journee.getpatientId(), journee.getdate(), journee.getresultat()) > 0;
+        try {
+            return jdbcTemplate.update(INSERT_REQUEST, journee.getpatientId(), journee.getdate(), journee.getresultat()) > 0;
+        } catch (DataIntegrityViolationException e) {
+            return false;
+        }
     }
 
     @Override

@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -66,8 +67,12 @@ public class UserDao implements Dao<String, User> {
 
     @Override
     public Boolean create(User obj) {
-        return jdbcTemplate.update(INSERT_REQUEST, obj.getLogin(), obj.getFname(), obj.getLname(),
-                obj.getPassword()) > 0;
+        try {
+            return jdbcTemplate.update(INSERT_REQUEST, obj.getLogin(), obj.getFname(), obj.getLname(),
+                    obj.getPassword()) > 0;
+        } catch (DataIntegrityViolationException e) {
+            return false;
+        }
     }
 
 

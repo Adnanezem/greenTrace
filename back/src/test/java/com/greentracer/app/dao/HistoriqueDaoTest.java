@@ -26,6 +26,8 @@ class HistoriqueDaoTest {
 
     private User user;
 
+    private Journee journee;
+
     @Autowired
     private HistoriqueDao historiqueDao;
 
@@ -44,8 +46,8 @@ class HistoriqueDaoTest {
         user.setLname("test");
         user.setFname("test");
         userDao.create(user);
-        Journee j = new Journee(0, "testHist", new Date(System.currentTimeMillis()), 46);
-        journeeDao.create(j);
+        journee = new Journee(0, "testHist", new Date(System.currentTimeMillis()), 46);
+        journeeDao.create(journee);
         historique = new Historique();
         historique.setidp(user.getLogin());
         historique.sethistorique(60.0f);
@@ -55,6 +57,7 @@ class HistoriqueDaoTest {
     @AfterEach
     void tearDown() {
         historiqueDao.delete(historique);
+        journeeDao.delete(journee);
         userDao.delete(user); // delete aussi les journee crée avec l'ID utilisateur correspondant (ON CASCADE).
     }
 
@@ -78,6 +81,30 @@ class HistoriqueDaoTest {
         assertTrue(historiqueDao.update(historique));
         assertEquals(0.0f, historiqueDao.getById("testHist").gethistorique());
         assertEquals("testHist", historiqueDao.getById("testHist").getidp());
+    }
+
+    @Test
+    void testCreateHistoriqueFailure() {
+        // Arrange
+        Historique historique = new Historique();
+        historique.setidp("nonexistent");
+        historique.sethistorique(60.0f);
+        // Act
+        Boolean result = historiqueDao.create(historique);
+        // Assert
+        assertFalse(result);
+    }
+
+
+    @Test
+    void testDeleteHistoriqueFailure() {
+        // Arrange
+        Historique historique = new Historique();
+
+        // Act
+        Boolean result = historiqueDao.delete(historique);
+        // Assert
+        assertFalse(result);
     }
 
     @Test

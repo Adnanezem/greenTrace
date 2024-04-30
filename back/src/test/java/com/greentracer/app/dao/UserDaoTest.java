@@ -65,6 +65,21 @@ class UserDaoTest {
     }
 
     @Test
+    void testUpdateUserFailure() {
+        // Arrange
+        User user = new User();
+        user.setLogin("nonexistent");
+        user.setFname("Test");
+        user.setLname("User");
+        user.setPassword("password");
+        // Act
+        Boolean result = userDao.update(user);
+        // Assert
+        assertFalse(result);
+        userDao.delete(user);
+    }
+
+    @Test
     void testDelete() {
         assertTrue(userDao.delete(user));
         assertThrows(IllegalArgumentException.class, () -> userDao.getById("test"));
@@ -82,5 +97,19 @@ class UserDaoTest {
         userDao.delete(u);
     }
 
+
+    @Test
+    void testCreateUserFailure() {
+        // Arrange
+        //Password not set, so the user is invalid
+        User user = new User();
+        user.setLogin("nonexistent");
+        user.setFname("Test");
+        user.setLname("User");
+        // Act
+        Boolean result = userDao.create(user);
+        // Assert
+        assertFalse(result);
+    }
 
 }

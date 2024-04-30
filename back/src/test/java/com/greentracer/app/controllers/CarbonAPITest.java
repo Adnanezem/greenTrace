@@ -91,6 +91,21 @@ class CarbonAPITest {
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 
+    @Test
+    @DisplayName("Should return OK when compute is successful and returns a value")
+    void computeSuccessfulWithValue() {
+        String requestBody = "{\"login\":\"testUser\", \"form\":[]}";
+        GreenTracerResponse successResponse = new GreenTracerResponse("Success", 200);
+        Map<Boolean, GreenTracerResponse> result = Collections.singletonMap(true, successResponse);
+
+        when(defaultCarbon.defaultCompute(requestBody, true)).thenReturn(result);
+
+        ResponseEntity<?> response = carbonAPI.compute(requestBody, "connect");
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(successResponse, response.getBody());
+    }
+
 
     @Test
     @DisplayName("Should return history data when successful")
@@ -154,6 +169,21 @@ class CarbonAPITest {
         assertEquals(errorResponse, response.getBody());
     }
 
+
+    @Test
+    @DisplayName("Should return Not Found when detailed history is not found")
+    void getDetailledHistoryNotFound() {
+        String id = "user1";
+        String date = "2024-04-26";
+        Map<Boolean, GreenTracerResponse> result = Collections.singletonMap(false, null);
+
+        when(defaultCarbon.defaultGetDetailledHistory(id, date)).thenReturn(result);
+
+        ResponseEntity<?> response = carbonAPI.getDetailledHistory(id, date);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
     @Test
     void computeJsonMappingExceptionTest() {
         String requestBody = "{\"login\":\"testUser\", \"form\":[]}";
@@ -210,6 +240,32 @@ class CarbonAPITest {
         ResponseEntity<?> response = carbonAPI.getHistory(id);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    @DisplayName("Should return OK when average carbon print is found")
+    void getAvgCarbonPrintSuccessful() {
+        GreenTracerResponse successResponse = new GreenTracerResponse("Success", 200);
+        Map<Boolean, GreenTracerResponse> result = Collections.singletonMap(true, successResponse);
+
+        when(defaultCarbon.defaultGetAvgCarbonPrint()).thenReturn(result);
+
+        ResponseEntity<?> response = carbonAPI.getAvgCarbonPrint();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(successResponse, response.getBody());
+    }
+
+    @Test
+    @DisplayName("Should return Bad Request when average carbon print is not found")
+    void getAvgCarbonPrintUnsuccessful() {
+        Map<Boolean, GreenTracerResponse> result = Collections.singletonMap(false, null);
+
+        when(defaultCarbon.defaultGetAvgCarbonPrint()).thenReturn(result);
+
+        ResponseEntity<?> response = carbonAPI.getAvgCarbonPrint();
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 }
 

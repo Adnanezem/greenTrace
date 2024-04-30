@@ -63,6 +63,14 @@ class JourneeDaoTest {
     }
 
     @Test
+    void testGetByIdFailure() {
+        // Arrange
+        String nonexistentId = "nonexistent";
+        // Act & Assert
+        assertThrows(IllegalArgumentException.class, () -> journeeDao.getById(nonexistentId));
+    }
+
+    @Test
     void testGetAll() {
 
         assertNotNull(journeeDao.getAll());
@@ -80,6 +88,7 @@ class JourneeDaoTest {
         journeeDao.create(journee2);
 
         assertEquals(2, journeeDao.getAll().size());
+        journeeDao.delete(journee2);
         userDao.delete(userTest);
     }
 
@@ -126,6 +135,19 @@ class JourneeDaoTest {
     }
 
     @Test
+    void testCreateJourneeFailure() {
+        // Arrange
+        Journee journee = new Journee();
+        journee.setpatientId("nonexistent");
+        journee.setdate(Date.valueOf("2022-01-01"));
+        journee.setresultat(60.0f);
+        // Act
+        Boolean result = journeeDao.create(journee);
+        // Assert
+        assertFalse(result);
+    }
+
+    @Test
     void testGetByDate() {
         List<Journee> j = journeeDao.getByDate("test", Date.valueOf("2021-01-01"));
         assertEquals(j.get(0).getpatientId(), journee.getpatientId());
@@ -164,6 +186,19 @@ class JourneeDaoTest {
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    void testUpdateJourneeFailure() {
+        // Arrange
+        Journee journee = new Journee();
+        journee.setpatientId("nonexistent");
+        journee.setdate(Date.valueOf("2022-01-01"));
+        journee.setresultat(70.0f);
+        // Act
+        Boolean result = journeeDao.update(journee);
+        // Assert
+        assertFalse(result);
     }
 
 }

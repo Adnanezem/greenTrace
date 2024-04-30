@@ -66,6 +66,35 @@ class UserAPITest {
     }
 
     @Test
+    void getUserHistoryTest() {
+        ResponseEntity<?> response = userAPI.getUserHistory("testUser");
+
+        assertEquals(HttpStatus.FOUND, response.getStatusCode());
+        assertEquals("/carbon/testUser/history", response.getHeaders().getLocation().getPath());
+    }
+
+
+    @Test
+    @DisplayName("Should return 404 when user is not found")
+    void getUserNotFound() {
+        Mockito.when(defaultUser.defaultGetUser(anyString())).thenReturn(Collections.singletonMap(false, new ErrorResponse("User not found", 404)));
+
+        ResponseEntity<?> response = userAPI.getUser("testUser");
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    @DisplayName("Should return 400 when user request is bad")
+    void getUserBadRequest() {
+        Mockito.when(defaultUser.defaultGetUser(anyString())).thenReturn(Collections.singletonMap(false, new ErrorResponse("Bad request", 400)));
+
+        ResponseEntity<?> response = userAPI.getUser("testUser");
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+    @Test
     @DisplayName("Should return no content when registration is successful")
     void registerSuccessful() {
         Mockito.when(defaultUser.defaultRegister(anyString())).thenReturn(Collections.singletonMap(true, new ErrorResponse("Success", 0)));
@@ -97,10 +126,24 @@ class UserAPITest {
     }
 
     @Test
-    void getUserHistoryTest() {
-        ResponseEntity<?> response = userAPI.getUserHistory("testUser");
+    @DisplayName("Should return 400 when user update is unsuccessful")
+    void updateUserUnsuccessful() {
+        ErrorResponse errorResponse = new ErrorResponse("ErrorResponse message", 1);
+        Mockito.when(defaultUser.defaultUpdateUser(anyString(), anyString())).thenReturn(Collections.singletonMap(false, errorResponse));
 
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-        assertEquals("/carbon/testUser/history", response.getHeaders().getLocation().getPath());
+        ResponseEntity<?> response = userAPI.updateUser("testUser", "{\"name\":\"newName\"}");
+
+        assertEquals(ResponseEntity.badRequest().body(errorResponse), response);
     }
+
+    @Test
+    @DisplayName("Should return no content when logout is successful")
+    void logoutSuccessful() {
+        Mockito.when(defaultUser.defaultLogout()).thenReturn(Collections.singletonMap(true, new ErrorResponse("Success", 0)));
+
+        ResponseEntity<?> response = userAPI.logout();
+
+        assertEquals(ResponseEntity.noContent().build(), response);
+    }
+
 }
