@@ -28,10 +28,10 @@ public class AutorizationFilter implements Filter {
     private static final String USERS = "users";
     private static final String CARBON = "carbon";
     private static final String[][] RESOURCES_WITH_LIMITATIONS = {
-            { "GET", USERS, "*" },
-            { "PUT", USERS, "*" },
-            { "POST", CARBON, "compute" },
-            { "GET", CARBON, "*" },
+            {"GET", USERS, "*" },
+            {"PUT", USERS, "*" },
+            {"POST", CARBON, "compute" },
+            {"GET", CARBON, "*" },
     };
 
     private final JwtTokenUtil jwtHelper;
@@ -74,8 +74,7 @@ public class AutorizationFilter implements Filter {
                 }
 
                 case CARBON -> {
-                    boolean pass = url[1].equals(user) || url[1].equals("compute")
-                            || url[1].equals("average");
+                    boolean pass = url[1].equals(user) || url[1].equals("compute") || url[1].equals("average");
                     if (pass) {
                         chain.doFilter(request, response);
                         return;
