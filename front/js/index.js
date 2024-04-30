@@ -14,31 +14,15 @@ function loadPage() {
 }
 
 function isConnected() {
-    console.log(document); 
-
-    const nav = document.querySelector('.nav-links ul');
-    const profilNav = document.getElementById('profilNav');
-    const loginNav = document.getElementById('loginNav');
-
+    console.log(document)
+    const profilNav = document.querySelector('#profilNav')
+    const loginNav = document.querySelector('#loginNav')
     if (sessionStorage.getItem("jwt") === null) {
-        if (profilNav) profilNav.remove(); 
-        if (!document.contains(loginNav)) {
-            const loginItem = document.createElement('li');
-            loginItem.className = 'nav-items';
-            loginItem.id = 'loginNav';
-            loginItem.innerHTML = '<a href="index.html?page=login">Login</a>';
-            nav.appendChild(loginItem);
-        }
-    } else {
-        // User is logged in
-        if (loginNav) loginNav.remove(); 
-        if (!document.contains(profilNav)) {
-            const profilItem = document.createElement('li');
-            profilItem.className = 'nav-items';
-            profilItem.id = 'profilNav';
-            profilItem.innerHTML = '<a href="index.html?page=profil">Profil</a>';
-            nav.appendChild(profilItem);
-        }
+        profilNav.style.display = 'none';
+        loginNav.style.display = 'flex';
+    } else { // on est connecté
+        profilNav.style.display = 'flex';
+        loginNav.style.display = 'none';
     }
 }
 
