@@ -30,7 +30,11 @@ public class DefaultUser {
     private final UserDao userDao;
     private final JwtTokenUtil jwt;
 
-    private static final String FORMAT_JSON_NON_RESPECTE = "Format JSON non respecté";
+    private static final String FORMAT_JSON_NON_RESPECTE = "Format JSON non respecté : {}";
+    private static final String FORMAT_JSON_NON_RESPECTE_POINT = "Format JSON non respecté.";
+
+    private static final String PASSWORD = "password";
+    private static final String LOGIN = "login";
 
     /**
      * Constructeur par défaut.
@@ -65,8 +69,8 @@ public class DefaultUser {
         ObjectMapper mapper = new ObjectMapper();
         try {
             JsonNode json = mapper.readTree(body);
-            String login = JSONUtils.getStringField(json, "login");
-            String password = JSONUtils.getStringField(json, "password");
+            String login = JSONUtils.getStringField(json, LOGIN);
+            String password = JSONUtils.getStringField(json, PASSWORD);
             if (login.isBlank() || password.isBlank()) {
                 logger.error("Le champ login ou password est vide.");
                 ErrorResponse err = new ErrorResponse("Le champ login ou password est vide.", 400);
@@ -85,8 +89,8 @@ public class DefaultUser {
                 res.put(false, err);
             }
         } catch (JsonProcessingException e) {
-            logger.error(FORMAT_JSON_NON_RESPECTE + " : {}", body);
-            ErrorResponse err = new ErrorResponse(FORMAT_JSON_NON_RESPECTE + ".", 400);
+            logger.error(FORMAT_JSON_NON_RESPECTE, body);
+            ErrorResponse err = new ErrorResponse(FORMAT_JSON_NON_RESPECTE_POINT, 400);
             res.put(false, err);
             return res;
         } catch (IllegalArgumentException e) {
@@ -118,8 +122,8 @@ public class DefaultUser {
         ObjectMapper mapper = new ObjectMapper();
         try {
             JsonNode json = mapper.readTree(body);
-            String login = JSONUtils.getStringField(json, "login");
-            String password = JSONUtils.getStringField(json, "password");
+            String login = JSONUtils.getStringField(json, LOGIN);
+            String password = JSONUtils.getStringField(json, PASSWORD);
             String mail = JSONUtils.getStringField(json, "mail");
             String fname = JSONUtils.getStringField(json, "fname");
             String lname = JSONUtils.getStringField(json, "lname");
@@ -145,8 +149,8 @@ public class DefaultUser {
                 return res;
             }
         } catch (JsonProcessingException e) {
-            logger.error(FORMAT_JSON_NON_RESPECTE + " : {}", body);
-            ErrorResponse err = new ErrorResponse(FORMAT_JSON_NON_RESPECTE + ".", 400);
+            logger.error(FORMAT_JSON_NON_RESPECTE, body);
+            ErrorResponse err = new ErrorResponse(FORMAT_JSON_NON_RESPECTE_POINT, 400);
             res.put(false, err);
             return res;
         }
@@ -198,7 +202,7 @@ public class DefaultUser {
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode json = mapper.readTree(body);
-            String password = JSONUtils.getStringField(json, "password");
+            String password = JSONUtils.getStringField(json, PASSWORD);
             String mail = JSONUtils.getStringField(json, "mail");
             String fname = JSONUtils.getStringField(json, "fname");
             String lname = JSONUtils.getStringField(json, "lname");
@@ -232,8 +236,8 @@ public class DefaultUser {
             res.put(false, err);
             return res;
         } catch (JsonProcessingException e) {
-            logger.error(FORMAT_JSON_NON_RESPECTE + " : {}", body);
-            ErrorResponse err = new ErrorResponse(FORMAT_JSON_NON_RESPECTE + ".", 400);
+            logger.error(FORMAT_JSON_NON_RESPECTE, body);
+            ErrorResponse err = new ErrorResponse(FORMAT_JSON_NON_RESPECTE_POINT, 400);
             res.put(false, err);
             return res;
         }
