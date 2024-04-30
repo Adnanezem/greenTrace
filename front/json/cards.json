@@ -133,24 +133,14 @@
             },
             "fields": [
                 {
-                    "name": "meal type",
-                    "type": "scrolllist",
-                    "options": ["breakfast", "brunch", "lunch", "dinner", "snack"]
-                },
-                {
                     "name": "restaurant type",
                     "type": "scrolllist",
-                    "options": ["fast food", "traditional", "gourmet", "vegan", "vegetarian"]
-                },
-                {
-                    "name": "number of people",
-                    "type": "number input"
+                    "options": ["fast food", "traditional", "vegan", "vegetarian"]
                 }
             ]
         },
         {
             "id": 6,
-            "disabled": "true",
             "category": "repas",
             "name": "Repas à la maison",
             "description": "Ajouter un repas à la maison",
@@ -162,11 +152,12 @@
                 {
                     "name": "meal type",
                     "type": "scrolllist",
-                    "options": ["breakfast", "brunch", "lunch", "dinner", "snack"]
+                    "options": ["breakfast", "lunch", "dinner"]
                 },
                 {
-                    "name": "number of people",
-                    "type": "number input"
+                    "name": "food type",
+                    "type": "scrolllist",
+                    "options": ["traditional", "vegan", "vegetarian"]
                 }
             ]
         },
