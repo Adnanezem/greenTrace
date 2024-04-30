@@ -54,27 +54,30 @@ public class CarbonAPI {
      * @param body
      * @return un résultat sous forme de json.
      */
-    @PostMapping("/compute")
-    public ResponseEntity<GreenTracerResponse> compute(@RequestBody String body) {
+    @PostMapping("/compute/{isConnected}")
+    public ResponseEntity<GreenTracerResponse> compute(@RequestBody String body, @PathVariable String isConnected) {
+        boolean hasConnection = isConnected.equals("connect");
         URI uri;
         Map<Boolean, GreenTracerResponse> resMap = new HashMap<>();
         try {
-            resMap = def.defaultCompute(body);
+            resMap = def.defaultCompute(body, hasConnection);
             Iterator<Map.Entry<Boolean, GreenTracerResponse>> iterator = resMap.entrySet().iterator();
             Map.Entry<Boolean, GreenTracerResponse> res = iterator.next();
             if (!res.getKey()) {
                 return ResponseEntity.badRequest().build();
             }
-            logger.info("body received: {}", body);
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode json = mapper.readTree(body);
-            String login = JSONUtils.getStringField(json, "login");
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date d = new Date(System.currentTimeMillis());
-            String utilDate = dateFormat.format(d);
-            logger.info("date URI : {}", utilDate);
-            uri = new URI("/" + login + "/history/" + utilDate);
-            return ResponseEntity.created(uri).body(res.getValue());
+            if(hasConnection) {
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode json = mapper.readTree(body);
+                String login = JSONUtils.getStringField(json, "login");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date d = new Date(System.currentTimeMillis());
+                String utilDate = dateFormat.format(d);
+                logger.info("date URI : {}", utilDate);
+                uri = new URI("/" + login + "/history/" + utilDate);
+                return ResponseEntity.created(uri).body(res.getValue());
+            }
+            return ResponseEntity.ok().body(res.getValue());
         } catch (URISyntaxException e) {
             logger.info(body);
             return ResponseEntity.badRequest().build();
